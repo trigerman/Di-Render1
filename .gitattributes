@@ -1,0 +1,10 @@
+* text=auto eol=lf
+
+# Library and fixture SVGs are verified by SHA-256; keep their bytes unchanged.
+*.svg -text
+*.woff2 binary
+
+# Pinned Apache POI files and their redistributed notices retain upstream bytes.
+vendor/poi-shapes/* -text
+app/public-browser/licenses/poi-shapes-*.txt -text
+app/dist/licenses/poi-shapes-*.txt -text

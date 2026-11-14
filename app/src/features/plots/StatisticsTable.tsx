@@ -1,0 +1,23 @@
+import { useState } from 'react';
+import type { AnalysisConfig, AnalysisResult } from '../../domain/stats/schema';
+import { statisticsCsv, statisticsClipboard } from '../../domain/stats/export';
+import { makeDownload, safeFileStem } from '../../domain/export/exporters';
+import { dataText as d, type Locale } from '../../i18n/messages';
+import { hasPostHoc, isPairedTest, usesTukey } from '../../domain/analysis/comparisons';
+
+export function StatisticsTable({ result, config, name, locale }: { result: AnalysisResult | null; config: AnalysisConfig | null; name: string; locale: Locale }) {
+  const [status, setStatus] = useState('');
+  if (!result || !config) return null;
+  const tukey = usesTukey(config), paired = isPairedTest(config.test);
+  const format = (value: number | null) => value === null ? '—' : Number(value.toPrecision(6)).toString();
+  return <section className="statistics-table"><h3>{d(locale, 'statistics')}</h3><p>{d(locale, 'familySize')}: {result.familySize} · α = {config.alpha} · {d(locale, hasPostHoc(config) && config.postHoc === 'none' ? 'none' : tukey ? 'tukeyHsd' : config.adjustment)}</p>
+    {result.global && <div className="plot-omnibus-result"><h4>{d(locale, 'overallTest')}</h4><strong>{d(locale, result.global.test)}</strong><p>{result.global.df2 !== undefined ? `F(${result.global.df}, ${result.global.df2})` : `${d(locale, 'statistic')} (${result.global.df ?? '—'})`} = {format(result.global.statistic)} · p = {format(result.global.p)}{config.test === 'anova' && <> · η² = {format(result.global.effect)}</>}</p>{result.global.reason && <p>{d(locale, result.global.reason)}</p>}</div>}
+    {tukey && <p>{d(locale, 'tukeyResultHint')} {100 * (1 - config.alpha)}% {d(locale, 'simultaneousCI')}</p>}
+    {paired && <p>{d(locale, 'pairedResultHint')}</p>}
+    <div className="data-actions"><button type="button" onClick={() => { void navigator.clipboard.writeText(statisticsClipboard(result, config, name, locale)).then(() => setStatus(d(locale, 'copied'))).catch(() => setStatus(d(locale, 'error'))); }}>{d(locale, 'copyTable')}</button><button type="button" onClick={() => makeDownload(statisticsCsv(result, config, name, locale), 'text/csv', safeFileStem(name) + '-statistics.csv')}>{d(locale, 'downloadStats')}</button></div>{status && <p role="status">{status}</p>}
+    <div className="data-table-scroll"><table><thead><tr><th>{d(locale, 'groupX')}</th>{['n', 'mean', 'sd', 'sem', 'median', 'q1', 'q3', 'iqr', 'ciLow', 'ciHigh', 'min', 'max'].map(key => <th key={key}>{d(locale, key)}</th>)}</tr></thead><tbody>{result.groups.map(group => <tr key={group.key}><th>{group.label}</th>{(['n', 'mean', 'sd', 'sem', 'median', 'q1', 'q3', 'iqr', 'ciLow', 'ciHigh', 'min', 'max'] as const).map(key => <td key={key}>{format(group.descriptive[key])}</td>)}</tr>)}</tbody></table>
+      {result.comparisons.length > 0 && <table className="plot-comparison-results"><thead><tr><th>{d(locale, 'comparisons')}</th><th>{tukey ? 'q' : d(locale, 'statistic')}</th><th>df</th><th>{d(locale, 'raw')}</th><th>{d(locale, 'adjustedP')}</th><th>{d(locale, tukey ? 'meanDifference' : 'effect')}</th>{tukey && <><th>{d(locale, 'ciLow')}</th><th>{d(locale, 'ciHigh')}</th></>}{paired && <><th>{d(locale, 'matchedPairs')}</th><th>{d(locale, 'excludedA')}</th><th>{d(locale, 'excludedB')}</th></>}<th>{d(locale, 'labelStyle')}</th></tr></thead><tbody>{result.comparisons.map(comparison => <tr key={`${comparison.a},${comparison.b}`}><th>{result.groups[comparison.a]?.label} / {result.groups[comparison.b]?.label}<small>{comparison.result.test} · {d(locale, comparison.result.method)}</small></th><td>{format(comparison.result.statistic)}</td><td>{format(comparison.result.df)}</td><td>{format(comparison.result.p)}</td><td>{format(comparison.adjustedP)}</td><td>{format(comparison.result.effect)}</td>{tukey && <><td>{format(comparison.result.ciLow ?? null)}</td><td>{format(comparison.result.ciHigh ?? null)}</td></>}{paired && <><td>{format(comparison.matchedPairs ?? null)}</td><td>{format(comparison.excludedA ?? null)}</td><td>{format(comparison.excludedB ?? null)}</td></>}<td>{d(locale, comparison.result.reason ?? comparison.label)}</td></tr>)}</tbody></table>}
+      {result.exclusions.length > 0 && <table><thead><tr><th>{d(locale, 'reason')}</th><th>{d(locale, 'count')}</th><th>{d(locale, 'sourceRows')}</th></tr></thead><tbody>{result.exclusions.map((exclusion, index) => <tr key={index}><td>{d(locale, exclusion.reason)}</td><td>{exclusion.count}</td><td>{exclusion.rows.slice(0, 5).join(', ')}</td></tr>)}</tbody></table>}
+    </div><small>{result.engine} · {result.fingerprint}</small>
+  </section>;
+}

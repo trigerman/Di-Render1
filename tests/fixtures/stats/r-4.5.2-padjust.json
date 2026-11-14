@@ -1,0 +1,391 @@
+{
+  "reference": "R 4.5.2 stats::p.adjust",
+  "source": "https://svn.r-project.org/R/tags/R-4-5-2/src/library/stats/R/p.adjust.R",
+  "provenance": "Independent exact rational fixtures for pinned source semantics; no R runtime was invoked.",
+  "cases": [
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 4,
+      "method": "bonferroni",
+      "expected": [
+        0.04,
+        0.16,
+        null,
+        0.12
+      ]
+    },
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 4,
+      "method": "holm",
+      "expected": [
+        0.04,
+        0.09,
+        null,
+        0.09
+      ]
+    },
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 4,
+      "method": "bh",
+      "expected": [
+        0.04,
+        0.05333333333333334,
+        null,
+        0.05333333333333334
+      ]
+    },
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 8,
+      "method": "bonferroni",
+      "expected": [
+        0.08,
+        0.32,
+        null,
+        0.24
+      ]
+    },
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 8,
+      "method": "holm",
+      "expected": [
+        0.08,
+        0.24,
+        null,
+        0.21
+      ]
+    },
+    {
+      "p": [
+        0.01,
+        0.04,
+        null,
+        0.03
+      ],
+      "familySize": 8,
+      "method": "bh",
+      "expected": [
+        0.08,
+        0.10666666666666667,
+        null,
+        0.10666666666666667
+      ]
+    },
+    {
+      "p": [
+        0.05,
+        0.05,
+        0.2,
+        1.0,
+        0.0
+      ],
+      "familySize": 5,
+      "method": "bonferroni",
+      "expected": [
+        0.25,
+        0.25,
+        1.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "p": [
+        0.05,
+        0.05,
+        0.2,
+        1.0,
+        0.0
+      ],
+      "familySize": 5,
+      "method": "holm",
+      "expected": [
+        0.2,
+        0.2,
+        0.4,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "p": [
+        0.05,
+        0.05,
+        0.2,
+        1.0,
+        0.0
+      ],
+      "familySize": 5,
+      "method": "bh",
+      "expected": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0.25,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "p": [
+        null,
+        null
+      ],
+      "familySize": 2,
+      "method": "bonferroni",
+      "expected": [
+        null,
+        null
+      ]
+    },
+    {
+      "p": [
+        null,
+        null
+      ],
+      "familySize": 2,
+      "method": "holm",
+      "expected": [
+        null,
+        null
+      ]
+    },
+    {
+      "p": [
+        null,
+        null
+      ],
+      "familySize": 2,
+      "method": "bh",
+      "expected": [
+        null,
+        null
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 1,
+      "method": "bonferroni",
+      "expected": [
+        0.07
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 1,
+      "method": "holm",
+      "expected": [
+        0.07
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 1,
+      "method": "bh",
+      "expected": [
+        0.07
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 190,
+      "method": "bonferroni",
+      "expected": [
+        1.0
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 190,
+      "method": "holm",
+      "expected": [
+        1.0
+      ]
+    },
+    {
+      "p": [
+        0.07
+      ],
+      "familySize": 190,
+      "method": "bh",
+      "expected": [
+        1.0
+      ]
+    },
+    {
+      "p": [
+        1e-40,
+        1e-200,
+        0.99,
+        null
+      ],
+      "familySize": 190,
+      "method": "bonferroni",
+      "expected": [
+        1.9e-38,
+        1.9e-198,
+        1.0,
+        null
+      ]
+    },
+    {
+      "p": [
+        1e-40,
+        1e-200,
+        0.99,
+        null
+      ],
+      "familySize": 190,
+      "method": "holm",
+      "expected": [
+        1.89e-38,
+        1.9e-198,
+        1.0,
+        null
+      ]
+    },
+    {
+      "p": [
+        1e-40,
+        1e-200,
+        0.99,
+        null
+      ],
+      "familySize": 190,
+      "method": "bh",
+      "expected": [
+        9.5e-39,
+        1.9e-198,
+        1.0,
+        null
+      ]
+    },
+    {
+      "p": [
+        0.8,
+        0.9,
+        1.0
+      ],
+      "familySize": 3,
+      "method": "bonferroni",
+      "expected": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "p": [
+        0.8,
+        0.9,
+        1.0
+      ],
+      "familySize": 3,
+      "method": "holm",
+      "expected": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "p": [
+        0.8,
+        0.9,
+        1.0
+      ],
+      "familySize": 3,
+      "method": "bh",
+      "expected": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "p": [
+        0.004,
+        0.001,
+        0.009,
+        0.002
+      ],
+      "familySize": 4,
+      "method": "bonferroni",
+      "expected": [
+        0.016,
+        0.004,
+        0.036,
+        0.008
+      ]
+    },
+    {
+      "p": [
+        0.004,
+        0.001,
+        0.009,
+        0.002
+      ],
+      "familySize": 4,
+      "method": "holm",
+      "expected": [
+        0.008,
+        0.004,
+        0.009,
+        0.006
+      ]
+    },
+    {
+      "p": [
+        0.004,
+        0.001,
+        0.009,
+        0.002
+      ],
+      "familySize": 4,
+      "method": "bh",
+      "expected": [
+        0.005333333333333333,
+        0.004,
+        0.009,
+        0.004
+      ]
+    }
+  ]
+}

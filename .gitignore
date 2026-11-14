@@ -1,0 +1,18 @@
+node_modules/
+dist/
+!vendor/fabric/dist/
+.audit-cache/
+.audit-pnpm-store/
+.pnpm-store/
+.local-audit/
+*.tsbuildinfo
+playwright-report/
+test-results/
+reports/
+releases/
+.env
+.env.*
+!.env.example
+
+# Copied from node_modules by scripts/vendor-sync.mjs at build time
+app/public-browser/vendor/

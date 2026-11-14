@@ -1,0 +1,355 @@
+{
+  "primitives": [
+    {
+      "kind": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 380,
+      "fill": "#FFFFFF"
+    },
+    {
+      "kind": "text",
+      "x": 260,
+      "y": 20,
+      "text": "Measurements",
+      "size": 14,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 312,
+      "text": "1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 240.5,
+      "x2": 502,
+      "y2": 240.5,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 244.5,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 173,
+      "x2": 502,
+      "y2": 173,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 177,
+      "text": "3",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 105.5,
+      "x2": 502,
+      "y2": 105.5,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 109.5,
+      "text": "4",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 502,
+      "y2": 38,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 42,
+      "text": "5",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 68,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "rect",
+      "x": 148.5,
+      "y": 206.75,
+      "width": 56,
+      "height": 67.5,
+      "fill": "#0072B2",
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 148.5,
+      "y1": 240.5,
+      "x2": 204.5,
+      "y2": 240.5,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 176.5,
+      "y1": 308,
+      "x2": 176.5,
+      "y2": 274.25,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 176.5,
+      "y1": 206.75,
+      "x2": 176.5,
+      "y2": 173,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 162.5,
+      "y1": 308,
+      "x2": 190.5,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 162.5,
+      "y1": 173,
+      "x2": 190.5,
+      "y2": 173,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "circle",
+      "x": 174.49,
+      "y": 308,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 172.179,
+      "y": 240.5,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 170.826,
+      "y": 173,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "text",
+      "x": 176.5,
+      "y": 324,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 365.5,
+      "y": 71.75,
+      "width": 56,
+      "height": 67.5,
+      "fill": "#E69F00",
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 365.5,
+      "y1": 105.5,
+      "x2": 421.5,
+      "y2": 105.5,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 393.5,
+      "y1": 173,
+      "x2": 393.5,
+      "y2": 139.25,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 393.5,
+      "y1": 71.75,
+      "x2": 393.5,
+      "y2": 38,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 379.5,
+      "y1": 173,
+      "x2": 407.5,
+      "y2": 173,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 379.5,
+      "y1": 38,
+      "x2": 407.5,
+      "y2": 38,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "circle",
+      "x": 388.976,
+      "y": 173,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 391.265,
+      "y": 105.5,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 399.166,
+      "y": 38,
+      "radius": 2.5,
+      "fill": "#263238",
+      "opacity": 0.8
+    },
+    {
+      "kind": "text",
+      "x": 393.5,
+      "y": 324,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 285,
+      "y": 352,
+      "text": "Group",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 14,
+      "y": 173,
+      "text": "Value",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": -90
+    },
+    {
+      "kind": "rect",
+      "x": 68,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#0072B2"
+    },
+    {
+      "kind": "text",
+      "x": 80,
+      "y": 371,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 100.2,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#E69F00"
+    },
+    {
+      "kind": "text",
+      "x": 112.2,
+      "y": 371,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    }
+  ],
+  "notices": [
+    "A: n < 5; observations are overlaid.",
+    "B: n < 5; observations are overlaid."
+  ],
+  "error": null
+}

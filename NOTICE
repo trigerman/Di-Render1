@@ -1,0 +1,61 @@
+OpenBRender 0.1.0 local release
+
+This source distribution includes OpenBioFigure by Voldigoade and contributors,
+licensed under Apache-2.0. Upstream source:
+https://github.com/Voldigoade/openbiofigure
+Pinned commit: 8f72679efc26c821737cc3adb2ddca033150f06e
+
+OpenBRender (formerly OpenRender) changes include bounded project validation, an explicit SVG policy,
+local import/export validation, untrusted provenance handling, a static browser
+entry point, hosting headers, and browser validation fixtures. Original file headers
+and license notices are retained. See docs/upstream-source.lock.json for the public upstream revision.
+
+Scientific artwork and fonts have separate licenses. 2,665 drawings are included
+in app/public-browser/artwork: 607 pinned Bioicons drawings (314 CC0 and 293
+CC BY 4.0), 1,352 Servier Medical Art drawings from the Bioicons vector edition
+(CC BY 3.0 Unported, credited to Servier Medical Art, https://smart.servier.com/)
+and 706 NIH BioArt Source drawings (https://bioart.niaid.nih.gov/): 701 public
+domain and 5 CC BY 4.0.
+Creator, source, license, original and normalized integrity evidence are recorded
+in app/src/assets/packs/library-manifest.json. See docs/ARTWORK_LIBRARY.md.
+Bundled Barlow, IBM Plex and STIX Two Text fonts retain their SIL OFL notices in
+app/public-browser/licenses.
+
+The app and audit harness include DOMPurify 3.4.14 under its retained dual
+Apache-2.0 or MPL-2.0 license. See vendor/dompurify/LICENSE and UPSTREAM.json.
+
+Fabric 7.4.0 is vendored under MIT from the pinned official v740 browser
+distribution. See vendor/fabric/LICENSE and UPSTREAM.json. Other bundled
+dependency notices are included with the local distribution.
+
+Native standard-shape geometry is adapted from Apache POI 5.4.1 (Apache-2.0),
+Copyright 2003-2025 The Apache Software Foundation. This product includes
+software developed at The Apache Software Foundation (https://www.apache.org/).
+Pinned source, full license and upstream notices: vendor/poi-shapes/.
+Extraction and parameter adaptations: docs/SHAPE_GEOMETRY.md.
+
+----------------------------------------------------------------------
+Di-Render 0.2.0
+
+Di-Render is a fork of OpenBRender 0.1.0 (published as DrawPlotia,
+https://github.com/GPTchatly/DrawPlotia, Apache-2.0). All upstream notices
+above are retained.
+
+Changes in Di-Render: rebranding; a plugin system (host API, registry, external
+plugins by URL, window.DiRender.registerPlugin); built-in Protein (Mol*), Molecule
+(SmilesDrawer) and My library (bulk icon import) plugins; sub-path hosting for
+GitHub Pages; GitHub Actions workflows; and 2,162 additional library drawings.
+
+Additional artwork (see docs/ICON_SOURCES.md and the per-item manifest records):
+- 1,651 drawings from the Reactome Icon Library, CC BY 4.0
+  (https://reactome.org/icon-lib), from github.com/reactome/reactome_illustrations.
+- 182 drawings from BioDraws, CC BY-SA 4.0 (https://biodraws.com/),
+  from github.com/biodraws/biodraws.
+- 311 further Bioicons drawings and 18 further Servier Medical Art drawings
+  (Bioicons vector edition), each under the licence recorded in its folder.
+Normalization only expanded styles and removed editor metadata; geometry is unchanged.
+
+Optional runtime libraries, loaded only when their plugin opens:
+- Mol* (molstar) 5.13.1, MIT — https://github.com/molstar/molstar
+- SmilesDrawer 2.4.1, MIT — https://github.com/reymond-group/smilesDrawer
+- JSZip 3.10.1, MIT or GPLv3 (used under MIT) — https://github.com/Stuk/jszip

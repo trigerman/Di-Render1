@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/apache/poi",
+  "release": "REL_5_4_1",
+  "commit": "4554f204cbbf00ecbcaed134fe57e43a1779a612",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "path": "presetShapeDefinitions.xml",
+      "upstreamPath": "poi/src/main/resources/org/apache/poi/sl/draw/geom/presetShapeDefinitions.xml",
+      "gitBlob": "f3c3f2ca33263e5bc4127409bab72675ca77780d",
+      "sha256": "a7dad593d27bd70536b41da9b761fa16409536cc0c25ef2b6c7a61c5d9b3e738"
+    },
+    {
+      "path": "LICENSE",
+      "upstreamPath": "legal/LICENSE",
+      "gitBlob": "990301df8a1b7b0436b250682f52d79da93857eb",
+      "sha256": "6e7c918e5a49f677c1b85a9eb2d035cd85c217fc42af6b4a336964a434001a9c"
+    },
+    {
+      "path": "NOTICE",
+      "upstreamPath": "legal/NOTICE",
+      "gitBlob": "d600ff75df73fe5ba17aad89834e7fafd0c74f69",
+      "sha256": "8e41ec916a59981a28397e2b46d7fb851eea02f7d179d75f030eb248916a4a09"
+    }
+  ]
+}

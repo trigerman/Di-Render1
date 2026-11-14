@@ -1,0 +1,254 @@
+{
+  "primitives": [
+    {
+      "kind": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 380,
+      "fill": "#FFFFFF"
+    },
+    {
+      "kind": "text",
+      "x": 260,
+      "y": 20,
+      "text": "Measurements",
+      "size": 14,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 254.793,
+      "x2": 502,
+      "y2": 254.793,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 258.793,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 173,
+      "x2": 502,
+      "y2": 173,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 177,
+      "text": "4",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 91.207,
+      "x2": 502,
+      "y2": 91.207,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 95.207,
+      "text": "6",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 68,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "circle",
+      "x": 68,
+      "y": 295.689,
+      "radius": 2.5,
+      "fill": "#0072B2",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 153.098,
+      "y": 254.793,
+      "radius": 2.5,
+      "fill": "#0072B2",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 238.196,
+      "y": 213.896,
+      "radius": 2.5,
+      "fill": "#0072B2",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 331.804,
+      "y": 308,
+      "radius": 2.5,
+      "fill": "#E69F00",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 416.902,
+      "y": 267.104,
+      "radius": 2.5,
+      "fill": "#E69F00",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 502,
+      "y": 226.207,
+      "radius": 2.5,
+      "fill": "#E69F00",
+      "opacity": 0.8
+    },
+    {
+      "kind": "text",
+      "x": 153.098,
+      "y": 324,
+      "text": "1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 416.902,
+      "y": 324,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 502,
+      "y2": 38,
+      "stroke": "#A74732"
+    },
+    {
+      "kind": "text",
+      "x": 502,
+      "y": 35,
+      "text": "7.301",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 132.104,
+      "x2": 502,
+      "y2": 132.104,
+      "stroke": "#A74732"
+    },
+    {
+      "kind": "text",
+      "x": 502,
+      "y": 129.104,
+      "text": "5",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 285,
+      "y": 352,
+      "text": "Group",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 14,
+      "y": 173,
+      "text": "Value",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": -90
+    },
+    {
+      "kind": "rect",
+      "x": 68,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#0072B2"
+    },
+    {
+      "kind": "text",
+      "x": 80,
+      "y": 371,
+      "text": "1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 100.2,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#E69F00"
+    },
+    {
+      "kind": "text",
+      "x": 112.2,
+      "y": 371,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    }
+  ],
+  "notices": [],
+  "error": null
+}

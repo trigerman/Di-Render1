@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "application": "Di-Render",
+  "version": "0.2.0",
+  "projectFormat": "3.0.0",
+  "runtime": "static-web (GitHub Pages) or local-browser",
+  "upstream": {
+    "name": "OpenBRender / DrawPlotia",
+    "repository": "https://github.com/GPTchatly/DrawPlotia",
+    "version": "0.1.0",
+    "sourceCommit": "fc82957326269544c9b93ce035fede707c332f67"
+  },
+  "notes": "Upstream release validation figures apply to OpenBRender 0.1.0 and are not re-claimed for this fork. Run the test suites in README to validate a build."
+}

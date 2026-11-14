@@ -1,0 +1,67 @@
+/* Di-Render plugin surfaces. Uses the design-system tokens from design-system.css. */
+.plugins-panel { display: flex; flex-direction: column; gap: 14px; padding: 12px; }
+.plugins-head { display: flex; gap: 8px; align-items: flex-start; justify-content: space-between; }
+.plugins-intro, .plugins-empty, .plugins-warning, .plugin-hint, .plugin-credits { overflow-wrap: anywhere; color: var(--color-text-secondary); font-size: var(--text-meta); line-height: 1.45; margin: 0; }
+.plugins-group { display: flex; flex-direction: column; gap: 6px; }
+.plugins-group h3, .plugins-manage h3 { margin: 0; font: 600 var(--text-label)/1.2 var(--font-label); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-text-tertiary); }
+.plugin-card { display: flex; gap: 10px; align-items: flex-start; text-align: left; padding: 10px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-surface-raised); color: var(--color-text); cursor: pointer; font: inherit; }
+.plugin-card:hover { border-color: var(--color-brand-border); background: var(--color-brand-soft); }
+.plugin-card:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.plugin-icon { flex: none; width: 32px; height: 32px; border-radius: 7px; display: grid; place-items: center; background: var(--color-brand-soft); color: var(--color-brand); }
+.plugin-emoji { font-size: 17px; }
+.plugin-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.plugin-text strong { font-size: var(--text-control); }
+.plugin-text span { font-size: var(--text-meta); color: var(--color-text-secondary); line-height: 1.35; }
+.plugins-manage { display: flex; flex-direction: column; gap: 8px; padding: 10px; border: 1px dashed var(--color-border-strong); border-radius: 8px; }
+.plugins-manage ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.plugins-manage li { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.plugins-manage label { display: flex; gap: 6px; align-items: center; font-size: var(--text-control); }
+.plugins-manage small { color: var(--color-text-tertiary); }
+.plugins-add { display: flex; gap: 6px; }
+.plugins-add input { flex: 1; min-width: 0; padding: 6px 8px; border: 1px solid var(--color-border); border-radius: 6px; font: inherit; font-size: var(--text-control); background: var(--color-document); color: var(--color-text); }
+.plugins-footer { margin: 0; }
+.plugins-docs-link { display: inline-flex; gap: 6px; align-items: center; font-size: var(--text-meta); color: var(--color-guide-text); }
+
+.plugin-dialog { width: min(560px, calc(100vw - 32px)); }
+.plugin-dialog.is-wide { width: min(1080px, calc(100vw - 32px)); }
+.plugin-dialog-body { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.plugin-credits { padding-top: 8px; border-top: 1px solid var(--color-border); }
+.plugin-form { display: flex; flex-direction: column; gap: 12px; }
+.plugin-check { display: flex; gap: 8px; align-items: center; font-size: var(--text-control); }
+.plugin-external-root { min-height: 120px; }
+
+.molecule-preview { height: 260px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff; display: grid; place-items: center; overflow: hidden; }
+.molecule-preview svg { width: 100%; height: 100%; }
+
+.protein-plugin { display: grid; grid-template-columns: 260px 1fr; gap: 14px; min-height: 520px; }
+.protein-controls { display: flex; flex-direction: column; gap: 10px; }
+.protein-load { display: flex; gap: 8px; align-items: flex-end; }
+.protein-load .field { flex: 1; }
+.protein-viewer { position: relative; min-height: 520px; border: 1px solid var(--color-border); border-radius: 8px; overflow: hidden; background: #fff; }
+.protein-viewer .msp-plugin { position: absolute; inset: 0; }
+
+.library-plugin.is-dragging { outline: 2px dashed var(--color-guide); outline-offset: 6px; border-radius: 8px; }
+.library-import, .library-browse { display: flex; flex-direction: column; gap: 10px; }
+.library-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.library-filters { display: flex; gap: 8px; }
+.library-filters input, .library-filters select { padding: 6px 8px; border: 1px solid var(--color-border); border-radius: 6px; font: inherit; font-size: var(--text-control); background: var(--color-document); color: var(--color-text); }
+.library-filters input { flex: 1; min-width: 0; }
+.library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; max-height: 46vh; overflow: auto; padding: 2px; }
+.library-thumb { position: relative; aspect-ratio: 1; }
+.library-thumb > button:first-child { width: 100%; height: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 8px; background: #fff; cursor: pointer; }
+.library-thumb > button:first-child:hover { border-color: var(--color-guide); }
+.library-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.library-thumb-placeholder { display: block; width: 100%; height: 100%; border-radius: 4px; background: var(--color-surface-secondary); }
+.library-remove { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-surface-raised); color: var(--color-text-secondary); display: none; place-items: center; padding: 0; cursor: pointer; }
+.library-thumb:hover .library-remove, .library-remove:focus-visible { display: grid; }
+.library-footer { flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .protein-plugin { grid-template-columns: 1fr; }
+}
+
+/* Four left-sidebar tabs (Assets · Plugins · Figures · Data) on one row. */
+.inspector-tabs.left-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.inspector-tabs.left-tabs button { gap: 4px; padding: 0 4px; font-size: var(--text-meta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.inspector-tabs.left-tabs button svg { width: 14px; height: 14px; }
+.left-tabpanel > .plugins-panel { flex: 1 1 auto; min-height: 0; overflow-y: auto; }

@@ -1,0 +1,224 @@
+{
+  "primitives": [
+    {
+      "kind": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 380,
+      "fill": "#FFFFFF"
+    },
+    {
+      "kind": "text",
+      "x": 260,
+      "y": 20,
+      "text": "Measurements",
+      "size": 14,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 312,
+      "text": "0",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 240.5,
+      "x2": 502,
+      "y2": 240.5,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 244.5,
+      "text": "1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 173,
+      "x2": 502,
+      "y2": 173,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 177,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 105.5,
+      "x2": 502,
+      "y2": 105.5,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 109.5,
+      "text": "3",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 502,
+      "y2": 38,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 42,
+      "text": "4",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 68,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "rect",
+      "x": 105.975,
+      "y": 173,
+      "width": 141.05,
+      "height": 135,
+      "fill": "#0072B2"
+    },
+    {
+      "kind": "rect",
+      "x": 322.975,
+      "y": 38,
+      "width": 141.05,
+      "height": 270,
+      "fill": "#E69F00"
+    },
+    {
+      "kind": "text",
+      "x": 176.5,
+      "y": 324,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 393.5,
+      "y": 324,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 285,
+      "y": 352,
+      "text": "Group",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 14,
+      "y": 173,
+      "text": "Value",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": -90
+    },
+    {
+      "kind": "rect",
+      "x": 68,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#0072B2"
+    },
+    {
+      "kind": "text",
+      "x": 80,
+      "y": 371,
+      "text": "S1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 107.4,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#E69F00"
+    },
+    {
+      "kind": "text",
+      "x": 119.4,
+      "y": 371,
+      "text": "S2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    }
+  ],
+  "notices": [
+    "Stacked bars do not support statistics."
+  ],
+  "error": null
+}

@@ -1,0 +1,206 @@
+.data-overlay:has(.plot-workflow) {
+  background: var(--color-scrim);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+}
+
+.data-dialog.plot-workflow {
+  display: flex;
+  flex-direction: column;
+  width: min(1480px, calc(100vw - 40px));
+  height: min(920px, calc(100dvh - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 16px;
+  background: var(--color-surface-primary);
+  color: var(--color-text);
+  box-shadow: 0 24px 90px rgb(0 0 0 / 28%);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.data-dialog.plot-workflow button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  background: var(--color-surface-primary);
+  color: var(--color-text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms;
+}
+.data-dialog.plot-workflow button:hover:not(:disabled) { background: var(--color-surface-secondary); border-color: var(--color-border-strong); }
+.data-dialog.plot-workflow button:disabled { opacity: .46; cursor: default; }
+.data-dialog.plot-workflow button.primary { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-text-inverse); padding-inline: 22px; }
+.data-dialog.plot-workflow button.primary:hover:not(:disabled) { background: var(--color-brand-hover); }
+.data-dialog.plot-workflow button svg { flex: 0 0 auto; width: 17px; height: 17px; }
+.data-dialog.plot-workflow .plot-dialog-header { flex: 0 0 auto; padding: 21px 28px 17px; gap: 20px; border-bottom: 0; }
+.data-dialog.plot-workflow h2 { font-size: 25px; line-height: 1.25; font-weight: 600; letter-spacing: -.5px; margin: 4px 0 0; }
+.plot-eyebrow { font-family: var(--font-label); font-weight: 600; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--color-text-tertiary); }
+.data-dialog.plot-workflow .plot-icon-button { align-self: flex-start; width: 36px; min-height: 36px; padding: 8px; border-color: transparent; background: transparent; }
+.plot-steps { padding: 0 28px; border-bottom: 1px solid var(--color-border); }
+.plot-steps ol { display: flex; gap: 26px; list-style: none; padding: 0; margin: 0; }
+.plot-steps li { position: relative; padding: 2px 0 12px; }
+.plot-steps li[data-current=true]::after { position: absolute; content: ''; bottom: -1px; inset-inline: 0; height: 2px; background: var(--color-guide); }
+.data-dialog.plot-workflow .plot-steps button { border: 0; background: transparent; padding: 5px 0; gap: 9px; color: var(--color-text-secondary); }
+.data-dialog.plot-workflow .plot-steps [aria-current=step] { color: var(--color-text); opacity: 1; font-weight: 600; }
+.plot-step-number { width: 25px; height: 25px; border: 1px solid var(--color-border); border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-variant-numeric: tabular-nums; }
+[aria-current=step] .plot-step-number { background: var(--color-brand); border-color: var(--color-brand); color: var(--color-text-inverse); }
+.plot-steps li[data-complete=true] .plot-step-number { color: var(--color-guide-text); background: var(--color-guide-soft); border-color: transparent; }
+.data-dialog.plot-workflow .data-dialog-body { flex: 1 1 auto; min-height: 0; padding: 24px 28px; overflow: auto; overscroll-behavior: contain; }
+.data-dialog.plot-workflow .plot-dialog-footer { flex: 0 0 auto; position: static; justify-content: space-between; flex-wrap: nowrap; gap: 16px; padding: 16px 28px; border-top: 1px solid var(--color-border); background: var(--color-surface-primary); }
+.plot-footer-start, .plot-footer-end { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.plot-footer-hint { color: var(--color-text-tertiary); font-size: 12px; text-align: center; }
+.data-dialog.plot-workflow .plot-reset { border-color: transparent; background: transparent; color: var(--color-text-secondary); }
+.data-dialog.plot-workflow .plot-reset:hover:not(:disabled) { color: var(--color-danger); background: var(--color-danger-soft); border-color: transparent; }
+.data-dialog.plot-workflow p { color: var(--color-text-secondary); margin: 8px 0 14px; }
+.data-dialog.plot-workflow h3 { font-size: 16px; line-height: 1.4; margin: 0 0 8px; font-weight: 600; }
+.data-dialog.plot-workflow h4 { font-size: 15px; margin: 0 0 6px; }
+.data-dialog.plot-workflow label { display: block; margin: 12px 0; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; }
+.data-dialog.plot-workflow input:not([type=checkbox]):not([type=color]):not([type=file]),
+.data-dialog.plot-workflow select, .data-dialog.plot-workflow textarea {
+  display: block; width: 100%; min-width: 0; margin-top: 6px; min-height: 38px; padding: 8px 10px;
+  border: 1px solid var(--color-border); border-radius: 6px; background: var(--color-surface-primary); color: var(--color-text); font-size: 14px;
+}
+.data-dialog.plot-workflow select { text-overflow: ellipsis; padding-right: 22px; }
+.data-dialog.plot-workflow input::placeholder, .data-dialog.plot-workflow textarea::placeholder { color: var(--color-text-tertiary); opacity: 1; }
+.data-dialog.plot-workflow textarea { font-family: var(--font-mono, monospace); font-size: 12px; line-height: 1.65; }
+.data-dialog.plot-workflow input[type=checkbox] { accent-color: var(--color-guide); width: 15px; height: 15px; vertical-align: -3px; margin-right: 8px; }
+.data-dialog.plot-workflow input[type=color] { width: 34px; height: 26px; padding: 2px; margin-left: 10px; vertical-align: middle; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-surface-primary); }
+.data-dialog.plot-workflow fieldset { border: 1px solid var(--color-border); border-radius: 8px; padding: 8px 12px; margin: 20px 0 0; min-width: 0; }
+.data-dialog.plot-workflow legend { color: var(--color-text); font-weight: 600; font-size: 12px; padding: 0 5px; }
+.data-dialog.plot-workflow .plot-source-body { padding: 40px clamp(24px, 7vw, 110px) 30px; }
+.plot-source-intro { max-width: 650px; margin-bottom: 28px; }
+.data-dialog.plot-workflow .plot-source-intro h3 { font-size: clamp(25px, 3vw, 34px); line-height: 1.2; letter-spacing: -.6px; margin: 10px 0 12px; }
+.data-dialog.plot-workflow .plot-source-intro p { font-size: 16px; max-width: 560px; }
+.plot-source-options { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.data-dialog.plot-workflow .plot-source-card { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; padding: 26px; gap: 12px; border-radius: 12px; min-height: 235px; }
+.data-dialog.plot-workflow .plot-source-card:hover { border-color: var(--color-guide); background: var(--color-surface-secondary); }
+.plot-source-card strong { font-size: 21px; font-weight: 600; }
+.plot-source-card > span:not(.plot-source-icon):not(.plot-source-link) { color: var(--color-text-secondary); font-size: 14px; font-weight: 400; max-width: 360px; }
+.plot-source-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 10px; background: var(--color-guide-soft); color: var(--color-guide-text); }
+.data-dialog.plot-workflow .plot-source-icon svg { width: 23px; height: 23px; }
+.plot-source-link { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 10px; color: var(--color-guide-text); font-weight: 600; font-size: 13px; }
+.plot-existing-data { display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--color-border); margin-top: 26px; padding-top: 20px; }
+.plot-existing-data > div { flex: 1; }.plot-existing-data > label { flex: 1; min-width: 100px; }
+.data-dialog.plot-workflow .plot-existing-data p { margin: 0; font-size: 12px; }
+.data-dialog.plot-workflow .plot-privacy-note { display: flex; align-items: center; gap: 7px; margin-top: 25px; font-size: 12px; color: var(--color-text-tertiary); }
+.plot-privacy-note svg { width: 14px; height: 14px; flex-shrink: 0; }
+.data-dialog.plot-workflow .plot-reset-notice { color: var(--color-guide-text); }
+.plot-section-intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.data-dialog.plot-workflow .plot-section-intro p { margin: 3px 0; }
+.plot-local-note, .plot-count, .plot-preview-status { color: var(--color-text-tertiary); font-size: 11px; white-space: nowrap; }
+.plot-local-note { border: 1px solid var(--color-border); padding: 4px 9px; border-radius: 5px; }
+.data-dialog.plot-workflow .data-import-columns { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.7fr); align-items: start; gap: 24px; }
+.plot-panel { min-width: 0; }
+.data-dialog.plot-workflow .data-input-panel > label:first-child { margin-top: 0; }
+.data-dialog.plot-workflow .plot-file-drop { position: relative; display: flex; align-items: center; flex-direction: column; gap: 6px; border: 1px dashed var(--color-border-strong); border-radius: 8px; background: var(--color-surface-secondary); padding: 20px 12px; cursor: pointer; overflow-wrap: anywhere; text-align: center; }
+.plot-file-drop svg { width: 24px; height: 24px; color: var(--color-guide-text); margin-bottom: 3px; }
+.plot-file-drop strong { color: var(--color-text); font-size: 14px; }.plot-file-drop span { font-weight: 400; }
+.data-dialog.plot-workflow .plot-file-drop input[type=file] { width: 100%; opacity: 0; position: absolute; inset: 0; cursor: pointer; }
+.plot-file-drop:focus-within { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.plot-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.data-dialog.plot-workflow .plot-panel-heading h3 { margin: 0; }
+.plot-panel-index { color: var(--color-text-tertiary); font-size: 11px; font-variant-numeric: tabular-nums; }
+.data-dialog.plot-workflow .data-preview-scroll { border: 1px solid var(--color-border); border-radius: 8px; }
+.data-dialog.plot-workflow .data-preview-scroll thead { background: var(--color-surface-secondary); }
+.data-dialog.plot-workflow :is(.data-preview-scroll, .statistics-table) :is(th, td) { border-color: var(--color-border); color: var(--color-text); padding: 6px 10px; }
+.data-dialog.plot-workflow .data-preview-scroll tbody tr:nth-child(even) { background: var(--color-surface-secondary); }
+.data-dialog.plot-workflow .data-preview-scroll td[data-state=invalid] { background: var(--color-danger-soft); color: var(--color-danger); }
+.data-dialog.plot-workflow .data-preview-scroll td[data-state=missing] { background: var(--color-surface-tertiary); }
+.data-dialog.plot-workflow .data-column-types { gap: 12px; padding-bottom: 8px; margin-bottom: 18px; }
+.plot-policy-note { border-left: 3px solid var(--color-warning); background: var(--color-warning-soft); padding: 12px; }
+.plot-empty-preview { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 35px; min-height: 280px; text-align: center; color: var(--color-text-tertiary); }
+.plot-empty-preview > svg { width: 42px; height: 42px; stroke-width: 1; }
+.data-dialog.plot-workflow .plot-empty-preview p { max-width: 330px; margin: 0; }
+.data-dialog.plot-workflow .plot-design-body { padding: 0; overflow: hidden; }
+.data-dialog.plot-workflow .plot-editor-columns { display: grid; grid-template-columns: minmax(220px, .85fr) minmax(320px, 1.65fr) minmax(250px, 1fr); height: 100%; gap: 0; }
+.data-dialog.plot-workflow .plot-editor-columns > section { min-width: 0; overflow: auto; padding: 24px; overscroll-behavior: contain; }
+.data-dialog.plot-workflow .plot-panel-description { font-size: 12px; margin-bottom: 20px; }
+.data-dialog.plot-workflow .plot-live { background: var(--color-surface-secondary); border-inline: 1px solid var(--color-border); }
+.plot-preview-stage { background: var(--color-surface-tertiary); padding: clamp(12px, 2vw, 26px); border: 1px solid var(--color-border); border-radius: 10px; margin-top: 18px; }
+.plot-preview-stage > svg.plot-preview { display: block; width: 100%; height: auto; background: white; border: 0; box-shadow: 0 4px 16px rgb(0 0 0 / 8%); }
+.data-dialog.plot-workflow .plot-preview-caption { font-size: 12px; text-align: center; margin: 18px 10px; }
+.data-dialog.plot-workflow .plot-subheading { border-top: 1px solid var(--color-border); margin: 24px 0 12px; padding-top: 20px; font-size: 14px; }
+.plot-type-picker { border: 1px solid var(--color-guide); border-radius: 10px; background: var(--color-guide-soft); padding: 16px; margin-bottom: 26px; }
+.plot-comparison-status { display: grid; gap: 8px; border: 1px solid var(--color-guide); border-radius: 10px; background: var(--color-guide-soft); padding: 14px; margin-bottom: 14px; overflow-wrap: anywhere; }
+.plot-comparison-status[data-state="setup"] { border-color: #b0782d; background: #fff8e9; color: #594017; }
+.data-dialog.plot-workflow .plot-comparison-status p { margin: 0; font-size: 12px; }
+.plot-comparison-status small { font-size: 11px; line-height: 1.5; }
+.plot-test-guide { margin: 12px 0; font-size: 12px; }
+.plot-test-guide summary { cursor: pointer; font-weight: 600; padding-block: 8px; }
+.data-dialog.plot-workflow .plot-test-guide button { display: grid; gap: 6px; width: 100%; margin-block: 8px; text-align: left; font-size: 12px; }
+.plot-test-guide small { font-weight: 400; line-height: 1.5; }
+.plot-picker-heading { display: flex; align-items: flex-start; gap: 9px; color: var(--color-guide-text); }
+.plot-picker-heading > svg { width: 21px; height: 21px; flex: 0 0 auto; margin-top: 1px; }
+.data-dialog.plot-workflow .plot-picker-heading h3 { margin: 0; font-size: 16px; }
+.data-dialog.plot-workflow .plot-type-picker > p { margin: 8px 0 14px; font-size: 12px; }
+.data-dialog.plot-workflow .plot-suggestions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.data-dialog.plot-workflow .plot-suggestions button { display: flex; justify-content: space-between; align-items: flex-start; min-height: 52px; text-align: left; padding: 10px; font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+.data-dialog.plot-workflow .plot-suggestions button[aria-pressed=true] { border: 2px solid var(--color-guide); background: var(--color-surface-primary); color: var(--color-guide-text); padding: 9px; font-weight: 600; }
+.data-dialog.plot-workflow .plot-suggestions button:has(small) { display: block; }
+.plot-suggestions button > svg { width: 14px; height: 14px; margin-top: 2px; }
+.plot-suggestions small { font-size: 11px; font-weight: 400; color: var(--color-text-secondary); }
+.plot-import-actions { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+.data-dialog.plot-workflow .plot-import-actions button { font-size: 12px; padding-inline: 9px; }
+.plot-notices:empty { display: none; }.plot-notices { padding-left: 16px; font-size: 12px; color: var(--color-text-secondary); }
+.data-dialog.plot-workflow .plot-mapping-note { padding: 12px; margin: 12px 0 18px; border: 1px solid var(--color-guide); border-radius: 8px; background: var(--color-guide-soft); font-size: 12px; }
+.data-dialog.plot-workflow .plot-mapping-note p { margin: 6px 0 10px; font-size: 12px; }
+.plot-mapping-note small { color: var(--color-text-secondary); }
+.plot-column-summary { padding: 16px; margin-top: 18px; border: 1px solid var(--color-border); border-radius: 8px; background: var(--color-surface-primary); }
+.plot-column-summary .data-table-scroll { overflow: auto; max-height: 240px; }
+.plot-column-summary table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.plot-column-summary :is(th, td) { padding: 8px; text-align: right; border-bottom: 1px solid var(--color-border); }
+.plot-column-summary th:first-child { text-align: left; overflow-wrap: anywhere; }
+.data-dialog.plot-workflow .plot-column-summary p { font-size: 11px; margin: 12px 0 0; }
+.data-dialog.plot-workflow .statistics-table { background: var(--color-surface-primary); padding: 14px; margin-top: 18px; border: 1px solid var(--color-border); border-radius: 8px; }
+.data-dialog.plot-workflow .statistics-table > small { display: block; overflow-wrap: anywhere; margin-top: 12px; color: var(--color-text-tertiary); }
+.data-dialog.plot-workflow .statistics-table .data-table-scroll { overflow: auto; margin-top: 14px; }
+.data-dialog.plot-workflow .statistics-table button { font-size: 12px; padding: 6px 10px; }
+.plot-analysis-note, .plot-omnibus-result { border-inline-start: 3px solid var(--color-guide); background: var(--color-guide-soft); padding: 10px 12px; margin-block: 12px; border-radius: 4px; }
+.plot-statistics-controls p, .plot-pair-picker p { font-size: 12px; line-height: 1.5; }
+.data-dialog.plot-workflow .plot-pair-picker { padding: 12px; border: 1px solid var(--color-border-strong); border-radius: 8px; }
+.plot-pair-picker legend { font-weight: 600; padding-inline: 5px; }
+.plot-selected-pairs { list-style: none; padding: 0; max-height: 230px; overflow: auto; }
+.plot-selected-pairs li { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--color-border); font-size: 12px; }
+.plot-selected-pairs span { overflow-wrap: anywhere; }.plot-selected-pairs small { display: block; color: var(--color-danger); }
+.data-dialog.plot-workflow .plot-selected-pairs button { padding: 3px 9px; flex: 0 0 auto; font-size: 18px; }
+.plot-omnibus-result h4 { margin: 0 0 8px; }.plot-omnibus-result p { margin-block: 6px; }
+.data-dialog.plot-workflow [role=alert] { background: var(--color-danger-soft); color: var(--color-danger); border-radius: 8px; padding: 12px 16px; margin: 14px 0; }
+.data-dialog.plot-workflow .plot-design-body > [role=alert] { position: absolute; bottom: 78px; left: 50%; transform: translateX(-50%); width: min(600px, 80vw); box-shadow: 0 4px 20px rgb(0 0 0 / 15%); }
+
+@media (max-width: 1100px) {
+  .data-dialog.plot-workflow .plot-editor-columns { grid-template-columns: minmax(210px, 1fr) minmax(280px, 1.6fr); height: auto; }
+  .data-dialog.plot-workflow .plot-design-body { overflow: auto; }
+  .data-dialog.plot-workflow .plot-editor-columns > section { overflow: visible; }
+  .data-dialog.plot-workflow .plot-editor-columns > section:last-child { grid-column: 1 / -1; border-top: 1px solid var(--color-border); }
+  .data-dialog.plot-workflow .plot-footer-hint { display: none; }
+  .data-dialog.plot-workflow .data-import-columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .data-overlay:has(.plot-workflow) { padding: 8px; }
+  .data-dialog.plot-workflow { width: calc(100vw - 16px); height: calc(100dvh - 16px); max-height: calc(100dvh - 16px); border-radius: 10px; }
+  .data-dialog.plot-workflow .plot-dialog-header { padding: 16px; }
+  .plot-steps { padding-inline: 16px; }.plot-steps ol { gap: 15px; }.data-dialog.plot-workflow .plot-steps button { font-size: 11px; gap: 5px; }
+  .plot-step-number { width: 21px; height: 21px; font-size: 10px; }
+  .data-dialog.plot-workflow .data-dialog-body { padding: 20px 16px; }.data-dialog.plot-workflow .plot-design-body { padding: 0; }
+  .plot-source-options { grid-template-columns: 1fr; gap: 12px; }
+  .data-dialog.plot-workflow .plot-source-card { min-height: 180px; padding: 20px; gap: 8px; }
+  .plot-existing-data { flex-wrap: wrap; }.plot-existing-data > div { flex-basis: 100%; }
+  .data-dialog.plot-workflow .plot-dialog-footer { padding: 12px; gap: 8px; flex-wrap: wrap; }
+  .plot-footer-end { margin-left: auto; }
+  .data-dialog.plot-workflow .plot-dialog-footer button { font-size: 12px; padding: 8px 10px; }
+  .data-dialog.plot-workflow .plot-editor-columns { display: flex; flex-direction: column; }
+  .data-dialog.plot-workflow .plot-live { order: -1; border-inline: 0; border-bottom: 1px solid var(--color-border); }
+  .plot-local-note { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .data-dialog.plot-workflow button { transition: none; }
+}

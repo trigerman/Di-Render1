@@ -1,0 +1,236 @@
+{
+  "primitives": [
+    {
+      "kind": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 380,
+      "fill": "#FFFFFF"
+    },
+    {
+      "kind": "text",
+      "x": 260,
+      "y": 20,
+      "text": "Measurements",
+      "size": 14,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 269.429,
+      "x2": 502,
+      "y2": 269.429,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 273.429,
+      "text": "2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 192.286,
+      "x2": 502,
+      "y2": 192.286,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 196.286,
+      "text": "4",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 115.143,
+      "x2": 502,
+      "y2": 115.143,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 119.143,
+      "text": "6",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 502,
+      "y2": 38,
+      "stroke": "#DCE3E5"
+    },
+    {
+      "kind": "text",
+      "x": 61,
+      "y": 42,
+      "text": "8",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 38,
+      "x2": 68,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 68,
+      "y1": 308,
+      "x2": 502,
+      "y2": 308,
+      "stroke": "#263238"
+    },
+    {
+      "kind": "line",
+      "x1": 176.5,
+      "y1": 269.429,
+      "x2": 176.5,
+      "y2": 192.286,
+      "stroke": "#0072B2"
+    },
+    {
+      "kind": "circle",
+      "x": 176.5,
+      "y": 269.429,
+      "radius": 2.5,
+      "fill": "#0072B2",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 176.5,
+      "y": 192.286,
+      "radius": 2.5,
+      "fill": "#E69F00",
+      "opacity": 0.8
+    },
+    {
+      "kind": "text",
+      "x": 176.5,
+      "y": 324,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "line",
+      "x1": 393.5,
+      "y1": 192.286,
+      "x2": 393.5,
+      "y2": 115.143,
+      "stroke": "#E69F00"
+    },
+    {
+      "kind": "circle",
+      "x": 393.5,
+      "y": 192.286,
+      "radius": 2.5,
+      "fill": "#0072B2",
+      "opacity": 0.8
+    },
+    {
+      "kind": "circle",
+      "x": 393.5,
+      "y": 115.143,
+      "radius": 2.5,
+      "fill": "#E69F00",
+      "opacity": 0.8
+    },
+    {
+      "kind": "text",
+      "x": 393.5,
+      "y": 324,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 285,
+      "y": 352,
+      "text": "Group",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 14,
+      "y": 173,
+      "text": "Value",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": -90
+    },
+    {
+      "kind": "rect",
+      "x": 68,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#0072B2"
+    },
+    {
+      "kind": "text",
+      "x": 80,
+      "y": 371,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 100.2,
+      "y": 360,
+      "width": 8,
+      "height": 8,
+      "fill": "#E69F00"
+    },
+    {
+      "kind": "text",
+      "x": 112.2,
+      "y": 371,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    }
+  ],
+  "notices": [],
+  "error": null
+}

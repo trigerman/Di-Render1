@@ -1,0 +1,92 @@
+{
+  "primitives": [
+    {
+      "kind": "rect",
+      "x": 0,
+      "y": 0,
+      "width": 520,
+      "height": 380,
+      "fill": "#FFFFFF"
+    },
+    {
+      "kind": "text",
+      "x": 260,
+      "y": 20,
+      "text": "Measurements",
+      "size": 14,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 68,
+      "y": 38,
+      "width": 216,
+      "height": 134,
+      "fill": "#bdcfe5"
+    },
+    {
+      "kind": "text",
+      "x": 62,
+      "y": 105.5,
+      "text": "A",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "rect",
+      "x": 285,
+      "y": 173,
+      "width": 216,
+      "height": 134,
+      "fill": "#4c7eba"
+    },
+    {
+      "kind": "text",
+      "x": 62,
+      "y": 240.5,
+      "text": "B",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "end",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 176.5,
+      "y": 324,
+      "text": "S1",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 393.5,
+      "y": 324,
+      "text": "S2",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "middle",
+      "angle": 0
+    },
+    {
+      "kind": "text",
+      "x": 68,
+      "y": 372,
+      "text": "1 → 5 · Missing cells are blank",
+      "size": 12,
+      "fill": "#263238",
+      "anchor": "start",
+      "angle": 0
+    }
+  ],
+  "notices": [
+    "4 duplicate observations combined using mean."
+  ],
+  "error": null
+}
