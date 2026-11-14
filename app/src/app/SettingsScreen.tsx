@@ -7,6 +7,7 @@ import {
   Grid3X3,
   ImageDown,
   Info,
+  Flower2,
   Laptop,
   Moon,
   Palette,
@@ -112,6 +113,7 @@ const themeOptions: Array<{
   { id: "light", label: "Light", icon: Sun },
   { id: "dark", label: "Dark", icon: Moon },
   { id: "system", label: "System", icon: Laptop },
+  { id: "blossom", label: "Blossom", icon: Flower2 },
 ];
 
 export function SettingsScreen({

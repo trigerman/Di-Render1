@@ -2,7 +2,7 @@ import type { DocumentPreset } from "../project/factory";
 
 export const PREFERENCES_KEY = "openbiofigure:preferences:v2";
 
-export type ThemePreference = "light" | "dark" | "system";
+export type ThemePreference = "light" | "dark" | "system" | "blossom";
 export type DensityPreference = "comfortable" | "compact";
 export type StartupPreference = "home" | "reopen";
 
@@ -19,7 +19,7 @@ export interface AppPreferences {
 }
 
 export const DEFAULT_PREFERENCES: AppPreferences = {
-  theme: "system",
+  theme: "blossom",
   density: "comfortable",
   reduceMotion: false,
   startup: "home",
@@ -30,7 +30,7 @@ export const DEFAULT_PREFERENCES: AppPreferences = {
   pngExportScale: 2,
 };
 
-const themes = new Set<ThemePreference>(["light", "dark", "system"]);
+const themes = new Set<ThemePreference>(["light", "dark", "system", "blossom"]);
 const densities = new Set<DensityPreference>(["comfortable", "compact"]);
 const startupOptions = new Set<StartupPreference>(["home", "reopen"]);
 const presets = new Set<AppPreferences["defaultPreset"]>([

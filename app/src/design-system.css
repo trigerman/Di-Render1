@@ -435,7 +435,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme="light"]):not([data-theme="blossom"]) {
     color-scheme: dark;
     --color-text: #e3eaf4;
     --color-text-secondary: #a8b5c9;
@@ -485,3 +485,47 @@
     --motion-slow: 0.01ms;
   }
 }
+
+/* Blossom — a soft pink-and-white theme (Di-Render). Figures stay on white paper. */
+:root[data-theme="blossom"] {
+  color-scheme: light;
+  --color-text: #3b1e2b;
+  --color-text-secondary: #6e4658;
+  --color-text-tertiary: #8c6474;
+  --color-text-disabled: #c9a9b7;
+  --color-text-inverse: #fff8fb;
+  --color-document: #ffffff;
+  --color-surface-canvas: #fff6f9;
+  --color-surface-primary: #fff6f9;
+  --color-surface-secondary: #fde9f0;
+  --color-surface-tertiary: #f9dbe6;
+  --color-surface-raised: #fffbfd;
+  --color-workspace: #f7e1ea;
+  --color-border: #f0cfdb;
+  --color-border-strong: #dc9db5;
+  --color-ink: #3b1e2b;
+  --color-brand: #c2185b;
+  --color-brand-hover: #ad1457;
+  --color-brand-pressed: #880e4f;
+  --color-brand-soft: #fde3ec;
+  --color-brand-border: #f2a9c3;
+  --color-focus: #d81b60;
+  --color-guide: #e8508a;
+  --color-guide-text: #b0175a;
+  --color-guide-soft: rgb(232 80 138 / 15%);
+  --color-grid: rgb(232 80 138 / 11%);
+  --color-grid-major: rgb(232 80 138 / 21%);
+  --color-selection: #e0407b;
+  --color-success: #3b1e2b;
+  --color-success-soft: #fde3ec;
+  --color-warning: #b8361f;
+  --color-warning-soft: #fbe9e5;
+  --color-danger: #a8231c;
+  --color-danger-soft: #fae3e1;
+  --color-scrim: rgb(59 30 43 / 38%);
+  --rule-heavy: 2px solid var(--color-brand);
+  --shadow-overlay: 0 2px 10px rgb(194 24 91 / 12%), 0 28px 70px rgb(136 14 79 / 18%);
+  --focus-ring: 0 0 0 3px rgb(216 27 96 / 22%);
+}
+:root[data-theme="blossom"] .brand-glyph { color: var(--color-brand); }
+:root[data-theme="blossom"] .start-template-preview { --mini-line: #dc9db5; --mini-fill: #fde3ec; --mini-ink: #7a2a4e; }
