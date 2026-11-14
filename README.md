@@ -10,7 +10,8 @@ Di-Render combines an editable vector canvas, a verified library of **4,827 open
 
 | Area | What you get |
 |---|---|
-| **Canvas** | Text, shapes, arrows and connectors, layers, groups, alignment, undo/redo, an SVG artwork editor (recolour or edit any part of a drawing), and figure templates such as pathway, workflow and graphical abstract |
+| **Canvas** | Text, shapes, arrows and connectors, layers, groups, alignment, undo/redo, and an SVG artwork editor (recolour or edit any part of a drawing) |
+| **Templates** | 19 editable templates, 13 of them with real artwork: cell signaling, mouse study, cell culture, virus life cycle, immune response, CRISPR, clinical trial, western blot, drug mechanism, gene expression, organoid screen, six-panel figure, research poster and more |
 | **Icon library** | 4,827 drawings in 43 categories: Reactome (1,651), Servier Medical Art (1,370), Bioicons (918), NIH BioArt (706), BioDraws (182). Every item carries its creator, source, licence and credit line |
 | **Licensing** | A Licensing tab lists the credits each figure needs and flags any artwork with an unknown licence |
 | **Data & plots** | CSV/TSV import and 15 editable vector plot types. Statistics: t-tests, ANOVA with Tukey, and Kruskal–Wallis with Dunn, shown as plot brackets |
@@ -30,7 +31,8 @@ Di-Render combines an editable vector canvas, a verified library of **4,827 open
    git push -u origin main
    ```
 2. On GitHub, open **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-3. The **Deploy to GitHub Pages** workflow builds the app and publishes it at `https://<you>.github.io/di-render/`. It sets the sub-path and your repository link automatically.
+3. Re-run the workflow if your first push happened before step 2 (**Actions → Deploy to GitHub Pages → Run workflow**). If the site shows this README instead of the editor, Pages is still set to *Deploy from a branch*.
+4. The **Deploy to GitHub Pages** workflow builds the app and publishes it at `https://<you>.github.io/di-render/`. It sets the sub-path and your repository link automatically.
 
 The first push uploads about 300 MB of artwork (small SVG files). Later pushes are quick.
 

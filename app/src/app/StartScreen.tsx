@@ -178,7 +178,7 @@ export function StartScreen({
                       <i />
                     </span>
                   </span>
-                  <strong>{template.title}</strong>
+                  <strong>{template.title}{template.tag && <em className="template-tag">{template.tag}</em>}</strong>
                   <small>{template.description}</small>
                 </button>
               ))}

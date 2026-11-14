@@ -63,6 +63,15 @@ export const assetTaxonomy = [
       "Other organisms",
       "Plants Algae",
       "Developmental biology",
+      "Cardiovascular system",
+      "Musculoskeletal system",
+      "Dermatology",
+      "Endocrinology",
+      "Digestive system",
+      "ENT and ophthalmology",
+      "Reproductive system",
+      "Respiratory system",
+      "Urinary system",
       "People Other",
     ],
   },
@@ -70,7 +79,7 @@ export const assetTaxonomy = [
     id: "lab-imaging",
     label: "Lab & imaging",
     description: "Laboratory equipment, microscopy, and scientific plots",
-    categories: ["Lab apparatus", "Imaging", "Procedures", "Scientific graphs"],
+    categories: ["Lab apparatus", "Medical equipment", "Imaging", "Procedures", "Scientific graphs"],
   },
   {
     id: "chemistry-materials",
@@ -92,7 +101,7 @@ export const assetTaxonomy = [
     id: "safety-general",
     label: "Safety & general",
     description: "Safety marks and general scientific symbols",
-    categories: ["Safety symbols", "General items", "Arrows and symbols"],
+    categories: ["Safety symbols", "General items", "Arrows and symbols", "Nutrition", "Maps"],
   },
 ] as const satisfies readonly AssetTaxonomyGroup[];
 

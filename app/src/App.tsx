@@ -67,7 +67,7 @@ import {
   savePreferences,
   type AppPreferences,
 } from "./domain/preferences/preferences";
-import { createTemplateProject } from "./domain/templates/templates";
+import { createTemplateProjectWithArtwork } from "./domain/templates/templateArtwork";
 import {
   IndexedDbProjectStorage,
   type RecentProject,
@@ -1173,9 +1173,9 @@ export function App() {
           initialPreset={preferences.defaultPreset}
           onClose={() => setNewDialog(false)}
           onCreateTemplate={(templateId) => {
-            void openOrReplaceProject(
-              applyPreferences(createTemplateProject(templateId)),
-            ).then((opened) => {
+            void createTemplateProjectWithArtwork(templateId).then((templateProject) => openOrReplaceProject(
+              applyPreferences(templateProject),
+            )).then((opened) => {
               if (!opened) return;
               setNewDialog(false);
               window.requestAnimationFrame(fitToScreen);
@@ -1262,9 +1262,9 @@ export function App() {
               });
             }}
             onCreateTemplate={(templateId) =>
-              void activateProject(
-                applyPreferences(createTemplateProject(templateId)),
-              ).catch(notifySwitchFailure)
+              void createTemplateProjectWithArtwork(templateId)
+                .then((templateProject) => activateProject(applyPreferences(templateProject)))
+                .catch(notifySwitchFailure)
             }
             onSettings={() => openSettings("home")}
           />

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — templates and Servier kits
+
+- **13 new figure templates** (19 in total): cell signaling, in vivo study design, cell culture assay, virus life cycle,
+  adaptive immune response, CRISPR gene editing, randomized clinical trial, western blot, drug mechanism of action,
+  gene expression, organoid drug screen, six-panel figure and research poster.
+- Templates can place real library drawings (`artwork` in `templates.ts`). They load through the verified catalog,
+  so licensing credits are complete, and a template still opens if a drawing can't load.
+- "Illustrated" and "Layout" tags on template cards, plus preview styles for panel and poster layouts.
+- Maintainer pipeline to convert Servier Medical Art PowerPoint kits into verified library SVGs
+  (`scripts/ingest/servier_split_kits.py`, `servier_ingest.py`), with 12 new library categories.
+
 ## 0.2.0 — Di-Render
 
 - Renamed to **Di-Render**; forked from OpenBRender / DrawPlotia 0.1.0.

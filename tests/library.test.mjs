@@ -41,9 +41,16 @@ test('every shipped public drawing has strict validation, integrity and approved
     assert.ok(['CC0-1.0','CC-BY-4.0','CC-BY-3.0','CC-BY-SA-3.0','CC-BY-SA-4.0','MIT','Public-Domain'].includes(record.license.id),record.license.id);
     assert.ok(getAssetTaxonomyForCategory(record.category),record.category);
     // Servier drawings ship only from the Bioicons vector edition, credited under CC BY 3.0.
+    // Servier drawings ship either from the Bioicons vector edition (CC BY 3.0) or, since Di-Render 0.3,
+    // converted from Servier's own PowerPoint kits (CC BY 4.0). Both credit Servier with its URL.
     if(/servier/i.test(JSON.stringify(record))){
-      assert.equal(record.source.provider,'Servier Medical Art via Bioicons');assert.equal(record.license.id,'CC-BY-3.0');
-      assert.match(record.attribution.text,/Servier Medical Art \(https:\/\/smart\.servier\.com\/\).*CC BY 3\.0/);
+      if(record.source.provider==='Servier Medical Art'){
+        assert.equal(record.license.id,'CC-BY-4.0');
+        assert.match(record.attribution.text,/Servier Medical Art \(https:\/\/smart\.servier\.com\/\).*CC BY 4\.0/);
+      } else {
+        assert.equal(record.source.provider,'Servier Medical Art via Bioicons');assert.equal(record.license.id,'CC-BY-3.0');
+        assert.match(record.attribution.text,/Servier Medical Art \(https:\/\/smart\.servier\.com\/\).*CC BY 3\.0/);
+      }
     }
     if(record.source.provider==='NIH BioArt Source')assert.match(record.attribution.text,/NIAID NIH BioArt Source\. bioart\.niaid\.nih\.gov\/bioart\/\d+/);
     const url=getSeedAssetUrl(record);assert.match(url,/^\/artwork\/[a-f0-9]{64}\.svg$/);
