@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenFigure Studio</title>
+<style>
+:root{--bg:#f4f5f7;--panel:#fff;--line:#e3e5ea;--text:#1d2330;--muted:#6b7385;--accent:#2f6fec;--accent-soft:#e8f0ff;--danger:#d64545;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:13px;color:var(--text)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg)}
+button{font:inherit;color:inherit;cursor:pointer}
+#app{display:grid;grid-template-rows:50px 1fr;height:100vh}
+#top{display:flex;align-items:center;gap:4px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line);min-width:0}
+.brand{font-weight:700;display:flex;align-items:center;gap:7px;margin-right:4px;white-space:nowrap}
+.brand i{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#2f6fec,#20b49a);display:inline-block}
+#title{border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;width:170px;background:transparent;color:var(--text)}
+#title:hover,#title:focus{border-color:var(--line);outline:none}
+.tb{border:1px solid transparent;background:transparent;border-radius:7px;padding:6px 9px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.tb:hover{background:#f0f2f5}
+.tb.on{background:var(--accent-soft);color:var(--accent)}
+.tb.primary{background:var(--accent);color:#fff}
+.tb.primary:hover{background:#2560d4}
+.tb:disabled{opacity:.35;cursor:default;background:transparent}
+.sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+.spacer{flex:1}
+#zoomPct{min-width:44px;text-align:center;color:var(--muted);font-variant-numeric:tabular-nums}
+.menu{position:relative}
+.dd{position:absolute;top:38px;right:0;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(20,30,50,.14);padding:6px;min-width:250px;display:none;z-index:60}
+.menu.open .dd{display:block}
+.dd button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:6px}
+.dd button:hover{background:#f0f2f5}
+.dd .hint{color:var(--muted);font-size:11px;padding:2px 10px 6px}
+.dd label{display:flex;gap:8px;align-items:center;padding:8px 10px;font-size:12px}
+.dd hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+#main{display:grid;grid-template-columns:52px 290px 1fr 272px;min-height:0}
+#tools{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:3px;overflow:auto}
+.tool{width:38px;height:38px;border:0;border-radius:9px;background:transparent;display:grid;place-items:center;color:#3a4252;flex:none}
+.tool:hover{background:#f0f2f5}
+.tool.on{background:var(--accent-soft);color:var(--accent)}
+.tool svg{width:20px;height:20px}
+.tsep{width:26px;height:1px;background:var(--line);margin:4px 0;flex:none}
+#lib{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.libhead{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.search{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;background:#fafbfc;color:var(--text)}
+.search:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.row{display:flex;gap:6px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;white-space:nowrap}
+.btn:hover{background:#f6f7f9}
+.btn.full{flex:1}
+.btn.danger{color:var(--danger)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:#2560d4}
+#libList{overflow:auto;flex:1;padding:2px 10px 24px}
+details.cat{border-bottom:1px solid #f0f1f4}
+details.cat summary{list-style:none;cursor:pointer;padding:9px 2px;display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:12px}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary::before{content:"▸";color:var(--muted);margin-right:2px;transition:transform .15s}
+details.cat[open] summary::before{transform:rotate(90deg)}
+details.cat summary span.t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.cat summary .n{color:var(--muted);font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding-bottom:10px}
+.thumb{aspect-ratio:1;border:1px solid #eef0f3;border-radius:8px;padding:6px;cursor:grab;position:relative;background:#fff;min-width:0}
+.thumb:hover{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+.thumb .x{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;border:0;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);font-size:11px;line-height:18px;display:none;padding:0;color:var(--danger)}
+.thumb:hover .x{display:block}
+.more{grid-column:1/-1}
+.empty{color:var(--muted);padding:18px 4px;text-align:center;line-height:1.55}
+#stage{position:relative;overflow:hidden;background:#e7e9ee;min-width:0}
+#svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none;user-select:none;-webkit-user-select:none}
+#stage.panning #svg{cursor:grab}
+#stage.drawing #svg{cursor:crosshair}
+#textedit{position:absolute;display:none;border:1px dashed var(--accent);background:rgba(255,255,255,.92);resize:none;outline:none;padding:0 2px;margin:0;overflow:hidden;white-space:pre;line-height:1.25;z-index:5}
+#drophint{position:absolute;inset:12px;border:2px dashed var(--accent);border-radius:14px;background:rgba(47,111,236,.07);display:none;place-items:center;font-weight:600;color:var(--accent);pointer-events:none;z-index:6}
+#welcome{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;color:#7b8396;pointer-events:none;line-height:1.7;max-width:420px}
+#welcome b{color:#4a5263;font-size:15px}
+#props{background:var(--panel);border-left:1px solid var(--line);overflow:auto;display:flex;flex-direction:column}
+.sec{padding:12px;border-bottom:1px solid var(--line)}
+.sec h4{margin:0 0 10px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f3{grid-template-columns:repeat(3,1fr)}
+.f1{grid-template-columns:1fr}
+label.l{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted);min-width:0}
+label.c{display:flex;gap:7px;align-items:center;font-size:12px}
+.in{border:1px solid var(--line);border-radius:6px;padding:5px 7px;font:inherit;font-size:12px;width:100%;background:#fff;color:var(--text);min-width:0}
+input[type=color].in{padding:2px;height:30px;cursor:pointer}
+textarea.in{min-height:70px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.sw{width:28px;height:28px;border-radius:7px;border:1px solid rgba(0,0,0,.18);padding:0;position:relative;overflow:hidden;display:inline-block}
+.sw input{position:absolute;inset:-6px;width:44px;height:44px;opacity:0;cursor:pointer;border:0;padding:0}
+.ib{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ib.c3{grid-template-columns:repeat(3,1fr)}
+.ib .btn{padding:6px 0;text-align:center}
+.tog.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+#layers{flex:1;min-height:140px}
+.layer{display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:12px}
+.layer:hover{background:#f4f6f9}
+.layer.on{background:var(--accent-soft)}
+.layer .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.layer .ty{width:16px;text-align:center;color:var(--muted)}
+.layer button{border:0;background:none;padding:2px 4px;color:var(--muted);font-size:12px;border-radius:4px}
+.layer button:hover{background:#e8ebf0}
+.layer.dim .nm{opacity:.4}
+#modal{position:fixed;inset:0;background:rgba(15,20,30,.38);display:none;place-items:center;z-index:100}
+#modal.open{display:grid}
+.dlg{background:#fff;border-radius:14px;width:min(660px,94vw);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.dlg>.hd{position:sticky;top:0;background:#fff;padding:14px 16px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);z-index:1}
+.dlg>.bd{padding:16px;display:flex;flex-direction:column;gap:12px;line-height:1.5}
+.dlg>.ft{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:#fff}
+.x-close{border:0;background:none;font-size:18px;color:var(--muted);padding:2px 6px}
+.note{background:#f6f8fb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:12px;color:#445}
+.src{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.src>div{border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12px;line-height:1.45}
+.src a{color:var(--accent);font-weight:600;text-decoration:none}
+.src .lic{display:inline-block;background:#eef2f7;border-radius:4px;padding:0 5px;font-size:10.5px;margin-left:4px;color:#445}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1d2330;color:#fff;padding:9px 14px;border-radius:9px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:200;max-width:80vw}
+#toast.show{opacity:1}
+#molPrev{width:100%;height:270px;border:1px solid var(--line);border-radius:8px;background:#fff;display:block}
+kbd{background:#f0f2f5;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px;font-size:11px;font-family:inherit}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:11.5px;color:#4a5263}
+.mlist{display:flex;flex-direction:column;gap:4px;max-height:320px;overflow:auto}
+.mrow{display:flex;gap:6px;align-items:center}
+.mrow .in{flex:1}
+.prog{height:6px;background:#eef1f5;border-radius:3px;overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--accent);width:0;transition:width .15s}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="top">
+    <div class="brand"><i></i>OpenFigure</div>
+    <input id="title" value="Untitled figure" aria-label="Figure title">
+    <div class="sep"></div>
+    <button class="tb" id="bNew" title="New figure">New</button>
+    <button class="tb" id="bOpen" title="Open a saved project (.json)">Open</button>
+    <button class="tb" id="bSave" title="Save project file (.json) — keeps every icon inside">Save</button>
+    <div class="sep"></div>
+    <button class="tb" id="bUndo" title="Undo (Ctrl+Z)">↶</button>
+    <button class="tb" id="bRedo" title="Redo (Ctrl+Shift+Z)">↷</button>
+    <div class="spacer"></div>
+    <button class="tb" id="bZoomOut" title="Zoom out">−</button>
+    <span id="zoomPct">100%</span>
+    <button class="tb" id="bZoomIn" title="Zoom in">+</button>
+    <button class="tb" id="bFit" title="Fit to screen (Ctrl+0)">Fit</button>
+    <button class="tb" id="bGrid" title="Toggle grid">Grid</button>
+    <button class="tb" id="bSnap" title="Snap to grid">Snap</button>
+    <div class="sep"></div>
+    <button class="tb" id="bCredits" title="Citation / credits for the icons in this figure">Credits</button>
+    <button class="tb" id="bHelp" title="Shortcuts">?</button>
+    <div class="menu" id="exportMenu">
+      <button class="tb primary" id="bExport">Export ▾</button>
+      <div class="dd">
+        <button data-exp="svg">SVG — editable vectors</button>
+        <div class="hint">Open in Inkscape / Illustrator, or submit to journals</div>
+        <button data-exp="png1">PNG — 1× (screen)</button>
+        <button data-exp="png2">PNG — 2× (slides)</button>
+        <button data-exp="png4">PNG — 4× (print, ~300 dpi)</button>
+        <hr>
+        <label><input type="checkbox" id="expTransparent"> Transparent background</label>
+        <label><input type="checkbox" id="expSelection"> Export selection only</label>
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div id="tools"></div>
+    <aside id="lib">
+      <div class="libhead">
+        <input class="search" id="search" placeholder="Search icons…  (e.g. mitochondria)">
+        <div class="row">
+          <select class="in" id="srcFilter" title="Filter by source"></select>
+        </div>
+        <div class="row">
+          <button class="btn primary full" id="bImport">+ Import icons</button>
+          <button class="btn" id="bSources" title="Where to get free icons">Get icons</button>
+          <button class="btn" id="bManage" title="Manage library">⋯</button>
+        </div>
+      </div>
+      <div id="libList"></div>
+    </aside>
+    <section id="stage">
+      <svg id="svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="gridPat" patternUnits="userSpaceOnUse" width="20" height="20"><path id="gridPath" d="M20 0H0V20" fill="none" stroke="#dfe3ea" stroke-width="1"/></pattern>
+          <pattern id="checker" patternUnits="userSpaceOnUse" width="16" height="16"><rect width="16" height="16" fill="#fff"/><rect width="8" height="8" fill="#eceef2"/><rect x="8" y="8" width="8" height="8" fill="#eceef2"/></pattern>
+          <filter id="pageShadow" x="-5%" y="-5%" width="110%" height="110%"><feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#1d2330" flood-opacity=".14"/></filter>
+        </defs>
+        <g id="vp">
+          <rect id="page" x="0" y="0" filter="url(#pageShadow)"/>
+          <rect id="gridRect" x="0" y="0" fill="url(#gridPat)" pointer-events="none"/>
+          <g id="items"></g>
+          <g id="overlay"></g>
+        </g>
+      </svg>
+      <div id="welcome"><b>Start your figure</b><br>Click or drag icons from the left panel.<br>Draw arrows with <kbd>A</kbd>, text with <kbd>T</kbd>, shapes with <kbd>R</kbd>/<kbd>O</kbd>.<br>Drop SVG/PNG files, folders, ZIPs or icon packs anywhere to import them.</div>
+      <textarea id="textedit" spellcheck="false"></textarea>
+      <div id="drophint">Drop to import (SVG, PNG, JPG, folders, .zip, .tgz, .pptx)</div>
+    </section>
+    <aside id="props"><div id="propsBody"></div><div class="sec" id="layers"></div></aside>
+  </div>
+</div>
+<div id="modal"><div class="dlg" id="dlg"></div></div>
+<div id="toast"></div>
+<input type="file" id="fileProject" accept=".json,application/json" hidden>
+<input type="file" id="fileIcons" accept=".svg,.png,.jpg,.jpeg,.webp,.gif,.zip,.tgz,.gz,.tar,.pptx" multiple hidden>
+<input type="file" id="fileFolder" webkitdirectory directory multiple hidden>
+<svg id="molHidden" xmlns="http://www.w3.org/2000/svg" style="position:absolute;left:-9999px;top:0;width:500px;height:500px"></svg>
+
+<script>
+(()=>{
+'use strict';
+/* =========================================================
+   OpenFigure Studio — a free, open scientific figure editor
+   Licence: MIT (code). Starter icons: CC0.
+   ========================================================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const uid=()=>Math.random().toString(36).slice(2,9)+(Date.now()%1e6).toString(36);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const r2=v=>Math.round(v*100)/100;
+const RAD=Math.PI/180;
+const rotV=(p,a)=>({x:p.x*Math.cos(a)-p.y*Math.sin(a),y:p.x*Math.sin(a)+p.y*Math.cos(a)});
+const SVGNS='http://www.w3.org/2000/svg';
+const JSZIP='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+const SMILES='https://unpkg.com/smiles-drawer@2.4.1/dist/smiles-drawer.min.js';
+
+/* ---------------- toast / modal ---------------- */
+let toastT;
+function toast(msg,ms=2200){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),ms);}
+function openModal(title,body,foot=''){
+  const d=document.createElement('div'); d.className='dlg'; d.id='dlg';
+  d.innerHTML=`<div class="hd"><span>${title}</span><button class="x-close" data-close>✕</button></div><div class="bd">${body}</div>${foot?`<div class="ft">${foot}</div>`:''}`;
+  $('#dlg').replaceWith(d);
+  $('#modal').classList.add('open');
+  return d;
+}
+function closeModal(){ $('#modal').classList.remove('open'); $('#dlg').innerHTML=''; }
+$('#modal').addEventListener('pointerdown',e=>{ if(e.target.id==='modal') closeModal(); });
+$('#modal').addEventListener('click',e=>{ if(e.target.closest('[data-close]')) closeModal(); });
+function confirmBox(title,msg,okText='OK'){
+  return new Promise(res=>{
+    const d=openModal(title,`<div>${msg}</div>`,`<button class="btn" data-close>Cancel</button><button class="btn primary" id="cfOk">${okText}</button>`);
+    $('#cfOk',d).onclick=()=>{closeModal();res(true)};
+    const obs=new MutationObserver(()=>{ if(!$('#modal').classList.contains('open')){obs.disconnect();res(false);} });
+    obs.observe($('#modal'),{attributes:true});
+  });
+}
+
+/* ---------------- storage (IndexedDB, optional) ---------------- */
+const DB={db:null,
+  async open(){ try{ this.db=await new Promise((res,rej)=>{const r=indexedDB.open('openfigure-studio',1);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('icons'))d.createObjectStore('icons',{keyPath:'id'});if(!d.objectStoreNames.contains('kv'))d.createObjectStore('kv');};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}); }catch(e){ this.db=null; } },
+  _req(store,mode,fn){ return new Promise(res=>{ if(!this.db) return res(undefined); try{ const t=this.db.transaction(store,mode); const q=fn(t.objectStore(store)); t.oncomplete=()=>res(q&&q.result); t.onerror=()=>res(undefined); t.onabort=()=>res(undefined);}catch(e){res(undefined)} }); },
+  all(store){ return this._req(store,'readonly',s=>s.getAll()).then(r=>r||[]); },
+  get(store,key){ return this._req(store,'readonly',s=>s.get(key)); },
+  put(store,val,key){ return this._req(store,'readwrite',s=>key!==undefined?s.put(val,key):s.put(val)); },
+  putMany(store,vals){ return this._req(store,'readwrite',s=>{vals.forEach(v=>s.put(v));return null;}); },
+  del(store,key){ return this._req(store,'readwrite',s=>s.delete(key)); },
+  delMany(store,keys){ return this._req(store,'readwrite',s=>{keys.forEach(k=>s.delete(k));return null;}); },
+};
+
+/* ---------------- downloads (Claude artifact capability, with fallback) ---------------- */
+let DL=null;
+(async()=>{ for(let i=0;i<30 && !(window.claude&&window.claude.use);i++) await new Promise(r=>setTimeout(r,100));
+  try{ if(window.claude&&window.claude.use) DL=await window.claude.use('downloads'); }catch(e){ DL=null; } })();
+async function saveFile(filename,data){
+  if(DL){
+    try{ await DL.save({filename,data}); toast('Saved '+filename); return; }
+    catch(e){ if(e&&e.code==='declined'){ toast('Save cancelled'); return; } if(e&&e.code==='rate_limited'){ toast('A save prompt is already open'); return; } }
+  }
+  // Fallback: ordinary browser download + manual option
+  const blob = data instanceof Blob ? data : new Blob([data],{type:filename.endsWith('.svg')?'image/svg+xml':'application/json'});
+  const url=URL.createObjectURL(blob);
+  try{ const a=document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
+  const isImg=/\.(png|svg)$/.test(filename);
+  const d=openModal('Your file is ready',`<div class="small">If no download started, use the link below${isImg?' or right-click the preview → “Save image as…”':''}.</div>
+    ${isImg?`<img src="${url}" style="max-width:100%;max-height:50vh;border:1px solid var(--line);border-radius:8px;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/16px 16px">`:''}
+    <a class="btn primary" style="align-self:flex-start;text-decoration:none" href="${url}" download="${esc(filename)}">Download ${esc(filename)}</a>
+    ${typeof data==='string'?`<button class="btn" id="cpy" style="align-self:flex-start">Copy contents</button>`:''}`);
+  const c=$('#cpy',d); if(c) c.onclick=async()=>{ try{ await navigator.clipboard.writeText(data); toast('Copied'); }catch(e){ toast('Copy not allowed here'); } };
+}
+
+/* ---------------- script loader ---------------- */
+const loaded={};
+function loadScript(src){ return loaded[src] ||= new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>{delete loaded[src];rej(new Error('Could not load '+src));}; document.head.appendChild(s); }); }
+
+/* =========================================================
+   STARTER ICON SET (original drawings, CC0)
+   ========================================================= */
+const S=(vb,b)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${b}</svg>`;
+function dnaSVG(){let a='',c='',r='';const X=y=>15+30*(1-Math.cos(Math.PI*y/30))/2;
+  for(let y=0;y<=120;y+=2){const x=X(y);a+=(y?'L':'M')+x.toFixed(1)+' '+y;c+=(y?'L':'M')+(60-x).toFixed(1)+' '+y;}
+  const cols=['#f4b942','#5cb85c','#e8743b','#8e6cc0'];let k=0;
+  for(let y=3;y<120;y+=5){const x=X(y);if(Math.abs(60-2*x)>10)r+=`<line x1="${x.toFixed(1)}" y1="${y}" x2="${(60-x).toFixed(1)}" y2="${y}" stroke="${cols[k++%4]}" stroke-width="3"/>`;}
+  return S('-2 -4 64 128',r+`<path d="${c}" fill="none" stroke="#e05a5a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="${a}" fill="none" stroke="#2f6fec" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`);}
+function rnaSVG(){let p='',t='';const cols=['#f4b942','#5cb85c','#e8743b','#8e6cc0'];
+  for(let x=0;x<=140;x+=2){const y=20+7*Math.sin(x/12);p+=(x?'L':'M')+x+' '+y.toFixed(1);}
+  for(let x=6,k=0;x<140;x+=9,k++){const y=20+7*Math.sin(x/12);t+=`<line x1="${x}" y1="${(y+2).toFixed(1)}" x2="${x}" y2="${(y+14).toFixed(1)}" stroke="${cols[k%4]}" stroke-width="3.2" stroke-linecap="round"/>`;}
+  return S('-4 6 148 36',t+`<path d="${p}" fill="none" stroke="#e05a5a" stroke-width="4.5" stroke-linecap="round"/>`);}
+function virusSVG(){let s='';for(let i=0;i<14;i++){const a=i/14*2*Math.PI,c=Math.cos(a),n=Math.sin(a);
+  s+=`<line x1="${(50+30*c).toFixed(1)}" y1="${(50+30*n).toFixed(1)}" x2="${(50+41*c).toFixed(1)}" y2="${(50+41*n).toFixed(1)}" stroke="#b03a2e" stroke-width="3"/><circle cx="${(50+42*c).toFixed(1)}" cy="${(50+42*n).toFixed(1)}" r="4.6" fill="#f5b041" stroke="#b03a2e" stroke-width="1.6"/>`;}
+  return S('0 0 100 100',s+'<circle cx="50" cy="50" r="31" fill="#f1948a" stroke="#b03a2e" stroke-width="3"/><path d="M36 44c6-6 14 4 20-2s10 6 12 10M34 58c8 4 12-4 20 0s8 6 12 2" fill="none" stroke="#b03a2e" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>');}
+function bilayerSVG(){let s='';for(let i=0;i<9;i++){const x=10+i*15;
+  s+=`<path d="M${x-3} 24v20M${x+3} 24v20M${x-3} 76v-20M${x+3} 76v-20" stroke="#c9a227" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="${x}" cy="18" r="7" fill="#f4d35e" stroke="#b8871b" stroke-width="2"/><circle cx="${x}" cy="82" r="7" fill="#f4d35e" stroke="#b8871b" stroke-width="2"/>`;}
+  return S('0 8 140 84',s);}
+function membrane(y0,y1,w){let s=`<rect x="0" y="${y0}" width="${w}" height="${y1-y0}" fill="#fbecc0"/>`;for(let x=5;x<w;x+=10)s+=`<circle cx="${x}" cy="${y0}" r="5" fill="#f4d35e" stroke="#b8871b" stroke-width="1.5"/><circle cx="${x}" cy="${y1}" r="5" fill="#f4d35e" stroke="#b8871b" stroke-width="1.5"/>`;return s;}
+function wellPlateSVG(){let s='<rect x="2" y="2" width="136" height="92" rx="8" fill="#eef2f6" stroke="#5a6b7d" stroke-width="2.5"/>';const cols=['#f6c453','#9ad0ec','#f1948a','#a5d6a7'];
+  for(let j=0;j<4;j++)for(let i=0;i<6;i++){const f=(i+j)%3===0?cols[(i+j)%4]:'#ffffff';s+=`<circle cx="${22+i*19.2}" cy="${20+j*19}" r="7.5" fill="${f}" stroke="#7b8a9a" stroke-width="1.5"/>`;}return S('0 0 140 96',s);}
+
+const STARTER=[
+ ['Cells','Animal cell',S('0 0 140 110','<ellipse cx="70" cy="55" rx="66" ry="50" fill="#fde6ea" stroke="#d76a7e" stroke-width="3"/><path d="M18 44c6-5 12 5 18 0s12 5 18 0M86 86c6-5 12 5 18 0s12 5 18 0M92 22c5-4 10 4 15 0" fill="none" stroke="#e8a0ae" stroke-width="2.2" stroke-linecap="round"/><circle cx="72" cy="56" r="22" fill="#cdb8ea" stroke="#7d5bb5" stroke-width="2.5"/><circle cx="78" cy="50" r="7" fill="#7d5bb5" opacity=".75"/><g transform="rotate(-20 34 74)"><ellipse cx="34" cy="74" rx="12" ry="6.5" fill="#f8c27a" stroke="#d98a2b" stroke-width="1.8"/><path d="M25 74l3-4 3 8 3-8 3 8 3-8 3 4" fill="none" stroke="#d98a2b" stroke-width="1.3"/></g><g transform="rotate(25 112 50)"><ellipse cx="112" cy="50" rx="11" ry="6" fill="#f8c27a" stroke="#d98a2b" stroke-width="1.8"/><path d="M104 50l3-4 3 8 3-8 3 8 3-4" fill="none" stroke="#d98a2b" stroke-width="1.3"/></g><circle cx="108" cy="72" r="5" fill="#9fd3c7" stroke="#3f9c87" stroke-width="1.5"/><circle cx="38" cy="28" r="4" fill="#9fd3c7" stroke="#3f9c87" stroke-width="1.5"/>')],
+ ['Cells','Plant cell',S('0 0 140 100','<rect x="3" y="3" width="134" height="94" rx="10" fill="#d6efc7" stroke="#4f8a2b" stroke-width="5"/><rect x="10" y="10" width="120" height="80" rx="6" fill="none" stroke="#7cb85a" stroke-width="2"/><rect x="48" y="22" width="62" height="54" rx="14" fill="#e6f4fb" stroke="#7fb3d5" stroke-width="2"/><circle cx="30" cy="34" r="12" fill="#cdb8ea" stroke="#7d5bb5" stroke-width="2"/><circle cx="33" cy="31" r="4" fill="#7d5bb5"/><g fill="#4caf50" stroke="#2e7d32" stroke-width="1.5"><ellipse cx="26" cy="70" rx="9" ry="5"/><ellipse cx="120" cy="30" rx="8" ry="4.5" transform="rotate(30 120 30)"/><ellipse cx="118" cy="78" rx="9" ry="5" transform="rotate(-20 118 78)"/></g>')],
+ ['Cells','Nucleus',S('0 0 100 100','<circle cx="50" cy="50" r="44" fill="#d9c9f0" stroke="#7d5bb5" stroke-width="4" stroke-dasharray="22 4"/><circle cx="58" cy="44" r="12" fill="#7d5bb5" opacity=".78"/><path d="M24 62c5-8 10 4 15-3s9 6 14-1M30 34c4 5 9-3 13 2M58 70c4-4 8 3 12-1" fill="none" stroke="#9a7fcb" stroke-width="2.6" stroke-linecap="round"/>')],
+ ['Cells','Lymphocyte',S('0 0 100 100','<circle cx="50" cy="50" r="44" fill="#cfe3f7" stroke="#3d7cc9" stroke-width="3"/><circle cx="54" cy="47" r="30" fill="#6c8fd6" stroke="#3d5fae" stroke-width="2"/><path d="M40 40c4-3 8 2 12 0M50 58c4 2 8-3 12-1" stroke="#3d5fae" stroke-width="2" fill="none" stroke-linecap="round"/>')],
+ ['Cells','Macrophage',S('0 0 120 100','<path d="M20 50c-14-6-14-20 0-18 2-14 16-22 26-12 8-12 26-12 30 2 14-6 28 4 22 18 16 4 16 22 2 24 4 14-10 24-22 16-8 12-28 12-32-2-14 6-28-4-22-16-10-2-12-10-4-12z" fill="#f6d7a7" stroke="#c98a2e" stroke-width="3"/><path d="M48 44c6-10 22-10 26 0 4 9-6 12-12 8-6 6-18 2-14-8z" fill="#b07ccf" stroke="#7d5bb5" stroke-width="2"/><circle cx="34" cy="62" r="5" fill="#e8b36b"/><circle cx="84" cy="64" r="6" fill="#e8b36b"/>')],
+ ['Cells','Red blood cell',S('0 0 100 100','<defs><radialGradient id="g" cx=".5" cy=".5" r=".5"><stop offset=".25" stop-color="#f2998f"/><stop offset=".7" stop-color="#d9453b"/><stop offset="1" stop-color="#b8322a"/></radialGradient></defs><circle cx="50" cy="50" r="44" fill="url(#g)" stroke="#9e2a22" stroke-width="2.5"/>')],
+ ['Cells','Neuron',S('0 0 220 100','<path d="M40 50L12 20M20 28L6 30M40 50L10 72M18 64L4 58M40 50L30 10M40 50L34 92M40 50L60 20" stroke="#8e6cc0" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M58 52H190" stroke="#8e6cc0" stroke-width="3"/><g fill="#f5d76e" stroke="#c9a227" stroke-width="1.5"><rect x="68" y="46" width="24" height="12" rx="6"/><rect x="98" y="46" width="24" height="12" rx="6"/><rect x="128" y="46" width="24" height="12" rx="6"/><rect x="158" y="46" width="24" height="12" rx="6"/></g><path d="M190 52l18-14M190 52h20M190 52l18 14" stroke="#8e6cc0" stroke-width="3" stroke-linecap="round" fill="none"/><g fill="#c9b6e4" stroke="#8e6cc0" stroke-width="2"><circle cx="209" cy="37" r="5"/><circle cx="212" cy="52" r="5"/><circle cx="209" cy="67" r="5"/></g><circle cx="42" cy="50" r="16" fill="#c9b6e4" stroke="#8e6cc0" stroke-width="3"/><circle cx="42" cy="50" r="6" fill="#8e6cc0"/>')],
+ ['Organelles','Mitochondrion',S('0 0 120 60','<ellipse cx="60" cy="30" rx="56" ry="26" fill="#f9c784" stroke="#d9822b" stroke-width="3"/><ellipse cx="60" cy="30" rx="48" ry="18" fill="#fbe0b4"/><path d="M28 16v18M48 12.5v19M68 12.5v19M88 15v18M38 45v-18M58 47.5v-19M78 46v-18" stroke="#d9822b" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="30" rx="48" ry="18" fill="none" stroke="#e39b4b" stroke-width="2"/>')],
+ ['Organelles','Ribosome',S('0 0 100 90','<path d="M4 56h92" stroke="#e05a5a" stroke-width="4" stroke-linecap="round"/><ellipse cx="50" cy="34" rx="34" ry="24" fill="#8fb6e8" stroke="#3d6fb8" stroke-width="2.5"/><ellipse cx="50" cy="68" rx="26" ry="15" fill="#b9d3f2" stroke="#3d6fb8" stroke-width="2.5"/><path d="M4 56h20M76 56h20" stroke="#e05a5a" stroke-width="4" stroke-linecap="round"/>')],
+ ['Organelles','Vesicle / exosome',S('0 0 100 100','<circle cx="50" cy="50" r="44" fill="#e3f4ef" stroke="#3f9c87" stroke-width="3"/><circle cx="50" cy="50" r="37" fill="none" stroke="#3f9c87" stroke-width="2" stroke-dasharray="3 3"/><g fill="#f4a261"><circle cx="38" cy="42" r="5"/><circle cx="60" cy="38" r="4"/><circle cx="56" cy="60" r="6"/><circle cx="38" cy="62" r="3.5"/></g>')],
+ ['Organelles','Chromosome',S('0 0 80 110','<g transform="rotate(-16 40 55)"><rect x="30" y="4" width="20" height="102" rx="10" fill="#6a8fe0" stroke="#3558a8" stroke-width="2.5"/><path d="M31 24h18M31 34h18M31 74h18M31 88h18" stroke="#3558a8" stroke-width="3"/></g><g transform="rotate(16 40 55)"><rect x="30" y="4" width="20" height="102" rx="10" fill="#7fa0ea" stroke="#3558a8" stroke-width="2.5"/><path d="M31 24h18M31 34h18M31 74h18M31 88h18" stroke="#3558a8" stroke-width="3"/></g><circle cx="40" cy="55" r="7" fill="#3558a8"/>')],
+ ['Molecules','DNA double helix',dnaSVG()],
+ ['Molecules','RNA strand',rnaSVG()],
+ ['Molecules','Protein (globular)',S('0 0 100 100','<path d="M30 20c12-12 32-10 40 2 14-2 24 12 18 26 10 10 2 30-14 30-6 12-28 14-36 2-16 2-26-14-18-28-10-12-2-30 10-32z" fill="#8fd1b8" stroke="#2f8f6b" stroke-width="3"/><path d="M34 34c6-4 12-2 14 2M60 60c4 2 8 0 10-4" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7" fill="none"/>')],
+ ['Molecules','Antibody (IgG)',S('0 0 100 112','<g stroke="#2f5fbf" stroke-width="2"><rect x="40" y="56" width="9" height="52" rx="4.5" fill="#5b8def"/><rect x="51" y="56" width="9" height="52" rx="4.5" fill="#5b8def"/><g transform="rotate(-35 50 58)"><rect x="45.5" y="8" width="9" height="52" rx="4.5" fill="#5b8def"/><rect x="35" y="8" width="8.5" height="32" rx="4.25" fill="#f2a65a" stroke="#c4762a"/></g><g transform="rotate(35 50 58)"><rect x="45.5" y="8" width="9" height="52" rx="4.5" fill="#5b8def"/><rect x="56.5" y="8" width="8.5" height="32" rx="4.25" fill="#f2a65a" stroke="#c4762a"/></g></g>')],
+ ['Molecules','Ligand',S('0 0 60 60','<path d="M30 6l24 14v20L30 54 6 40V20z" fill="#f4a261" stroke="#c4622d" stroke-width="3" stroke-linejoin="round"/>')],
+ ['Membrane','Lipid bilayer',bilayerSVG()],
+ ['Membrane','Membrane receptor',S('0 0 140 130',membrane(78,108,140)+'<rect x="60" y="56" width="9" height="70" rx="4.5" fill="#2a9d8f" stroke="#1d6f65" stroke-width="2"/><rect x="71" y="56" width="9" height="70" rx="4.5" fill="#2a9d8f" stroke="#1d6f65" stroke-width="2"/><g transform="rotate(-30 70 58)"><rect x="65.5" y="18" width="9" height="42" rx="4.5" fill="#2a9d8f" stroke="#1d6f65" stroke-width="2"/></g><g transform="rotate(30 70 58)"><rect x="65.5" y="18" width="9" height="42" rx="4.5" fill="#2a9d8f" stroke="#1d6f65" stroke-width="2"/></g><circle cx="70" cy="10" r="7" fill="#f4a261" stroke="#c4622d" stroke-width="2"/>')],
+ ['Membrane','Ion channel',S('0 0 140 130',membrane(50,90,140)+'<rect x="44" y="30" width="20" height="80" rx="8" fill="#5b8def" stroke="#2f5fbf" stroke-width="2.5"/><rect x="76" y="30" width="20" height="80" rx="8" fill="#5b8def" stroke="#2f5fbf" stroke-width="2.5"/><g fill="#f6c453" stroke="#b8871b" stroke-width="1.5"><circle cx="70" cy="14" r="5"/><circle cx="70" cy="54" r="5"/><circle cx="70" cy="122" r="5"/></g><path d="M70 66v20m-5-6 5 6 5-6" stroke="#b8871b" stroke-width="2" fill="none" stroke-linecap="round"/>')],
+ ['Microbes','Virus',virusSVG()],
+ ['Microbes','Bacterium (rod)',S('0 0 150 70','<path d="M100 35c10 0 12-12 22-6s8 14 18 10 8-12 10-8" fill="none" stroke="#4f8a2b" stroke-width="2.5" stroke-linecap="round"/><g stroke="#4f8a2b" stroke-width="2" stroke-linecap="round"><path d="M30 16l-4-8M50 15l0-9M70 15l4-8M30 54l-4 8M50 55v9M70 55l4 8"/></g><rect x="10" y="15" width="92" height="40" rx="20" fill="#9ed36a" stroke="#4f8a2b" stroke-width="3"/><path d="M34 35c6-8 12 8 18 0s12 8 18 0 10 6 14 0" fill="none" stroke="#4f8a2b" stroke-width="2" opacity=".6" stroke-linecap="round"/>')],
+ ['Microbes','Coccus cluster',S('0 0 100 90','<g fill="#c8a2e0" stroke="#7d4fa8" stroke-width="2.5"><circle cx="30" cy="30" r="17"/><circle cx="62" cy="26" r="17"/><circle cx="46" cy="56" r="17"/><circle cx="78" cy="56" r="15"/><circle cx="20" cy="64" r="14"/></g>')],
+ ['Microbes','Yeast',S('0 0 110 90','<ellipse cx="44" cy="48" rx="36" ry="30" fill="#f3e1b6" stroke="#b5883b" stroke-width="3"/><ellipse cx="88" cy="30" rx="17" ry="14" fill="#f3e1b6" stroke="#b5883b" stroke-width="3"/><circle cx="40" cy="48" r="10" fill="#d1a85b"/>')],
+ ['Lab','Test tube',S('0 0 40 120','<path d="M8 8h24v84a12 12 0 0 1-24 0z" fill="#eef6fb"/><path d="M8 58h24v34a12 12 0 0 1-24 0z" fill="#6cc3e8"/><path d="M8 8h24v84a12 12 0 0 1-24 0z" fill="none" stroke="#5a6b7d" stroke-width="2.5"/><rect x="4" y="3" width="32" height="7" rx="3" fill="#cfd8e3" stroke="#5a6b7d" stroke-width="2"/>')],
+ ['Lab','Microtube',S('0 0 50 120','<path d="M10 24h30v46l-10 42a5 5 0 0 1-10 0L10 70z" fill="#f3f6f9"/><path d="M10.5 60h29v10l-9.6 40a5 5 0 0 1-9.8 0L10.5 70z" fill="#f6c453"/><path d="M10 24h30v46l-10 42a5 5 0 0 1-10 0L10 70z" fill="none" stroke="#5a6b7d" stroke-width="2.5" stroke-linejoin="round"/><rect x="6" y="16" width="38" height="9" rx="3" fill="#cfd8e3" stroke="#5a6b7d" stroke-width="2"/><path d="M8 16c-2-8 4-14 14-13" fill="none" stroke="#5a6b7d" stroke-width="2.5" stroke-linecap="round"/>')],
+ ['Lab','Erlenmeyer flask',S('0 0 100 120','<path d="M38 8h24v34l30 60a8 8 0 0 1-7 12H15a8 8 0 0 1-7-12l30-60z" fill="#eef6fb"/><path d="M23.5 72h53l14.5 30a6 6 0 0 1-5.5 9h-71a6 6 0 0 1-5.5-9z" fill="#a5d6a7"/><path d="M38 8h24v34l30 60a8 8 0 0 1-7 12H15a8 8 0 0 1-7-12l30-60z" fill="none" stroke="#5a6b7d" stroke-width="2.5" stroke-linejoin="round"/><rect x="33" y="3" width="34" height="7" rx="3" fill="#cfd8e3" stroke="#5a6b7d" stroke-width="2"/>')],
+ ['Lab','Beaker',S('0 0 100 110','<path d="M14 8h72v88a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="#eef6fb"/><path d="M16 50h68v46a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6z" fill="#f1948a"/><path d="M8 6h78v90a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8V14z" fill="none" stroke="#5a6b7d" stroke-width="2.5" stroke-linejoin="round"/><path d="M70 30h14M74 42h10M70 54h14M74 66h10" stroke="#5a6b7d" stroke-width="2"/>')],
+ ['Lab','Petri dish',S('0 0 120 72','<ellipse cx="60" cy="42" rx="56" ry="24" fill="#dfe9f2" stroke="#5a6b7d" stroke-width="2.5"/><ellipse cx="60" cy="35" rx="56" ry="24" fill="#f7e9a8" stroke="#5a6b7d" stroke-width="2.5"/><g fill="#fffaf0" stroke="#c9b458" stroke-width="1.5"><circle cx="38" cy="32" r="5"/><circle cx="64" cy="26" r="4"/><circle cx="78" cy="40" r="6"/><circle cx="52" cy="44" r="3.5"/><circle cx="88" cy="28" r="3"/></g>')],
+ ['Lab','Well plate (24)',wellPlateSVG()],
+ ['Lab','Micropipette',S('0 0 40 140','<rect x="14" y="2" width="12" height="9" rx="3" fill="#e05a5a"/><rect x="17" y="10" width="6" height="12" fill="#9aa7b6"/><rect x="10" y="22" width="20" height="70" rx="8" fill="#dfe6ee" stroke="#5a6b7d" stroke-width="2"/><rect x="14" y="40" width="12" height="14" rx="2" fill="#2b3a4a"/><path d="M14 92h12l-3 20h-6z" fill="#cfd8e3" stroke="#5a6b7d" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 112h6l-2.4 26h-1.2z" fill="#f4f7fa" stroke="#5a6b7d" stroke-width="1.5" stroke-linejoin="round"/>')],
+ ['Lab','Syringe',S('0 0 140 40','<rect x="4" y="8" width="6" height="24" rx="2" fill="#5a6b7d"/><rect x="8" y="17" width="52" height="6" fill="#9aa7b6"/><rect x="28" y="4" width="4" height="32" rx="1.5" fill="#5a6b7d"/><rect x="30" y="10" width="80" height="20" rx="3" fill="#eef6fb"/><rect x="60" y="12" width="49" height="16" fill="#9ad0ec"/><rect x="56" y="11" width="5" height="18" rx="1" fill="#2b3a4a"/><rect x="30" y="10" width="80" height="20" rx="3" fill="none" stroke="#5a6b7d" stroke-width="2"/><path d="M45 10v6M55 10v6M65 10v6M75 10v6M85 10v6M95 10v6" stroke="#5a6b7d" stroke-width="1.5"/><rect x="110" y="15" width="8" height="10" rx="1.5" fill="#cfd8e3" stroke="#5a6b7d" stroke-width="1.5"/><path d="M118 20h20" stroke="#5a6b7d" stroke-width="1.6" stroke-linecap="round"/>')],
+ ['Lab','Microscope',S('0 0 100 120','<rect x="18" y="104" width="64" height="11" rx="4" fill="#4a5568"/><path d="M64 104V62c0-18-8-30-22-38" fill="none" stroke="#4a5568" stroke-width="10" stroke-linecap="round"/><rect x="22" y="74" width="50" height="6" rx="2" fill="#2d3748"/><g transform="rotate(-20 30 36)"><rect x="23" y="12" width="14" height="50" rx="3" fill="#718096"/><rect x="21" y="2" width="18" height="12" rx="2" fill="#2d3748"/></g><rect x="36" y="60" width="8" height="12" rx="2" fill="#2d3748"/><circle cx="64" cy="88" r="7" fill="#a0aec0" stroke="#4a5568" stroke-width="3"/>')],
+ ['Lab','Capsule / drug',S('0 0 100 54','<g transform="rotate(-20 50 27)"><path d="M50 12H29a15 15 0 0 0 0 30h21z" fill="#e05a5a" stroke="#9b2c2c" stroke-width="2"/><path d="M50 12h21a15 15 0 0 1 0 30H50z" fill="#f7f7f7" stroke="#9b2c2c" stroke-width="2"/></g>')],
+ ['Organisms','Lab mouse',S('0 0 140 92','<path d="M116 62c16 4 22 16 14 26" fill="none" stroke="#e8a3b0" stroke-width="3" stroke-linecap="round"/><ellipse cx="70" cy="58" rx="48" ry="27" fill="#eceff3" stroke="#8a94a6" stroke-width="2.5"/><ellipse cx="50" cy="84" rx="7" ry="3.5" fill="#e8a3b0"/><ellipse cx="96" cy="84" rx="7" ry="3.5" fill="#e8a3b0"/><ellipse cx="30" cy="46" rx="22" ry="17" fill="#eceff3" stroke="#8a94a6" stroke-width="2.5"/><circle cx="36" cy="27" r="10" fill="#f5c6cf" stroke="#8a94a6" stroke-width="2.5"/><circle cx="22" cy="42" r="2.7" fill="#1d2330"/><circle cx="9" cy="50" r="3.2" fill="#e8a3b0"/><path d="M12 52l-10 2M12 54l-9 6M14 50l-10-3" stroke="#8a94a6" stroke-width="1.2" stroke-linecap="round"/>')],
+ ['Organisms','Human',S('0 0 60 122','<circle cx="30" cy="13" r="11" fill="#5b8def"/><path d="M14 28h32a6 6 0 0 1 6 6v34a4 4 0 0 1-8 0V42h-2v74a5 5 0 0 1-10 0V78h-4v38a5 5 0 0 1-10 0V42h-2v26a4 4 0 0 1-8 0V34a6 6 0 0 1 6-6z" fill="#5b8def"/>')],
+ ['Organisms','Zebrafish',S('0 0 150 60','<path d="M10 30c20-22 70-24 104-8l26-14-6 22 6 22-26-14C80 54 30 52 10 30z" fill="#f7e7a1" stroke="#9b8a3a" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 26h80M28 33h84M32 40h70" stroke="#4a6fbf" stroke-width="2.6" stroke-linecap="round"/><circle cx="22" cy="27" r="3" fill="#1d2330"/>')],
+ ['Symbols','Lightning (stimulus)',S('0 0 60 100','<path d="M36 2L6 56h20l-6 42 34-58H32z" fill="#f6c453" stroke="#b8871b" stroke-width="3" stroke-linejoin="round"/>')],
+ ['Symbols','Cross (blocked)',S('0 0 60 60','<path d="M10 10l40 40M50 10L10 50" stroke="#d64545" stroke-width="9" stroke-linecap="round"/>')],
+ ['Symbols','Check',S('0 0 60 60','<path d="M8 32l14 14 30-32" fill="none" stroke="#2e9d5b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>')],
+ ['Symbols','Clock / time',S('0 0 60 60','<circle cx="30" cy="30" r="26" fill="#fff" stroke="#4a5568" stroke-width="4"/><path d="M30 14v17l11 7" fill="none" stroke="#4a5568" stroke-width="4" stroke-linecap="round"/>')],
+];
+
+/* =========================================================
+   SOURCE PRESETS (licence + credit line written into each icon)
+   ========================================================= */
+const SOURCES={
+  starter:{label:'Starter set',license:'CC0',credit:()=>'OpenFigure starter icons (CC0)'},
+  bioicons:{label:'Bioicons',url:'https://bioicons.com/',license:'Per icon (CC0 / CC BY 3.0 / CC BY 4.0 / MIT)',credit:m=>`${m.name}${m.author?' by '+m.author:''}, Bioicons (bioicons.com), ${m.license||'see icon licence'}`},
+  servier:{label:'Servier Medical Art',url:'https://smart.servier.com/',license:'CC BY 4.0',credit:()=>'Servier Medical Art (smart.servier.com), licensed under CC BY 4.0'},
+  nih:{label:'NIH BioArt',url:'https://bioart.niaid.nih.gov/',license:'Public domain',credit:m=>`NIAID Visual & Medical Arts. ${m.name}. NIAID NIH BioArt Source. bioart.niaid.nih.gov`},
+  scidraw:{label:'SciDraw',url:'https://www.scidraw.io/',license:'CC BY 4.0 or CC0 (per item)',credit:m=>`${m.name}, SciDraw (scidraw.io) — cite the item DOI/licence from its page`},
+  reactome:{label:'Reactome Icon Library',url:'https://reactome.org/icon-lib',license:'CC BY 4.0',credit:()=>'Reactome Icon Library (reactome.org/icon-lib), CC BY 4.0'},
+  biodraws:{label:'BioDraws',url:'https://biodraws.com/',license:'CC BY-SA 4.0',credit:()=>'BioDraws (biodraws.com), CC BY-SA 4.0'},
+  osa:{label:'Open Science Art',url:'https://openscienceart.com/',license:'CC0',credit:()=>'Open Science Art (openscienceart.com), CC0'},
+  proteinimager:{label:'Protein Imager',url:'https://3dproteinimaging.com/protein-imager/',license:'See Protein Imager terms',credit:m=>`${m.name}, rendered with Protein Imager (3dproteinimaging.com)`},
+  smiles:{label:'Molecules (SMILES)',license:'Generated',credit:m=>`${m.name} structure drawn with SmilesDrawer (Probst & Reymond, J. Chem. Inf. Model. 2018)`},
+  own:{label:'My own artwork',license:'Own work',credit:()=>''},
+  other:{label:'Other source',license:'',credit:m=>m.customCredit||''},
+};
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let doc=newDoc();
+function newDoc(){ return {title:'Untitled figure',width:1200,height:800,bg:'#ffffff',items:[],assets:{}}; }
+let sel=new Set();
+let tool='select';
+const view={x:40,y:40,z:1};
+const settings={grid:true,snap:false,gridSize:10};
+let library=[];               // icon records (starter + imported)
+let lastSource='bioicons';
+const thumbCache=new Map(), hrefCache=new Map();
+
+const svg=$('#svg'), vp=$('#vp'), itemsG=$('#items'), overlay=$('#overlay'), page=$('#page'), gridRect=$('#gridRect'), stage=$('#stage');
+const byId=id=>doc.items.find(i=>i.id===id);
+const selItems=()=>doc.items.filter(i=>sel.has(i.id));
+
+/* =========================================================
+   SVG NORMALISATION + COLOUR TOOLS
+   ========================================================= */
+function normalizeSvg(text){
+  text=String(text).replace(/<\?xml[\s\S]*?\?>/g,'').replace(/<!DOCTYPE[\s\S]*?>/gi,'').replace(/<!--[\s\S]*?-->/g,'');
+  const open=(text.match(/<svg\b[^>]*>/)||[''])[0];
+  if(open&&!/\sxmlns\s*=\s*["']http:\/\/www\.w3\.org\/2000\/svg["']/.test(open)) text=text.replace(/<svg\b/,'<svg xmlns="http://www.w3.org/2000/svg"');
+  if(/xlink:/.test(text)&&!/xmlns:xlink=/.test(open)) text=text.replace(/<svg\b/,'<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+  const d=new DOMParser().parseFromString(text,'image/svg+xml');
+  const root=d.documentElement;
+  if(!root||root.nodeName.toLowerCase()!=='svg'||d.getElementsByTagName('parsererror').length) throw new Error('Not a valid SVG');
+  // strip scripts, foreign/editor namespaces, event handlers
+  const walk=el=>{ for(const c of [...el.children]){ const nm=c.localName.toLowerCase(); if(c.namespaceURI!==SVGNS||nm==='script'||nm==='foreignobject'||nm==='metadata'){ c.remove(); continue; } walk(c); }
+    for(const a of [...el.attributes]){ const n=a.name; if(/^on/i.test(n)) el.removeAttribute(n); else if(n.includes(':')&&!n.startsWith('xlink:')&&!n.startsWith('xml:')&&n!=='xmlns:xlink') el.removeAttribute(n); else if((n==='href'||n==='xlink:href')&&/^\s*(javascript:|https?:)/i.test(a.value)) el.removeAttribute(n); } };
+  walk(root);
+  const num=v=>{const f=parseFloat(v);return isFinite(f)&&f>0?f:null;};
+  let vb=root.getAttribute('viewBox');
+  let w=num(root.getAttribute('width')), h=num(root.getAttribute('height'));
+  if(!vb){ w=w||100; h=h||100; vb=`0 0 ${w} ${h}`; }
+  const p=vb.trim().split(/[\s,]+/).map(Number);
+  const vw=p[2]||w||100, vh=p[3]||h||100;
+  root.setAttribute('viewBox',vb); root.removeAttribute('width'); root.removeAttribute('height');
+  root.setAttribute('preserveAspectRatio','none');
+  for(const a of ['x','y','style']) if(a!=='style') root.removeAttribute(a);
+  let out=new XMLSerializer().serializeToString(root);
+  if(!/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/.test(out)) out=out.replace(/^<svg/,'<svg xmlns="http://www.w3.org/2000/svg"');
+  return {svg:out,w:vw,h:vh};
+}
+const COLRE=/#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![\w-])|rgba?\(\s*[\d.]+%?\s*,\s*[\d.]+%?\s*,\s*[\d.]+%?[^)]*\)/g;
+function normCol(c){ c=c.toLowerCase().replace(/\s/g,''); if(c[0]==='#'&&c.length===4) c='#'+c[1]+c[1]+c[2]+c[2]+c[3]+c[3];
+  if(c.startsWith('rgb')){ const m=c.match(/[\d.]+%?/g); if(m&&m.length>=3) c='#'+m.slice(0,3).map(v=>{let n=parseFloat(v); if(v.endsWith('%')) n=n*2.55; return clamp(Math.round(n),0,255).toString(16).padStart(2,'0');}).join(''); }
+  return c; }
+function isColorCtx(text,off){ const pre=text.slice(Math.max(0,off-6),off); return !/url\($/.test(pre)&&!/href="$/.test(pre)&&!/href='$/.test(pre); }
+function getColors(svgText){ const cnt=new Map(); svgText.replace(COLRE,(m,off)=>{ if(isColorCtx(svgText,off)){ const n=normCol(m); cnt.set(n,(cnt.get(n)||0)+1);} return m; });
+  return [...cnt.entries()].sort((a,b)=>b[1]-a[1]).map(e=>e[0]).slice(0,18); }
+function applyColors(svgText,map){ if(!map||!Object.keys(map).length) return svgText;
+  return svgText.replace(COLRE,(m,off)=>{ if(!isColorCtx(svgText,off)) return m; const n=normCol(m); return map[n]||m; }); }
+function hexToHsl(h){ const r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255; const mx=Math.max(r,g,b),mn=Math.min(r,g,b); let H=0,S=0; const L=(mx+mn)/2; if(mx!==mn){const d=mx-mn; S=L>.5?d/(2-mx-mn):d/(mx+mn); H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4; H/=6;} return [H,S,L]; }
+function hslToHex(H,S,L){ const f=n=>{const k=(n+H*12)%12, a=S*Math.min(L,1-L); const c=L-a*Math.max(-1,Math.min(k-3,9-k,1)); return Math.round(c*255).toString(16).padStart(2,'0');}; return '#'+f(0)+f(8)+f(4); }
+function svgDataUri(t){ return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(t); }
+function iconHref(a,colors){ if(a.kind!=='svg') return a.src; const key=a.id+'|'+JSON.stringify(colors||{}); let h=hrefCache.get(key); if(!h){ h=svgDataUri(applyColors(a.svg,colors)); if(hrefCache.size>800) hrefCache.clear(); hrefCache.set(key,h);} return h; }
+function thumbSrc(a){ if(a.kind!=='svg') return a.src; let t=thumbCache.get(a.id); if(!t){ t=svgDataUri(a.svg.replace('preserveAspectRatio="none"','')); thumbCache.set(a.id,t);} return t; }
+function inlineIcon(a,colors,w,h,pfx){
+  let t=applyColors(a.svg,colors);
+  t=t.replace(/\bid="([^"]+)"/g,(m,x)=>`id="${pfx}${x}"`)
+     .replace(/url\(\s*['"]?#([^)'"\s]+)['"]?\s*\)/g,(m,x)=>`url(#${pfx}${x})`)
+     .replace(/((?:xlink:)?href)="#([^"]+)"/g,(m,k,x)=>`${k}="#${pfx}${x}"`)
+     .replace(/<style([^>]*)>([\s\S]*?)<\/style>/g,(m,at,css)=>`<style${at}>${css.replace(/\.(-?[A-Za-z_][\w-]*)/g,'.'+pfx+'$1')}</style>`)
+     .replace(/\bclass="([^"]+)"/g,(m,x)=>`class="${x.split(/\s+/).filter(Boolean).map(c=>pfx+c).join(' ')}"`);
+  t=t.replace(/<svg\b[^>]*>/,m=>{ const vb=(m.match(/viewBox="([^"]+)"/)||[])[1]||`0 0 ${a.w} ${a.h}`; return `<svg x="${r2(-w/2)}" y="${r2(-h/2)}" width="${r2(w)}" height="${r2(h)}" viewBox="${vb}" preserveAspectRatio="none" overflow="visible">`; });
+  return t;
+}
+
+/* =========================================================
+   TEXT MEASUREMENT
+   ========================================================= */
+const mctx=document.createElement('canvas').getContext('2d');
+const FONTS=['Arial','Helvetica','Calibri','Verdana','Georgia','Times New Roman','Courier New','Trebuchet MS'];
+const fontStack=f=>`'${f}', ${/Georgia|Times/.test(f)?'serif':/Courier/.test(f)?'monospace':'sans-serif'}`;
+function measureText(it){ mctx.font=`${it.italic?'italic ':''}${it.bold?'700 ':'400 '}${it.size}px ${fontStack(it.font)}`;
+  const lines=String(it.text).split('\n'); let w=0; for(const l of lines) w=Math.max(w,mctx.measureText(l||' ').width);
+  it.w=Math.ceil(w)+6; it.h=Math.ceil(lines.length*it.size*1.25); }
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+const boxT=it=>`translate(${r2(it.x+it.w/2)} ${r2(it.y+it.h/2)})${it.rot?` rotate(${r2(it.rot)})`:''}`;
+function strokeAttrs(it){ if(!it.sw||it.stroke==='none') return 'stroke="none"'; return `stroke="${it.stroke}" stroke-width="${it.sw}"${it.dash?` stroke-dasharray="${dashFor(it.dash,it.sw)}"`:''}`; }
+function dashFor(d,sw){ return d==='dash'?`${sw*4} ${sw*2.5}`:d==='dot'?`0.1 ${sw*2.2}`:''; }
+function lineGeom(it){ const P1={x:it.x1,y:it.y1},P2={x:it.x2,y:it.y2}; const dx=P2.x-P1.x,dy=P2.y-P1.y,L=Math.hypot(dx,dy)||1; const n={x:-dy/L,y:dx/L}; const M={x:(P1.x+P2.x)/2,y:(P1.y+P2.y)/2}; const b=it.bend||0; const C={x:M.x+n.x*b*2,y:M.y+n.y*b*2}; return {P1,P2,C,M,n,L}; }
+function unit(v){ const l=Math.hypot(v.x,v.y)||1; return {x:v.x/l,y:v.y/l}; }
+function headSVG(kind,P,dir,s,it){
+  const n={x:-dir.y,y:dir.x}, col=it.stroke, f=v=>r2(v);
+  if(kind==='arrow'){ const b={x:P.x-dir.x*s,y:P.y-dir.y*s}; return {svg:`<path d="M${f(P.x)} ${f(P.y)}L${f(b.x+n.x*s*.5)} ${f(b.y+n.y*s*.5)}L${f(b.x-n.x*s*.5)} ${f(b.y-n.y*s*.5)}Z" fill="${col}" stroke="${col}" stroke-width="${f(it.sw*.6)}" stroke-linejoin="round"/>`,back:s*.8}; }
+  if(kind==='open'){ const b={x:P.x-dir.x*s,y:P.y-dir.y*s}; return {svg:`<path d="M${f(b.x+n.x*s*.55)} ${f(b.y+n.y*s*.55)}L${f(P.x)} ${f(P.y)}L${f(b.x-n.x*s*.55)} ${f(b.y-n.y*s*.55)}" fill="none" stroke="${col}" stroke-width="${f(it.sw)}" stroke-linecap="round" stroke-linejoin="round"/>`,back:it.sw*.4}; }
+  if(kind==='inhibit'){ const w=s*.75; return {svg:`<path d="M${f(P.x+n.x*w)} ${f(P.y+n.y*w)}L${f(P.x-n.x*w)} ${f(P.y-n.y*w)}" stroke="${col}" stroke-width="${f(Math.max(it.sw*1.3,2))}" stroke-linecap="round"/>`,back:0}; }
+  if(kind==='circle'||kind==='ocircle'){ const r=s*.38, c={x:P.x-dir.x*r,y:P.y-dir.y*r}; return {svg:`<circle cx="${f(c.x)}" cy="${f(c.y)}" r="${f(r)}" fill="${kind==='circle'?col:'#fff'}" stroke="${col}" stroke-width="${f(it.sw)}"/>`,back:r*2-it.sw*.3}; }
+  if(kind==='bar'){ const w=s*.55; const c={x:P.x-dir.x*s*.15,y:P.y-dir.y*s*.15}; return {svg:`<path d="M${f(c.x+n.x*w)} ${f(c.y+n.y*w)}L${f(c.x-n.x*w)} ${f(c.y-n.y*w)}" stroke="${col}" stroke-width="${f(it.sw)}"/>`,back:0}; }
+  return {svg:'',back:0};
+}
+function renderLine(it,idAttr,op,mode){
+  const g=lineGeom(it); const s=it.hs||Math.max(11,it.sw*4.2);
+  const dEnd=unit({x:g.P2.x-g.C.x,y:g.P2.y-g.C.y}), dStart=unit({x:g.P1.x-g.C.x,y:g.P1.y-g.C.y});
+  const he=headSVG(it.end||'none',g.P2,dEnd,s,it), hs=headSVG(it.start||'none',g.P1,dStart,s,it);
+  const p2={x:g.P2.x-dEnd.x*he.back,y:g.P2.y-dEnd.y*he.back}, p1={x:g.P1.x-dStart.x*hs.back,y:g.P1.y-dStart.y*hs.back};
+  const curved=Math.abs(it.bend||0)>0.5;
+  const d=curved?`M${r2(p1.x)} ${r2(p1.y)}Q${r2(g.C.x)} ${r2(g.C.y)} ${r2(p2.x)} ${r2(p2.y)}`:`M${r2(p1.x)} ${r2(p1.y)}L${r2(p2.x)} ${r2(p2.y)}`;
+  const full=curved?`M${r2(g.P1.x)} ${r2(g.P1.y)}Q${r2(g.C.x)} ${r2(g.C.y)} ${r2(g.P2.x)} ${r2(g.P2.y)}`:`M${r2(g.P1.x)} ${r2(g.P1.y)}L${r2(g.P2.x)} ${r2(g.P2.y)}`;
+  const dash=it.dash?` stroke-dasharray="${dashFor(it.dash,it.sw)}"`:'';
+  return `<g${idAttr}${op}><path d="${d}" fill="none" stroke="${it.stroke}" stroke-width="${it.sw}"${dash} stroke-linecap="round"/>${hs.svg}${he.svg}${mode==='view'?`<path d="${full}" fill="none" stroke="transparent" stroke-width="${Math.max(14,it.sw+12)}"/>`:''}</g>`;
+}
+function renderItem(it,mode,pfx=''){
+  const op=it.opacity!=null&&it.opacity<1?` opacity="${it.opacity}"`:'';
+  const idAttr=mode==='view'?` data-id="${it.id}"`:'';
+  const hw=r2(it.w/2), hh=r2(it.h/2);
+  if(it.type==='icon'){
+    const a=doc.assets[it.asset]; if(!a) return '';
+    const flip=(it.flipX||it.flipY)?` transform="scale(${it.flipX?-1:1} ${it.flipY?-1:1})"`:'';
+    if(mode==='svg'&&a.kind==='svg') return `<g transform="${boxT(it)}"${op}><g${flip}>${inlineIcon(a,it.colors,it.w,it.h,pfx)}</g></g>`;
+    const href=iconHref(a,it.colors);
+    return `<g${idAttr} transform="${boxT(it)}"${op}><image href="${href}"${mode==='svg'?` xlink:href="${href}"`:''} x="${-hw}" y="${-hh}" width="${r2(it.w)}" height="${r2(it.h)}" preserveAspectRatio="none"${flip}/></g>`;
+  }
+  if(it.type==='rect') return `<g${idAttr} transform="${boxT(it)}"${op}><rect x="${-hw}" y="${-hh}" width="${r2(it.w)}" height="${r2(it.h)}" rx="${it.rx||0}" fill="${it.fill}" ${strokeAttrs(it)}/></g>`;
+  if(it.type==='ellipse') return `<g${idAttr} transform="${boxT(it)}"${op}><ellipse cx="0" cy="0" rx="${hw}" ry="${hh}" fill="${it.fill}" ${strokeAttrs(it)}/></g>`;
+  if(it.type==='text'){
+    const lines=String(it.text).split('\n'), lh=it.size*1.25;
+    const anchor=it.align==='center'?'middle':it.align==='right'?'end':'start';
+    const tx=it.align==='center'?0:it.align==='right'?hw-3:-hw+3;
+    let t=''; lines.forEach((ln,i)=>{ t+=`<tspan x="${r2(tx)}" y="${r2(-hh+i*lh+it.size*0.98)}">${esc(ln)||' '}</tspan>`; });
+    const bg=it.bgc&&it.bgc!=='none'?`<rect x="${-hw-4}" y="${-hh-2}" width="${r2(it.w+8)}" height="${r2(it.h+4)}" rx="4" fill="${it.bgc}"/>`:(mode==='view'?`<rect x="${-hw}" y="${-hh}" width="${r2(it.w)}" height="${r2(it.h)}" fill="transparent"/>`:'');
+    return `<g${idAttr} transform="${boxT(it)}"${op}>${bg}<text xml:space="preserve" font-family="${esc(fontStack(it.font))}" font-size="${it.size}" fill="${it.color}"${it.bold?' font-weight="700"':''}${it.italic?' font-style="italic"':''} text-anchor="${anchor}">${t}</text></g>`;
+  }
+  if(it.type==='line') return renderLine(it,idAttr,op,mode);
+  return '';
+}
+function itemAABB(it){
+  if(it.type==='line'){ const g=lineGeom(it); const B={x:g.M.x+g.n.x*(it.bend||0),y:g.M.y+g.n.y*(it.bend||0)}; const xs=[g.P1.x,g.P2.x,B.x], ys=[g.P1.y,g.P2.y,B.y]; return {x:Math.min(...xs),y:Math.min(...ys),x2:Math.max(...xs),y2:Math.max(...ys)}; }
+  const c={x:it.x+it.w/2,y:it.y+it.h/2}, a=(it.rot||0)*RAD; let xs=[],ys=[];
+  for(const [sx,sy] of [[-1,-1],[1,-1],[1,1],[-1,1]]){ const p=rotV({x:sx*it.w/2,y:sy*it.h/2},a); xs.push(c.x+p.x); ys.push(c.y+p.y); }
+  return {x:Math.min(...xs),y:Math.min(...ys),x2:Math.max(...xs),y2:Math.max(...ys)};
+}
+function unionAABB(items){ if(!items.length) return null; let b=itemAABB(items[0]); for(const it of items.slice(1)){ const c=itemAABB(it); b={x:Math.min(b.x,c.x),y:Math.min(b.y,c.y),x2:Math.max(b.x2,c.x2),y2:Math.max(b.y2,c.y2)}; } return b; }
+
+function renderAll(){
+  page.setAttribute('width',doc.width); page.setAttribute('height',doc.height);
+  page.setAttribute('fill',doc.bg?doc.bg:'url(#checker)');
+  gridRect.setAttribute('width',doc.width); gridRect.setAttribute('height',doc.height);
+  gridRect.style.display=settings.grid?'':'none';
+  itemsG.innerHTML=doc.items.map(it=>it.hidden?'':renderItem(it,'view')).join('');
+  $('#welcome').style.display=doc.items.length?'none':'';
+  $('#title').value=doc.title;
+  renderOverlay(); renderProps(); renderLayers(); updateButtons();
+}
+function updateItemEls(items){
+  for(const it of items){ const el=itemsG.querySelector(`[data-id="${it.id}"]`); const html=it.hidden?'':renderItem(it,'view');
+    if(el){ if(html){ const tmp=document.createElementNS(SVGNS,'g'); tmp.innerHTML=html; el.replaceWith(tmp.firstElementChild); } else el.remove(); }
+    else if(html){ renderAll(); return; } }
+  renderOverlay();
+}
+const HANDLES=[['nw',-1,-1],['n',0,-1],['ne',1,-1],['e',1,0],['se',1,1],['s',0,1],['sw',-1,1],['w',-1,0]];
+const CURS={nw:'nwse-resize',se:'nwse-resize',ne:'nesw-resize',sw:'nesw-resize',n:'ns-resize',s:'ns-resize',e:'ew-resize',w:'ew-resize'};
+function renderOverlay(){
+  const z=view.z, hs=9/z, sw=1.4/z; let s='';
+  const items=selItems();
+  if(items.length===1&&items[0].type!=='line'){
+    const it=items[0], hw=it.w/2, hh=it.h/2;
+    s+=`<g transform="${boxT(it)}"><rect x="${-hw}" y="${-hh}" width="${it.w}" height="${it.h}" fill="none" stroke="#2f6fec" stroke-width="${sw}" pointer-events="none"/>`;
+    if(!it.locked){
+      for(const [n,hx,hy] of HANDLES){ if(it.type==='text'&&(hx===0||hy===0)) continue;
+        s+=`<rect data-h="${n}" x="${hx*hw-hs/2}" y="${hy*hh-hs/2}" width="${hs}" height="${hs}" rx="${2/z}" fill="#fff" stroke="#2f6fec" stroke-width="${sw}" style="cursor:${CURS[n]}"/>`; }
+      s+=`<line x1="0" y1="${-hh}" x2="0" y2="${-hh-24/z}" stroke="#2f6fec" stroke-width="${sw}" pointer-events="none"/><circle data-h="rot" cx="0" cy="${-hh-24/z}" r="${6/z}" fill="#fff" stroke="#2f6fec" stroke-width="${sw}" style="cursor:grab"/>`;
+    }
+    s+='</g>';
+  } else if(items.length===1){
+    const it=items[0], g=lineGeom(it), B={x:g.M.x+g.n.x*(it.bend||0),y:g.M.y+g.n.y*(it.bend||0)};
+    if(!it.locked){
+      s+=`<circle data-h="p1" cx="${g.P1.x}" cy="${g.P1.y}" r="${6/z}" fill="#fff" stroke="#2f6fec" stroke-width="${sw}" style="cursor:move"/>`;
+      s+=`<circle data-h="p2" cx="${g.P2.x}" cy="${g.P2.y}" r="${6/z}" fill="#fff" stroke="#2f6fec" stroke-width="${sw}" style="cursor:move"/>`;
+      s+=`<rect data-h="bend" x="${B.x-5/z}" y="${B.y-5/z}" width="${10/z}" height="${10/z}" transform="rotate(45 ${B.x} ${B.y})" fill="#2f6fec" stroke="#fff" stroke-width="${sw}" style="cursor:pointer"><title>Drag to curve</title></rect>`;
+    }
+  } else if(items.length>1){
+    const b=unionAABB(items);
+    s+=`<rect x="${b.x-4/z}" y="${b.y-4/z}" width="${b.x2-b.x+8/z}" height="${b.y2-b.y+8/z}" fill="none" stroke="#2f6fec" stroke-width="${sw}" stroke-dasharray="${5/z} ${4/z}" pointer-events="none"/>`;
+    for(const it of items){ const c=itemAABB(it); s+=`<rect x="${c.x}" y="${c.y}" width="${c.x2-c.x}" height="${c.y2-c.y}" fill="none" stroke="#2f6fec" stroke-opacity=".45" stroke-width="${sw}" pointer-events="none"/>`; }
+  }
+  if(drag&&drag.mode==='marquee'){ const x=Math.min(drag.start.x,drag.cur.x), y=Math.min(drag.start.y,drag.cur.y);
+    s+=`<rect x="${x}" y="${y}" width="${Math.abs(drag.cur.x-drag.start.x)}" height="${Math.abs(drag.cur.y-drag.start.y)}" fill="rgba(47,111,236,.08)" stroke="#2f6fec" stroke-width="${sw}" pointer-events="none"/>`; }
+  overlay.innerHTML=s;
+}
+
+/* =========================================================
+   VIEW (pan / zoom)
+   ========================================================= */
+function applyView(){ vp.setAttribute('transform',`translate(${r2(view.x)} ${r2(view.y)}) scale(${view.z})`); $('#zoomPct').textContent=Math.round(view.z*100)+'%'; $('#gridPath').setAttribute('stroke-width',1/view.z); renderOverlay(); positionTextEditor(); }
+function zoomAt(cx,cy,z){ z=clamp(z,0.05,10); const r=svg.getBoundingClientRect(); const px=cx-r.left, py=cy-r.top; view.x=px-(px-view.x)*z/view.z; view.y=py-(py-view.y)*z/view.z; view.z=z; applyView(); }
+function zoomBy(f){ const r=svg.getBoundingClientRect(); zoomAt(r.left+r.width/2,r.top+r.height/2,view.z*f); }
+function fit(){ const r=svg.getBoundingClientRect(); if(!r.width) return; const z=clamp(Math.min((r.width-80)/doc.width,(r.height-80)/doc.height),0.05,4); view.z=z; view.x=(r.width-doc.width*z)/2; view.y=(r.height-doc.height*z)/2; applyView(); }
+function toDoc(e){ const r=svg.getBoundingClientRect(); return {x:(e.clientX-r.left-view.x)/view.z, y:(e.clientY-r.top-view.y)/view.z}; }
+function viewCenter(){ const r=svg.getBoundingClientRect(); return {x:(r.width/2-view.x)/view.z, y:(r.height/2-view.y)/view.z}; }
+svg.addEventListener('wheel',e=>{ e.preventDefault(); if(e.ctrlKey||e.metaKey) zoomAt(e.clientX,e.clientY,view.z*Math.exp(-e.deltaY*0.0018)); else { view.x-=e.shiftKey?e.deltaY:e.deltaX; view.y-=e.shiftKey?0:e.deltaY; applyView(); } },{passive:false});
+new ResizeObserver(()=>{ if(!fit.done){ fit(); fit.done=true; } }).observe(stage);
+
+/* =========================================================
+   HISTORY + AUTOSAVE
+   ========================================================= */
+let undoS=[],redoS=[],lastSnap='';
+const snap=()=>JSON.stringify({w:doc.width,h:doc.height,bg:doc.bg,t:doc.title,items:doc.items});
+function commit(){ const s=snap(); if(s===lastSnap) return; undoS.push(lastSnap); if(undoS.length>200) undoS.shift(); redoS=[]; lastSnap=s; autosave(); updateButtons(); }
+function restore(s){ const o=JSON.parse(s); doc.width=o.w; doc.height=o.h; doc.bg=o.bg; doc.title=o.t; doc.items=o.items; lastSnap=s; sel=new Set([...sel].filter(id=>byId(id))); renderAll(); autosave(); }
+function undo(){ if(!undoS.length) return; redoS.push(lastSnap); restore(undoS.pop()); }
+function redo(){ if(!redoS.length) return; undoS.push(lastSnap); restore(redoS.pop()); }
+function updateButtons(){ $('#bUndo').disabled=!undoS.length; $('#bRedo').disabled=!redoS.length; $('#bGrid').classList.toggle('on',settings.grid); $('#bSnap').classList.toggle('on',settings.snap); }
+function prunedDoc(){ const used=new Set(doc.items.filter(i=>i.type==='icon').map(i=>i.asset)); const assets={}; for(const k of used) if(doc.assets[k]) assets[k]=doc.assets[k]; return {...doc,assets}; }
+let saveT; function autosave(){ clearTimeout(saveT); saveT=setTimeout(()=>{ DB.put('kv',prunedDoc(),'autosave'); DB.put('kv',{...settings,lastSource},'settings'); },700); }
+
+/* =========================================================
+   ITEM CREATION
+   ========================================================= */
+const DEF={stroke:'#1d2330',sw:3,fill:'#dbe7ff',shapeStroke:'#2f6fec',textColor:'#1d2330',font:'Arial'};
+function addItem(it,select=true){ doc.items.push(it); if(select) sel=new Set([it.id]); return it; }
+function placeIcon(icon,at){
+  doc.assets[icon.id]=doc.assets[icon.id]||stripIcon(icon);
+  const max=150, ar=(icon.w||1)/(icon.h||1); let w,h; if(ar>=1){w=max;h=max/ar}else{h=max;w=max*ar}
+  const c=at||viewCenter();
+  addItem({id:uid(),type:'icon',asset:icon.id,name:icon.name,x:c.x-w/2,y:c.y-h/2,w,h,rot:0,opacity:1,colors:{}});
+  renderAll(); commit();
+}
+function stripIcon(i){ const o={id:i.id,name:i.name,kind:i.kind,w:i.w,h:i.h,cat:i.cat,source:i.source,license:i.license||'',author:i.author||'',credit:i.credit||''}; if(i.kind==='svg') o.svg=i.svg; else o.src=i.src; return o; }
+function newText(p,opts={}){ const it={id:uid(),type:'text',text:opts.text||'Text',x:p.x,y:p.y,w:10,h:10,rot:0,opacity:1,size:opts.size||24,font:DEF.font,color:DEF.textColor,bold:!!opts.bold,italic:false,align:'left',bgc:'none'}; measureText(it); it.y-=it.h/2; return it; }
+function nextPanelLetter(){ const used=new Set(doc.items.filter(i=>i.type==='text'&&i.panel).map(i=>i.text)); for(let k=0;k<26;k++){ const L=String.fromCharCode(65+k); if(!used.has(L)) return L; } return 'A'; }
+
+/* =========================================================
+   POINTER INTERACTION
+   ========================================================= */
+let drag=null, spaceDown=false;
+const groupIds=it=>it.g?doc.items.filter(i=>i.g===it.g).map(i=>i.id):[it.id];
+const snapV=v=>settings.snap?Math.round(v/settings.gridSize)*settings.gridSize:v;
+function moveItem(it,o,dx,dy){ if(it.type==='line'){ it.x1=o.x1+dx; it.y1=o.y1+dy; it.x2=o.x2+dx; it.y2=o.y2+dy; } else { it.x=o.x+dx; it.y=o.y+dy; } }
+function snapAngle(from,p){ const dx=p.x-from.x, dy=p.y-from.y, L=Math.hypot(dx,dy), a=Math.round(Math.atan2(dy,dx)/(Math.PI/4))*(Math.PI/4); return {x:from.x+Math.cos(a)*L,y:from.y+Math.sin(a)*L}; }
+
+svg.addEventListener('pointerdown',e=>{
+  if(editing) finishTextEdit();
+  closeMenus();
+  const p=toDoc(e);
+  if(e.button===1||spaceDown||tool==='hand'){ drag={mode:'pan',sx:e.clientX,sy:e.clientY,vx:view.x,vy:view.y}; svg.setPointerCapture(e.pointerId); stage.classList.add('panning'); e.preventDefault(); return; }
+  if(e.button!==0) return;
+  const h=e.target.closest('[data-h]');
+  if(h){ const it=selItems()[0]; if(it){ drag={mode:h.dataset.h,it,orig:JSON.parse(JSON.stringify(it)),start:p}; svg.setPointerCapture(e.pointerId); } return; }
+  if(tool==='rect'||tool==='ellipse'){
+    const it=addItem({id:uid(),type:tool,x:snapV(p.x),y:snapV(p.y),w:1,h:1,rot:0,opacity:1,fill:DEF.fill,stroke:DEF.shapeStroke,sw:2,rx:tool==='rect'?8:0,dash:''});
+    drag={mode:'create-box',it,start:{x:it.x,y:it.y}}; renderAll();
+  } else if(tool==='arrow'||tool==='line'||tool==='inhibit'){
+    const q={x:snapV(p.x),y:snapV(p.y)};
+    const it=addItem({id:uid(),type:'line',x1:q.x,y1:q.y,x2:q.x,y2:q.y,bend:0,stroke:DEF.stroke,sw:DEF.sw,dash:'',start:'none',end:tool==='arrow'?'arrow':tool==='inhibit'?'inhibit':'none',opacity:1});
+    drag={mode:'create-line',it}; renderAll();
+  } else if(tool==='text'){
+    e.preventDefault(); const it=addItem(newText(p)); renderAll(); commit(); if(!stickyTool) setTool('select'); setTimeout(()=>editText(it,true),30); return;
+  } else if(tool==='label'){
+    const it=addItem(newText(p,{text:nextPanelLetter(),size:40,bold:true})); it.panel=true; measureText(it); renderAll(); commit(); return;
+  } else {
+    const g=e.target.closest('[data-id]'); const it=g&&byId(g.dataset.id);
+    if(it&&!it.locked){
+      const ids=groupIds(it);
+      if(e.shiftKey){ const on=sel.has(it.id); ids.forEach(id=>on?sel.delete(id):sel.add(id)); }
+      else if(!sel.has(it.id)) sel=new Set(ids);
+      if(e.altKey){ // alt-drag duplicates
+        const copies=selItems().map(o=>({...JSON.parse(JSON.stringify(o)),id:uid()})); remapGroups(copies); doc.items.push(...copies); sel=new Set(copies.map(c=>c.id)); renderAll();
+      }
+      drag={mode:'move',start:p,orig:new Map(selItems().map(o=>[o.id,JSON.parse(JSON.stringify(o))])),shift:false};
+    } else {
+      if(!e.shiftKey) sel.clear();
+      drag={mode:'marquee',start:p,cur:p,base:new Set(sel)};
+    }
+    renderOverlay(); renderProps(); renderLayers();
+  }
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener('pointermove',e=>{
+  if(!drag) return;
+  const p=toDoc(e);
+  switch(drag.mode){
+    case 'pan': view.x=drag.vx+e.clientX-drag.sx; view.y=drag.vy+e.clientY-drag.sy; applyView(); return;
+    case 'move': {
+      let dx=p.x-drag.start.x, dy=p.y-drag.start.y;
+      if(e.shiftKey){ if(Math.abs(dx)>Math.abs(dy)) dy=0; else dx=0; }
+      const first=drag.orig.values().next().value;
+      if(settings.snap&&first){ const rx=first.type==='line'?first.x1:first.x, ry=first.type==='line'?first.y1:first.y; dx=snapV(rx+dx)-rx; dy=snapV(ry+dy)-ry; }
+      const items=[]; for(const [id,o] of drag.orig){ const it=byId(id); if(it){ moveItem(it,o,dx,dy); items.push(it);} }
+      drag.moved=true; updateItemEls(items); return; }
+    case 'marquee': {
+      drag.cur=p; const x1=Math.min(drag.start.x,p.x),y1=Math.min(drag.start.y,p.y),x2=Math.max(drag.start.x,p.x),y2=Math.max(drag.start.y,p.y);
+      sel=new Set(drag.base);
+      for(const it of doc.items){ if(it.hidden||it.locked) continue; const b=itemAABB(it); if(b.x<x2&&b.x2>x1&&b.y<y2&&b.y2>y1) groupIds(it).forEach(id=>sel.add(id)); }
+      renderOverlay(); return; }
+    case 'create-box': {
+      const it=drag.it; let q={x:snapV(p.x),y:snapV(p.y)}; let w=q.x-drag.start.x, h=q.y-drag.start.y;
+      if(e.shiftKey){ const m=Math.max(Math.abs(w),Math.abs(h)); w=Math.sign(w||1)*m; h=Math.sign(h||1)*m; }
+      it.x=Math.min(drag.start.x,drag.start.x+w); it.y=Math.min(drag.start.y,drag.start.y+h); it.w=Math.max(1,Math.abs(w)); it.h=Math.max(1,Math.abs(h));
+      updateItemEls([it]); return; }
+    case 'create-line': case 'p2': case 'p1': {
+      const it=drag.it||drag.it; const isP1=drag.mode==='p1';
+      let q={x:snapV(p.x),y:snapV(p.y)};
+      if(e.shiftKey) q=snapAngle(isP1?{x:it.x2,y:it.y2}:{x:it.x1,y:it.y1},q);
+      if(isP1){ it.x1=q.x; it.y1=q.y; } else { it.x2=q.x; it.y2=q.y; }
+      updateItemEls([it]); return; }
+    case 'bend': { const it=drag.it, g=lineGeom(it); let b=(p.x-g.M.x)*g.n.x+(p.y-g.M.y)*g.n.y; if(Math.abs(b)<4) b=0; it.bend=b; updateItemEls([it]); return; }
+    case 'rot': { const it=drag.it; const c={x:it.x+it.w/2,y:it.y+it.h/2}; let a=Math.atan2(p.y-c.y,p.x-c.x)/RAD+90; if(e.shiftKey) a=Math.round(a/15)*15; else for(const s of [0,90,180,270,360,-90]) if(Math.abs(a-s)<3) a=s; a=((a%360)+540)%360-180; it.rot=r2(a); updateItemEls([it]); return; }
+    default: { // resize handles
+      const H=HANDLES.find(h=>h[0]===drag.mode); if(!H) return;
+      const [,hx,hy]=H, o=drag.orig, it=drag.it;
+      const c={x:o.x+o.w/2,y:o.y+o.h/2}, a=(o.rot||0)*RAD;
+      const d=rotV({x:p.x-c.x,y:p.y-c.y},-a);
+      const ax=-hx*o.w/2, ay=-hy*o.h/2;
+      let nw=o.w, nh=o.h;
+      if(hx) nw=Math.max(4,(d.x-ax)*hx);
+      if(hy) nh=Math.max(4,(d.y-ay)*hy);
+      const keep=it.type==='text'?true:(it.type==='icon'?!e.shiftKey:e.shiftKey);
+      if(keep){ let s; if(hx&&hy) s=Math.max(nw/o.w,nh/o.h); else if(hx) s=nw/o.w; else s=nh/o.h; s=Math.max(s,4/Math.min(o.w,o.h)); nw=o.w*s; nh=o.h*s; }
+      const lc={x:ax+hx*nw/2,y:ay+hy*nh/2}, wc=rotV(lc,a);
+      if(it.type==='text'){ it.size=Math.max(4,r2(o.size*nw/o.w)); measureText(it); nw=it.w; nh=it.h; const lc2={x:ax+hx*nw/2,y:ay+hy*nh/2}, wc2=rotV(lc2,a); it.x=c.x+wc2.x-nw/2; it.y=c.y+wc2.y-nh/2; }
+      else { it.x=c.x+wc.x-nw/2; it.y=c.y+wc.y-nh/2; it.w=nw; it.h=nh; }
+      updateItemEls([it]); return; }
+  }
+});
+function endDrag(e){
+  if(!drag) return; const d=drag; drag=null; stage.classList.remove('panning');
+  if(d.mode==='create-box'&&d.it.w<4&&d.it.h<4){ d.it.w=140; d.it.h=d.it.type==='ellipse'?140:90; d.it.x-=70; d.it.y-=d.it.h/2; }
+  if(d.mode==='create-line'&&Math.hypot(d.it.x2-d.it.x1,d.it.y2-d.it.y1)<5){ d.it.x2=d.it.x1+140; }
+  if(d.mode.startsWith('create')){ renderAll(); commit(); if(!stickyTool) setTool('select'); return; }
+  if(d.mode==='pan') return;
+  renderOverlay(); renderProps(); renderLayers(); commit();
+}
+svg.addEventListener('pointerup',endDrag); svg.addEventListener('pointercancel',endDrag);
+svg.addEventListener('dblclick',e=>{ const g=e.target.closest('[data-id]'); const it=g&&byId(g.dataset.id); if(it&&it.type==='text'&&!it.locked){ sel=new Set([it.id]); editText(it); } else if(it&&it.type==='line'){ it.bend=0; updateItemEls([it]); commit(); } });
+svg.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* ---------------- text editing ---------------- */
+let editing=null;
+const ta=$('#textedit');
+function editText(it,selectAll){ editing=it; ta.value=it.text; ta.style.display='block'; positionTextEditor(); ta.focus(); if(selectAll) ta.select(); }
+function positionTextEditor(){ if(!editing) return; const it=editing, z=view.z;
+  Object.assign(ta.style,{left:(view.x+it.x*z-3)+'px',top:(view.y+it.y*z-2)+'px',width:(Math.max(it.w,30)*z+24)+'px',height:(it.h*z+6)+'px',fontSize:(it.size*z)+'px',fontFamily:fontStack(it.font),fontWeight:it.bold?700:400,fontStyle:it.italic?'italic':'normal',color:it.color,textAlign:it.align,transform:it.rot?`rotate(${it.rot}deg)`:'',transformOrigin:'center'}); }
+ta.addEventListener('input',()=>{ if(!editing) return; editing.text=ta.value; measureText(editing); updateItemEls([editing]); positionTextEditor(); });
+ta.addEventListener('keydown',e=>{ if(e.key==='Escape'||(e.key==='Enter'&&(e.ctrlKey||e.metaKey))){ e.preventDefault(); finishTextEdit(); } e.stopPropagation(); });
+ta.addEventListener('blur',()=>finishTextEdit());
+function finishTextEdit(){ if(!editing) return; const it=editing; editing=null; ta.style.display='none'; if(!it.text.trim()){ doc.items=doc.items.filter(i=>i!==it); sel.delete(it.id); } renderAll(); commit(); }
+
+/* =========================================================
+   TOOLS
+   ========================================================= */
+const ICO={
+ select:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 3l14 8-6 1.6L10 19z"/></svg>',
+ hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12V5.5a1.5 1.5 0 013 0V11m0-6.5a1.5 1.5 0 013 0V11m0-5a1.5 1.5 0 013 0v7c0 4-2.5 7-6.5 7-3 0-4.5-1.5-6-4l-2-3.5a1.5 1.5 0 012.5-1.6L8 13"/></svg>',
+ text:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg>',
+ label:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.7"/><text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" font-family="Arial">A</text></svg>',
+ rect:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="6" width="16" height="12" rx="2.5"/></svg>',
+ ellipse:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="12" rx="8.5" ry="6.5"/></svg>',
+ arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20L19 5M10 5h9v9"/></svg>',
+ inhibit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20L18 6M14 3l7 7"/></svg>',
+ line:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20L20 4"/></svg>',
+ mol:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l7 4v8l-7 4-7-4V7z"/><path d="M12 19v3M19 7l2.5-1.5"/></svg>',
+ image:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>',
+};
+const TOOLS=[['select','Select & move (V)'],['hand','Pan (H or hold Space)'],'-',['text','Text (T)'],['label','Panel label A, B, C… (P)'],['rect','Rectangle (R)'],['ellipse','Ellipse (O)'],'-',['arrow','Arrow (A) — drag; Shift = 45°'],['inhibit','Inhibition ⊣ (I)'],['line','Line (L)'],'-',['mol','Molecule from SMILES (M)'],['image','Insert your image (U)']];
+let stickyTool=false;
+function buildTools(){ $('#tools').innerHTML=TOOLS.map(t=>t==='-'?'<div class="tsep"></div>':`<button class="tool" data-tool="${t[0]}" title="${t[1]}">${ICO[t[0]]}</button>`).join(''); }
+function setTool(t){ if(t==='mol'){ openMolecule(); return; } if(t==='image'){ pendingPlace=true; $('#fileIcons').click(); return; }
+  tool=t; $$('.tool').forEach(b=>b.classList.toggle('on',b.dataset.tool===t)); stage.classList.toggle('drawing',['rect','ellipse','arrow','inhibit','line','text','label'].includes(t)); stage.classList.toggle('panning',t==='hand'); }
+$('#tools').addEventListener('click',e=>{ const b=e.target.closest('[data-tool]'); if(b){ stickyTool=false; setTool(b.dataset.tool);} });
+$('#tools').addEventListener('dblclick',e=>{ const b=e.target.closest('[data-tool]'); if(b){ stickyTool=true; toast('Tool locked — press V or Esc to release'); } });
+
+/* =========================================================
+   PROPERTIES PANEL
+   ========================================================= */
+const PRESETS=[['Custom',0,0],['Figure — 1200 × 800',1200,800],['Square — 1000 × 1000',1000,1000],['Slide 16:9 — 1920 × 1080',1920,1080],['Graphical abstract — 1328 × 531',1328,531],['Graphical abstract square — 1200 × 1200',1200,1200],['Journal 1-column (90 mm @300dpi) — 1063 × 800',1063,800],['Journal 2-column (180 mm @300dpi) — 2126 × 1200',2126,1200],['A4 portrait @150dpi — 1240 × 1754',1240,1754],['Poster A0 portrait @50dpi — 1655 × 2340',1655,2340]];
+const HEADS=[['none','None'],['arrow','Arrow ▶'],['open','Open arrow >'],['inhibit','Inhibition ⊣'],['circle','Dot ●'],['ocircle','Open dot ○'],['bar','Bar |']];
+const sel1=(opts,v)=>opts.map(([k,l])=>`<option value="${k}"${k===v?' selected':''}>${l}</option>`).join('');
+const num=(k,v,label,step=1,extra='')=>`<label class="l">${label}<input class="in" type="number" step="${step}" data-k="${k}" value="${r2(v)}" ${extra}></label>`;
+const col=(k,v,label)=>`<label class="l">${label}<input class="in" type="color" data-k="${k}" value="${/^#[0-9a-f]{6}$/i.test(v)?v:'#000000'}"></label>`;
+function renderProps(){
+  const P=$('#propsBody'); const items=selItems();
+  if(editing) return;
+  if(!items.length){
+    const pi=PRESETS.findIndex(p=>p[1]===doc.width&&p[2]===doc.height);
+    P.innerHTML=`<div class="sec"><h4>Canvas</h4><div class="f f1"><label class="l">Size preset<select class="in" data-doc="preset">${PRESETS.map((p,i)=>`<option value="${i}"${i===(pi<0?0:pi)?' selected':''}>${p[0]}</option>`).join('')}</select></label></div>
+      <div class="f" style="margin-top:8px">${num('width',doc.width,'Width (px)',1,'data-doc="1"')}${num('height',doc.height,'Height (px)',1,'data-doc="1"')}</div>
+      <div class="f" style="margin-top:8px"><label class="l">Background<input class="in" type="color" data-doc="bg" value="${doc.bg||'#ffffff'}"></label><label class="c" style="margin-top:16px"><input type="checkbox" data-doc="transparent"${doc.bg?'':' checked'}> Transparent</label></div>
+      <div class="f" style="margin-top:8px">${num('gridSize',settings.gridSize,'Snap grid (px)',1,'data-doc="1" min="2"')}</div></div>
+      <div class="sec"><h4>Quick tips</h4><div class="keys"><kbd>Click</kbd><span>icon in library → adds to canvas</span><kbd>Drag</kbd><span>handles to resize; top dot rotates</span><kbd>Shift</kbd><span>free-resize icons · 45° arrows</span><kbd>Alt+drag</kbd><span>duplicate</span><kbd>◆</kbd><span>drag the diamond to curve an arrow</span><kbd>Ctrl+G</kbd><span>group · Ctrl+Shift+G ungroup</span><kbd>Space</kbd><span>hold to pan · Ctrl+wheel zoom</span></div></div>`;
+    return;
+  }
+  const it=items[0], single=items.length===1;
+  let h=`<div class="sec"><h4>${single?typeName(it):items.length+' items'}<span><button class="btn" data-act="dup" title="Duplicate (Ctrl+D)">Duplicate</button> <button class="btn danger" data-act="del" title="Delete">Delete</button></span></h4>
+    <div class="ib"><button class="btn" data-act="front" title="Bring to front (Ctrl+Shift+])">⇈</button><button class="btn" data-act="fwd" title="Forward (Ctrl+])">↑</button><button class="btn" data-act="bwd" title="Backward (Ctrl+[)">↓</button><button class="btn" data-act="back" title="Send to back (Ctrl+Shift+[)">⇊</button></div>
+    <div class="ib c3" style="margin-top:6px"><button class="btn" data-act="group"${items.length<2?' disabled':''}>Group</button><button class="btn" data-act="ungroup"${items.some(i=>i.g)?'':' disabled'}>Ungroup</button><button class="btn tog${it.locked?' on':''}" data-act="lock">${it.locked?'Unlock':'Lock'}</button></div></div>`;
+  if(!single){
+    h+=`<div class="sec"><h4>Align</h4><div class="ib c3"><button class="btn" data-act="al-l">Left</button><button class="btn" data-act="al-c">Center</button><button class="btn" data-act="al-r">Right</button><button class="btn" data-act="al-t">Top</button><button class="btn" data-act="al-m">Middle</button><button class="btn" data-act="al-b">Bottom</button></div>
+      <div class="ib" style="grid-template-columns:1fr 1fr;margin-top:6px"><button class="btn" data-act="dist-h"${items.length<3?' disabled':''}>Distribute ↔</button><button class="btn" data-act="dist-v"${items.length<3?' disabled':''}>Distribute ↕</button></div></div>`;
+    h+=`<div class="sec"><h4>Appearance</h4><div class="f">${num('opacity',(it.opacity??1)*100,'Opacity %',5,'min="0" max="100"')}</div></div>`;
+    P.innerHTML=h; return;
+  }
+  if(it.type!=='line'){
+    h+=`<div class="sec"><h4>Position & size</h4><div class="f">${num('x',it.x,'X')}${num('y',it.y,'Y')}${it.type==='text'?'':num('w',it.w,'Width')+num('h',it.h,'Height')}${num('rot',it.rot||0,'Rotation °')}${num('opacity',(it.opacity??1)*100,'Opacity %',5,'min="0" max="100"')}</div></div>`;
+  }
+  if(it.type==='icon'){
+    const a=doc.assets[it.asset]||{};
+    const cols=a.kind==='svg'?getColors(a.svg):[];
+    h+=`<div class="sec"><h4>Icon</h4><div class="ib c3"><button class="btn tog${it.flipX?' on':''}" data-act="flipx">Flip ↔</button><button class="btn tog${it.flipY?' on':''}" data-act="flipy">Flip ↕</button><button class="btn" data-act="natural" title="Restore original proportions">Reset ratio</button></div>`;
+    if(cols.length){
+      h+=`<div style="margin-top:12px" class="small">Colours in this icon — click a swatch to change it</div><div class="chips" style="margin-top:6px">${cols.map(c=>{const cur=(it.colors||{})[c]||c;return `<span class="sw" style="background:${cur}" title="${c}"><input type="color" data-col="${c}" value="${/^#[0-9a-f]{6}$/i.test(cur)?cur:'#000000'}"></span>`;}).join('')}</div>
+        <div class="f" style="margin-top:10px"><label class="l">Recolour whole icon<input class="in" type="color" data-recolor="1" value="#2f6fec"></label><button class="btn" data-act="resetcol" style="align-self:end">Original colours</button></div>`;
+    } else if(a.kind!=='svg') h+=`<div class="small" style="margin-top:10px">Raster image (PNG/JPG) — colours can't be edited. Use SVG icons for recolouring.</div>`;
+    h+=`<div class="small" style="margin-top:12px"><b>${esc(a.name||'')}</b><br>${esc(a.credit||'')}${a.license?`<br>Licence: ${esc(a.license)}`:''}</div></div>`;
+  }
+  if(it.type==='rect'||it.type==='ellipse'){
+    h+=`<div class="sec"><h4>Style</h4><div class="f">${col('fill',it.fill==='none'?'#ffffff':it.fill,'Fill')}<label class="c" style="margin-top:16px"><input type="checkbox" data-k="nofill"${it.fill==='none'?' checked':''}> No fill</label>${col('stroke',it.stroke==='none'?'#000000':it.stroke,'Outline')}${num('sw',it.sw,'Outline width',0.5,'min="0"')}
+      <label class="l">Outline style<select class="in" data-k="dash">${sel1([['','Solid'],['dash','Dashed'],['dot','Dotted']],it.dash||'')}</select></label>${it.type==='rect'?num('rx',it.rx||0,'Corner radius',1,'min="0"'):''}</div></div>`;
+  }
+  if(it.type==='text'){
+    h+=`<div class="sec"><h4>Text</h4><div class="f f1"><textarea class="in" data-k="text">${esc(it.text)}</textarea></div>
+      <div class="f" style="margin-top:8px"><label class="l">Font<select class="in" data-k="font">${FONTS.map(f=>`<option${f===it.font?' selected':''}>${f}</option>`).join('')}</select></label>${num('size',it.size,'Size',1,'min="4"')}${col('color',it.color,'Colour')}<label class="l">Highlight<input class="in" type="color" data-k="bgc" value="${it.bgc&&it.bgc!=='none'?it.bgc:'#fff3b0'}"></label></div>
+      <div class="ib" style="margin-top:8px"><button class="btn tog${it.bold?' on':''}" data-act="bold"><b>B</b></button><button class="btn tog${it.italic?' on':''}" data-act="italic"><i>I</i></button><button class="btn tog${it.bgc&&it.bgc!=='none'?' on':''}" data-act="hl" title="Toggle highlight box">▭</button><button class="btn" data-act="edittext">Edit</button></div>
+      <div class="ib c3" style="margin-top:6px"><button class="btn tog${it.align==='left'?' on':''}" data-act="a-left">Left</button><button class="btn tog${it.align==='center'?' on':''}" data-act="a-center">Center</button><button class="btn tog${it.align==='right'?' on':''}" data-act="a-right">Right</button></div></div>`;
+  }
+  if(it.type==='line'){
+    h+=`<div class="sec"><h4>Arrow / line</h4><div class="f">${col('stroke',it.stroke,'Colour')}${num('sw',it.sw,'Width',0.5,'min="0.5"')}
+      <label class="l">Start<select class="in" data-k="start">${sel1(HEADS,it.start||'none')}</select></label><label class="l">End<select class="in" data-k="end">${sel1(HEADS,it.end||'none')}</select></label>
+      <label class="l">Style<select class="in" data-k="dash">${sel1([['','Solid'],['dash','Dashed'],['dot','Dotted']],it.dash||'')}</select></label>${num('hs',it.hs||Math.max(11,it.sw*4.2),'Head size',1,'min="4"')}
+      ${num('bend',it.bend||0,'Curve',1)}<button class="btn" data-act="straight" style="align-self:end">Straighten</button></div>
+      <div class="ib c3" style="margin-top:8px"><button class="btn" data-act="swap">Reverse</button><button class="btn" data-act="preset-act" title="Activation arrow">→ Activate</button><button class="btn" data-act="preset-inh" title="Inhibition">⊣ Inhibit</button></div></div>`;
+  }
+  P.innerHTML=h;
+}
+function typeName(it){ return {icon:'Icon',rect:'Rectangle',ellipse:'Ellipse',text:it.panel?'Panel label':'Text',line:it.end==='arrow'||it.start==='arrow'?'Arrow':it.end==='inhibit'?'Inhibition':'Line'}[it.type]||it.type; }
+function setProp(k,v){
+  const items=selItems(); if(!items.length) return;
+  for(const it of items){
+    switch(k){
+      case 'x': if(it.type==='line'){const dx=v-Math.min(it.x1,it.x2);it.x1+=dx;it.x2+=dx;} else it.x=v; break;
+      case 'y': if(it.type==='line'){const dy=v-Math.min(it.y1,it.y2);it.y1+=dy;it.y2+=dy;} else it.y=v; break;
+      case 'w': if(v>0){ it.x+= (it.w-v)/2; it.w=v; } break;
+      case 'h': if(v>0){ it.y+= (it.h-v)/2; it.h=v; } break;
+      case 'opacity': it.opacity=clamp(v/100,0,1); break;
+      case 'nofill': it.fill=v?'none':'#dbe7ff'; break;
+      case 'text': case 'size': case 'font': { const cx=it.x; it[k]=k==='size'?Math.max(4,v):v; measureText(it); it.x=cx; break; }
+      case 'bend': it.bend=v; break;
+      default: it[k]=v;
+    }
+  }
+  updateItemEls(items);
+}
+$('#propsBody').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.doc){ docInput(t); return; }
+  if(t.dataset.col){ const it=selItems()[0]; if(!it) return; it.colors={...(it.colors||{}),[t.dataset.col]:t.value}; t.parentElement.style.background=t.value; updateItemEls([it]); return; }
+  if(t.dataset.recolor){ const it=selItems()[0]; const a=it&&doc.assets[it.asset]; if(!a) return; const [H,S2]=hexToHsl(t.value); const m={}; for(const c of getColors(a.svg)){ if(!/^#[0-9a-f]{6}$/.test(c)) continue; const [,s0,L]=hexToHsl(c); if(L>0.95||L<0.04||s0<0.06&&(L>0.85||L<0.15)) continue; m[c]=hslToHex(H,Math.max(S2*0.85,Math.min(1,s0*0.4+S2*0.6)),L); } it.colors=m; updateItemEls([it]); return; }
+  const k=t.dataset.k; if(!k) return;
+  let v=t.type==='checkbox'?t.checked:t.type==='number'?parseFloat(t.value):t.value;
+  if(t.type==='number'&&!isFinite(v)) return;
+  setProp(k,v);
+});
+$('#propsBody').addEventListener('change',e=>{ if(e.target.dataset.doc){ renderAll(); fit(); } else { commit(); if(e.target.dataset.recolor||e.target.dataset.col||e.target.tagName==='SELECT'||e.target.type==='checkbox'||e.target.type==='color') renderProps(); renderLayers(); } });
+function docInput(t){
+  const k=t.dataset.doc;
+  if(k==='preset'){ const p=PRESETS[+t.value]; if(p&&p[1]){ doc.width=p[1]; doc.height=p[2]; } }
+  else if(k==='bg'){ doc.bg=t.value; }
+  else if(k==='transparent'){ doc.bg=t.checked?'':'#ffffff'; }
+  else if(t.dataset.k==='width'){ const v=parseInt(t.value); if(v>=50&&v<=12000) doc.width=v; }
+  else if(t.dataset.k==='height'){ const v=parseInt(t.value); if(v>=50&&v<=12000) doc.height=v; }
+  else if(t.dataset.k==='gridSize'){ const v=parseInt(t.value); if(v>=2){ settings.gridSize=v; $('#gridPat').setAttribute('width',v*2); $('#gridPat').setAttribute('height',v*2); $('#gridPath').setAttribute('d',`M${v*2} 0H0V${v*2}`);} }
+  page.setAttribute('width',doc.width); page.setAttribute('height',doc.height); page.setAttribute('fill',doc.bg||'url(#checker)'); gridRect.setAttribute('width',doc.width); gridRect.setAttribute('height',doc.height);
+  commit();
+}
+$('#propsBody').addEventListener('click',e=>{ const b=e.target.closest('[data-act]'); if(!b||b.disabled) return; act(b.dataset.act); });
+
+function act(a){
+  const items=selItems(); const it=items[0];
+  const T={
+    del:()=>{ doc.items=doc.items.filter(i=>!sel.has(i.id)); sel.clear(); },
+    dup:()=>{ const copies=items.map(o=>{const c=JSON.parse(JSON.stringify(o)); c.id=uid(); if(c.type==='line'){c.x1+=20;c.y1+=20;c.x2+=20;c.y2+=20;} else {c.x+=20;c.y+=20;} return c;}); remapGroups(copies); doc.items.push(...copies); sel=new Set(copies.map(c=>c.id)); },
+    front:()=>{ const s=doc.items.filter(i=>sel.has(i.id)); doc.items=doc.items.filter(i=>!sel.has(i.id)).concat(s); },
+    back:()=>{ const s=doc.items.filter(i=>sel.has(i.id)); doc.items=s.concat(doc.items.filter(i=>!sel.has(i.id))); },
+    fwd:()=>{ for(let i=doc.items.length-2;i>=0;i--) if(sel.has(doc.items[i].id)&&!sel.has(doc.items[i+1].id)) [doc.items[i],doc.items[i+1]]=[doc.items[i+1],doc.items[i]]; },
+    bwd:()=>{ for(let i=1;i<doc.items.length;i++) if(sel.has(doc.items[i].id)&&!sel.has(doc.items[i-1].id)) [doc.items[i],doc.items[i-1]]=[doc.items[i-1],doc.items[i]]; },
+    group:()=>{ if(items.length<2) return; const g=uid(); items.forEach(i=>i.g=g); toast('Grouped'); },
+    ungroup:()=>{ items.forEach(i=>delete i.g); toast('Ungrouped'); },
+    lock:()=>{ const v=!it.locked; items.forEach(i=>i.locked=v); },
+    flipx:()=>items.forEach(i=>i.flipX=!i.flipX), flipy:()=>items.forEach(i=>i.flipY=!i.flipY),
+    natural:()=>{ const as=doc.assets[it.asset]; if(as){ const c={x:it.x+it.w/2,y:it.y+it.h/2}; it.h=it.w*as.h/as.w; it.y=c.y-it.h/2; } },
+    resetcol:()=>{ it.colors={}; },
+    bold:()=>{ items.forEach(i=>{i.bold=!i.bold; measureText(i);}); }, italic:()=>{ items.forEach(i=>{i.italic=!i.italic; measureText(i);}); },
+    hl:()=>{ items.forEach(i=>i.bgc=i.bgc&&i.bgc!=='none'?'none':'#fff3b0'); },
+    edittext:()=>{ editText(it,true); },
+    'a-left':()=>items.forEach(i=>i.align='left'),'a-center':()=>items.forEach(i=>i.align='center'),'a-right':()=>items.forEach(i=>i.align='right'),
+    straight:()=>items.forEach(i=>i.bend=0),
+    swap:()=>items.forEach(i=>{ [i.x1,i.x2]=[i.x2,i.x1]; [i.y1,i.y2]=[i.y2,i.y1]; [i.start,i.end]=[i.end,i.start]; i.bend=-(i.bend||0); }),
+    'preset-act':()=>items.forEach(i=>{i.end='arrow';i.start='none';i.dash='';}),
+    'preset-inh':()=>items.forEach(i=>{i.end='inhibit';i.start='none';}),
+    'al-l':()=>alignItems('l'),'al-c':()=>alignItems('c'),'al-r':()=>alignItems('r'),'al-t':()=>alignItems('t'),'al-m':()=>alignItems('m'),'al-b':()=>alignItems('b'),
+    'dist-h':()=>distribute('h'),'dist-v':()=>distribute('v'),
+  };
+  if(!T[a]) return;
+  T[a]();
+  if(a!=='edittext'){ renderAll(); commit(); }
+}
+function remapGroups(copies){ const m={}; for(const c of copies) if(c.g){ m[c.g]=m[c.g]||uid(); c.g=m[c.g]; } }
+function alignItems(mode){ const items=selItems(); const B=unionAABB(items);
+  for(const it of items){ const b=itemAABB(it); let dx=0,dy=0;
+    if(mode==='l') dx=B.x-b.x; if(mode==='r') dx=B.x2-b.x2; if(mode==='c') dx=(B.x+B.x2)/2-(b.x+b.x2)/2;
+    if(mode==='t') dy=B.y-b.y; if(mode==='b') dy=B.y2-b.y2; if(mode==='m') dy=(B.y+B.y2)/2-(b.y+b.y2)/2;
+    moveItem(it,JSON.parse(JSON.stringify(it)),dx,dy); } }
+function distribute(dir){ const items=selItems(); if(items.length<3) return; const k=dir==='h'?'x':'y', k2=dir==='h'?'x2':'y2';
+  const arr=items.map(it=>({it,b:itemAABB(it)})).sort((a,b)=>(a.b[k]+a.b[k2])-(b.b[k]+b.b[k2]));
+  const total=arr.reduce((s,a)=>s+(a.b[k2]-a.b[k]),0); const span=arr[arr.length-1].b[k2]-arr[0].b[k]; const gap=(span-total)/(arr.length-1);
+  let pos=arr[0].b[k]; for(const a of arr){ const d=pos-a.b[k]; moveItem(a.it,JSON.parse(JSON.stringify(a.it)),dir==='h'?d:0,dir==='h'?0:d); pos+=a.b[k2]-a.b[k]+gap; } }
+
+/* ---------------- layers ---------------- */
+function itemLabel(it){ if(it.type==='icon') return it.name||(doc.assets[it.asset]||{}).name||'Icon'; if(it.type==='text') return (it.panel?'Label ':'')+'“'+String(it.text).split('\n')[0].slice(0,28)+'”'; return typeName(it); }
+const TYI={icon:'◈',rect:'▭',ellipse:'◯',text:'T',line:'↗'};
+function renderLayers(){
+  const L=$('#layers');
+  if(!doc.items.length){ L.innerHTML='<h4>Layers</h4><div class="small">Nothing on the canvas yet.</div>'; return; }
+  L.innerHTML='<h4>Layers <span class="small" style="text-transform:none;letter-spacing:0">top → bottom</span></h4>'+[...doc.items].reverse().map(it=>`<div class="layer${sel.has(it.id)?' on':''}${it.hidden?' dim':''}" data-lid="${it.id}"><span class="ty">${TYI[it.type]||'•'}</span><span class="nm">${esc(itemLabel(it))}${it.g?' <span class="small">(grp)</span>':''}</span><button data-lact="hide" title="${it.hidden?'Show':'Hide'}">${it.hidden?'◌':'●'}</button><button data-lact="lock" title="${it.locked?'Unlock':'Lock'}">${it.locked?'🔒':'·'}</button></div>`).join('');
+}
+$('#layers').addEventListener('click',e=>{ const row=e.target.closest('[data-lid]'); if(!row) return; const it=byId(row.dataset.lid); if(!it) return; const b=e.target.closest('[data-lact]');
+  if(b){ if(b.dataset.lact==='hide'){ it.hidden=!it.hidden; if(it.hidden) sel.delete(it.id);} else it.locked=!it.locked; renderAll(); commit(); return; }
+  if(e.shiftKey){ sel.has(it.id)?sel.delete(it.id):sel.add(it.id); } else sel=new Set([it.id]); renderOverlay(); renderProps(); renderLayers(); });
+
+/* =========================================================
+   LIBRARY PANEL
+   ========================================================= */
+const openCats=new Set(['Cells','Molecules']); const catLimit={};
+function renderSourceFilter(){ const cur=$('#srcFilter').value||'all'; const srcs=[...new Set(library.map(i=>i.source))];
+  $('#srcFilter').innerHTML=`<option value="all">All sources (${library.length} icons)</option>`+srcs.map(s=>`<option value="${s}">${esc((SOURCES[s]||{}).label||s)} (${library.filter(i=>i.source===s).length})</option>`).join('');
+  $('#srcFilter').value=srcs.includes(cur)?cur:'all'; }
+function libFiltered(){ const sf=$('#srcFilter').value||'all'; return sf==='all'?library:library.filter(i=>i.source===sf); }
+function thumbHTML(i){ return `<div class="thumb" draggable="true" data-icon="${i.id}" title="${esc(i.name)}${i.author?' — '+esc(i.author):''}\n${esc((SOURCES[i.source]||{}).label||'')}"><img loading="lazy" src="${thumbSrc(i)}" alt="">${i.builtin?'':`<button class="x" data-delicon="${i.id}" title="Remove from library">✕</button>`}</div>`; }
+function renderLibrary(){
+  const q=$('#search').value.trim().toLowerCase(); const list=libFiltered(); const L=$('#libList');
+  if(q){ const words=q.split(/\s+/); const res=list.filter(i=>{const s=(i.name+' '+i.cat+' '+(i.author||'')).toLowerCase(); return words.every(w=>s.includes(w));}).slice(0,400);
+    L.innerHTML=res.length?`<div class="small" style="padding:10px 2px">${res.length}${res.length===400?'+':''} matches</div><div class="grid">${res.map(thumbHTML).join('')}</div>`:`<div class="empty">No icons match “${esc(q)}”.<br>Try another word, or <a href="#" data-open-sources>get more icons</a>.</div>`; return; }
+  const cats=new Map(); for(const i of list){ if(!cats.has(i.cat)) cats.set(i.cat,[]); cats.get(i.cat).push(i); }
+  if(!cats.size){ L.innerHTML='<div class="empty">No icons yet. Click <b>+ Import icons</b>.</div>'; return; }
+  const order=[...cats.keys()].sort((a,b)=>{ const sa=cats.get(a)[0].builtin?0:1, sb=cats.get(b)[0].builtin?0:1; return sa-sb||a.localeCompare(b); });
+  L.innerHTML=order.map(c=>{ const arr=cats.get(c); const open=openCats.has(c); return `<details class="cat" data-cat="${esc(c)}"${open?' open':''}><summary><span class="t">${esc(c)}</span><span class="n">${arr.length}</span></summary><div class="grid">${open?gridInner(c,arr):''}</div></details>`; }).join('')
+    +`<div class="empty" style="padding-top:14px">Need more? <a href="#" data-open-sources>Get free icon packs</a> and drop them here.</div>`;
+}
+function gridInner(c,arr){ const lim=catLimit[c]||48; return arr.slice(0,lim).map(thumbHTML).join('')+(arr.length>lim?`<button class="btn more" data-more="${esc(c)}">Show ${Math.min(arr.length-lim,96)} more (${arr.length-lim} left)</button>`:''); }
+$('#libList').addEventListener('toggle',e=>{ const d=e.target; if(!d.matches||!d.matches('details.cat')) return; const c=d.dataset.cat; if(d.open){ openCats.add(c); const arr=libFiltered().filter(i=>i.cat===c); $('.grid',d).innerHTML=gridInner(c,arr);} else openCats.delete(c); },true);
+$('#libList').addEventListener('click',async e=>{
+  if(e.target.closest('[data-open-sources]')){ e.preventDefault(); openSources(); return; }
+  const m=e.target.closest('[data-more]'); if(m){ const c=m.dataset.more; catLimit[c]=(catLimit[c]||48)+96; const d=m.closest('details'); $('.grid',d).innerHTML=gridInner(c,libFiltered().filter(i=>i.cat===c)); return; }
+  const x=e.target.closest('[data-delicon]'); if(x){ e.stopPropagation(); const id=x.dataset.delicon; library=library.filter(i=>i.id!==id); await DB.del('icons',id); renderSourceFilter(); renderLibrary(); toast('Removed from library (copies already on the canvas stay)'); return; }
+  const t=e.target.closest('[data-icon]'); if(t){ const ic=library.find(i=>i.id===t.dataset.icon); if(ic) placeIcon(ic); }
+});
+$('#libList').addEventListener('dragstart',e=>{ const t=e.target.closest('[data-icon]'); if(!t) return; e.dataTransfer.setData('text/x-ofs-icon',t.dataset.icon); e.dataTransfer.effectAllowed='copy'; });
+$('#search').addEventListener('input',()=>{ clearTimeout(renderLibrary.t); renderLibrary.t=setTimeout(renderLibrary,120); });
+$('#srcFilter').addEventListener('change',renderLibrary);
+
+/* drop onto canvas / library */
+let dragDepth=0;
+function hasFiles(e){ return [...(e.dataTransfer?.types||[])].includes('Files'); }
+for(const el of [stage,$('#lib')]){
+  el.addEventListener('dragenter',e=>{ if(hasFiles(e)){ dragDepth++; $('#drophint').style.display='grid'; } });
+  el.addEventListener('dragleave',e=>{ if(hasFiles(e)){ dragDepth=Math.max(0,dragDepth-1); if(!dragDepth) $('#drophint').style.display='none'; } });
+  el.addEventListener('dragover',e=>{ e.preventDefault(); e.dataTransfer.dropEffect='copy'; });
+  el.addEventListener('drop',async e=>{
+    e.preventDefault(); dragDepth=0; $('#drophint').style.display='none';
+    const iconId=e.dataTransfer.getData('text/x-ofs-icon');
+    if(iconId){ if(el===stage){ const ic=library.find(i=>i.id===iconId); if(ic) placeIcon(ic,toDoc(e)); } return; }
+    if(!hasFiles(e)) return;
+    const at=el===stage?toDoc(e):null;
+    const entries=await entriesFromDataTransfer(e.dataTransfer);
+    const onlyImages=entries.length&&entries.length<=12&&entries.every(x=>/\.(svg|png|jpe?g|webp|gif)$/i.test(x.path)&&!x.path.includes('/'));
+    if(at&&onlyImages){ const icons=await importEntries(entries,{source:'own',cat:'My uploads',quiet:true}); icons.forEach((ic,k)=>placeIcon(ic,{x:at.x+k*30,y:at.y+k*30})); }
+    else openImport(entries);
+  });
+}
+async function entriesFromDataTransfer(dt){
+  const roots=[...dt.items].map(i=>i.webkitGetAsEntry?i.webkitGetAsEntry():null).filter(Boolean);
+  if(!roots.length) return [...dt.files].map(f=>({path:f.name,file:f}));
+  const out=[];
+  async function walk(en,path){ if(en.isFile){ const f=await new Promise((res,rej)=>en.file(res,rej)); out.push({path:path+f.name,file:f}); }
+    else if(en.isDirectory){ const r=en.createReader(); let batch; do{ batch=await new Promise((res,rej)=>r.readEntries(res,rej)); for(const c of batch) await walk(c,path+en.name+'/'); }while(batch.length); } }
+  for(const r of roots) await walk(r,'');
+  return out;
+}
+
+/* =========================================================
+   IMPORT PIPELINE  (files, folders, .zip, .tgz/.tar, .pptx)
+   ========================================================= */
+const IMG_RE=/\.(svg|png|jpe?g|webp|gif)$/i;
+async function gunzip(blob){ const ds=new DecompressionStream('gzip'); return new Uint8Array(await new Response(blob.stream().pipeThrough(ds)).arrayBuffer()); }
+function parseTar(u8){ const out=[], td=new TextDecoder(); let off=0, longName=null;
+  const str=(a,b)=>{const s=td.decode(u8.subarray(a,b)); const i=s.indexOf('\0'); return i>=0?s.slice(0,i):s;};
+  while(off+512<=u8.length){ const n0=str(off,off+100); if(!n0) break;
+    const size=parseInt(str(off+124,off+136).trim()||'0',8)||0; const type=String.fromCharCode(u8[off+156]||48);
+    const ustar=str(off+257,off+262)==='ustar'&&u8[off+263]===48; const prefix=ustar?str(off+345,off+500):'';
+    const name=longName||(prefix?prefix+'/'+n0:n0); longName=null; const ds=off+512;
+    if(type==='L') longName=str(ds,ds+size);
+    else if(type==='x'){ const m=td.decode(u8.subarray(ds,ds+size)).match(/\d+ path=([^\n]+)\n/); if(m) longName=m[1]; }
+    else if(type==='0'||type==='\0'||type==='7') out.push({path:name,file:new Blob([u8.slice(ds,ds+size)])});
+    off=ds+Math.ceil(size/512)*512; }
+  return out; }
+async function expandArchives(entries,progress){
+  const out=[];
+  for(const en of entries){ const p=en.path, low=p.toLowerCase();
+    if(/(^|\/)(__macosx|\._)/i.test(p)) continue;
+    try{
+      if(low.endsWith('.zip')||low.endsWith('.pptx')){
+        progress&&progress('Opening '+p.split('/').pop()+'…');
+        await loadScript(JSZIP); const zip=await window.JSZip.loadAsync(en.file);
+        const base=p.replace(/\.[^.]+$/,'').split('/').pop();
+        for(const [name,zf] of Object.entries(zip.files)){ if(zf.dir||!IMG_RE.test(name)||/(^|\/)(__macosx|\._)/i.test(name)) continue;
+          if(low.endsWith('.pptx')&&!name.startsWith('ppt/media/')) continue;
+          const blob=await zf.async('blob'); out.push({path:low.endsWith('.pptx')?base+'/'+name.split('/').pop():base+'/'+name,file:blob}); }
+      } else if(low.endsWith('.tgz')||low.endsWith('.tar.gz')||low.endsWith('.tar')){
+        progress&&progress('Unpacking '+p.split('/').pop()+'…');
+        const u8=low.endsWith('.tar')?new Uint8Array(await en.file.arrayBuffer()):await gunzip(en.file);
+        for(const t of parseTar(u8)) if(IMG_RE.test(t.path)&&!/(^|\/)(__macosx|\._)/i.test(t.path)) out.push(t);
+      } else if(IMG_RE.test(low)) out.push(en);
+    }catch(err){ toast('Could not read '+p+': '+err.message,4000); }
+  }
+  return out;
+}
+function deriveMeta(path,opts){
+  const parts=path.split('/').filter(Boolean); const file=parts.pop()||'icon';
+  const name=file.replace(/\.[^.]+$/,'').replace(/[_]+/g,' ').replace(/-(?=[a-z])/gi,' ').replace(/\s+/g,' ').trim()||'icon';
+  let cat='', license='', author='';
+  const li=parts.findIndex(p=>/^(cc[-_ ]?0|cc[-_ ]?by.*|mit|public[-_ ]?domain|bsd.*|apache.*|cc[-_ ]?by[-_ ]?sa.*)$/i.test(p));
+  if(li>=0){ license=parts[li].toUpperCase().replace(/[-_]/g,' ').replace(/^CC 0$/,'CC0'); cat=parts[li+1]||''; author=(parts[li+2]||'').replace(/[_-]+/g,' '); }
+  if(opts.cat) cat=opts.cat;
+  if(!cat){ const generic=/^(svg|png|icons?|static|images?|media|img|files?|icon-lib(-svg|-png)?|dist|assets|.*-main|.*-master)$/i; for(let k=parts.length-1;k>=0;k--){ if(!generic.test(parts[k])){ cat=parts[k]; break; } } }
+  cat=(cat||opts.fallbackCat||'Imported').replace(/[_-]+/g,' ').trim(); cat=cat.charAt(0).toUpperCase()+cat.slice(1);
+  return {name,cat,license,author};
+}
+async function importEntries(entries,opts){
+  const progress=opts.onProgress||((m)=>toast(m,8000));
+  const files=await expandArchives(entries,progress);
+  const src=SOURCES[opts.source]||SOURCES.other; const out=[]; let skipped=0;
+  for(let k=0;k<files.length;k++){
+    const en=files[k];
+    if(k%20===0) progress(`Importing ${k+1} / ${files.length}…`,k/files.length);
+    try{
+      if(en.file.size>6e6){ skipped++; continue; }
+      const m=deriveMeta(en.path,opts);
+      const rec={id:'u_'+uid(),name:m.name,cat:(opts.catPrefix?opts.catPrefix+' · ':'')+m.cat,source:opts.source,author:m.author,license:m.license||src.license||'',kind:'svg',w:100,h:100};
+      if(/\.svg$/i.test(en.path)){ const n=normalizeSvg(await en.file.text()); rec.svg=n.svg; rec.w=n.w; rec.h=n.h; }
+      else { rec.kind='img'; rec.src=await new Promise((res,rej)=>{const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(en.file);});
+        try{ const bmp=await createImageBitmap(en.file); rec.w=bmp.width; rec.h=bmp.height; bmp.close&&bmp.close(); }catch(e){ const im=new Image(); im.src=rec.src; await im.decode().catch(()=>{}); rec.w=im.naturalWidth||100; rec.h=im.naturalHeight||100; } }
+      rec.credit=src.credit({name:rec.name,author:rec.author,license:rec.license,customCredit:opts.customCredit});
+      out.push(rec);
+    }catch(err){ skipped++; }
+  }
+  for(let i=0;i<out.length;i+=200) await DB.putMany('icons',out.slice(i,i+200));
+  library.push(...out); out.forEach(r=>openCats.add(r.cat));
+  renderSourceFilter(); renderLibrary();
+  if(!opts.quiet||skipped) toast(`Imported ${out.length} icon${out.length===1?'':'s'}${skipped?` · skipped ${skipped}`:''}`,3500);
+  return out;
+}
+
+/* ---------------- import dialog ---------------- */
+let pendingEntries=null, pendingPlace=false;
+function sourceOptions(v){ return Object.entries(SOURCES).filter(([k])=>k!=='starter'&&k!=='smiles').map(([k,s])=>`<option value="${k}"${k===v?' selected':''}>${s.label}${s.license?' — '+s.license:''}</option>`).join(''); }
+function openImport(entries){
+  pendingEntries=entries||null;
+  const n=entries?entries.length:0;
+  const d=openModal('Import icons',`
+    ${n?`<div class="note"><b>${n}</b> file${n===1?'':'s'} ready to import${entries.some(e=>/\.(zip|tgz|gz|tar|pptx)$/i.test(e.path))?' (archives will be unpacked)':''}.</div>`:`<div>Add icons you downloaded from free libraries. You can pick single <b>SVG/PNG</b> files, a whole <b>folder</b>, or an archive: <b>.zip</b> (e.g. the Bioicons GitHub download), <b>.tgz</b> (Reactome icon pack) or <b>.pptx</b> (pictures inside PowerPoint kits).</div>`}
+    <div class="f"><label class="l">Where are these from?<select class="in" id="impSrc">${sourceOptions(lastSource)}</select></label>
+    <label class="l">Category (blank = use folder names)<input class="in" id="impCat" placeholder="auto"></label></div>
+    <label class="l" id="impCustomWrap" style="display:none">Credit line to use in citations<input class="in" id="impCustom" placeholder="e.g. Icon by Jane Doe, CC BY 4.0"></label>
+    <div class="small" id="impLic"></div>
+    ${n?'':`<div class="row"><button class="btn" id="impFiles">Choose files / archives…</button><button class="btn" id="impFolder">Choose a folder…</button></div><div class="small">Tip: you can also drag files or folders straight onto the library or canvas.</div>`}
+    <div class="prog" id="impProg" style="display:none"><i></i></div><div class="small" id="impMsg"></div>`,
+    `<button class="btn" data-close>Cancel</button>${n?'<button class="btn primary" id="impGo">Import</button>':''}`);
+  const upd=()=>{ const s=SOURCES[$('#impSrc',d).value]; $('#impCustomWrap',d).style.display=$('#impSrc',d).value==='other'?'':'none';
+    $('#impLic',d).innerHTML=s.license?`Licence recorded: <b>${esc(s.license)}</b>. Credits for every icon you use are collected under <b>Credits</b> in the top bar.`:''; };
+  $('#impSrc',d).onchange=upd; upd();
+  const go=async ents=>{
+    const opts={source:$('#impSrc',d).value,cat:$('#impCat',d).value.trim(),customCredit:$('#impCustom',d).value.trim(),
+      onProgress:(m,f)=>{ $('#impProg',d).style.display=''; $('#impMsg',d).textContent=m; if(f!=null) $('#impProg i',d).style.width=Math.round(f*100)+'%'; }};
+    lastSource=opts.source; autosave();
+    const btn=$('#impGo',d); if(btn) btn.disabled=true;
+    const res=await importEntries(ents,opts);
+    closeModal();
+    if(pendingPlace&&res.length){ res.slice(0,12).forEach((ic,k)=>{ const c=viewCenter(); placeIcon(ic,{x:c.x+k*25,y:c.y+k*25}); }); }
+    pendingPlace=false;
+  };
+  if(n) $('#impGo',d).onclick=()=>go(entries);
+  else { $('#impFiles',d).onclick=()=>{ importDialogGo=go; $('#fileIcons').click(); }; $('#impFolder',d).onclick=()=>{ importDialogGo=go; $('#fileFolder').click(); }; }
+}
+let importDialogGo=null;
+$('#fileIcons').addEventListener('change',async e=>{ const files=[...e.target.files]; e.target.value=''; if(!files.length) return; const ents=files.map(f=>({path:f.name,file:f}));
+  if(importDialogGo){ const g=importDialogGo; importDialogGo=null; await g(ents); return; }
+  if(pendingPlace&&files.every(f=>IMG_RE.test(f.name))){ const res=await importEntries(ents,{source:'own',cat:'My uploads',quiet:true}); res.slice(0,12).forEach((ic,k)=>{const c=viewCenter(); placeIcon(ic,{x:c.x+k*25,y:c.y+k*25});}); pendingPlace=false; return; }
+  openImport(ents); });
+$('#fileFolder').addEventListener('change',async e=>{ const files=[...e.target.files]; e.target.value=''; if(!files.length) return; const ents=files.map(f=>({path:f.webkitRelativePath||f.name,file:f}));
+  if(importDialogGo){ const g=importDialogGo; importDialogGo=null; await g(ents); return; } openImport(ents); });
+$('#bImport').onclick=()=>openImport();
+
+/* ---------------- sources / where to get icons ---------------- */
+function openSources(){
+  openModal('Get free icons',`
+    <div class="note">This page can't download from other websites itself, so grab the icons from these free libraries, then <b>drop the files, folder or archive onto OpenFigure</b>. Licence and credit info is recorded automatically.</div>
+    <div class="src">
+      <div><a href="https://github.com/duerrsimon/bioicons" target="_blank" rel="noopener">Bioicons</a><span class="lic">CC0 / CC BY</span><br>~2,800 life-science SVGs. Fastest: on GitHub click <b>Code → Download ZIP</b>, then import the .zip. Licence and author are read from folder names.</div>
+      <div><a href="https://reactome.org/icon-lib" target="_blank" rel="noopener">Reactome Icon Library</a><span class="lic">CC BY 4.0</span><br>2,500+ icons (proteins, receptors, cells, compounds). Download <b>icon-lib-svg.tgz</b> and import it as is.</div>
+      <div><a href="https://bioart.niaid.nih.gov/" target="_blank" rel="noopener">NIH BioArt Source</a><span class="lic">Public domain</span><br>2,000+ professional illustrations. Each item downloads as SVG/PNG (or a zip) — import those.</div>
+      <div><a href="https://smart.servier.com/" target="_blank" rel="noopener">Servier Medical Art</a><span class="lic">CC BY 4.0</span><br>3,000+ medical drawings. Download SVG/PNG images, or a PowerPoint kit (picture files inside are extracted).</div>
+      <div><a href="https://www.scidraw.io/" target="_blank" rel="noopener">SciDraw</a><span class="lic">CC BY / CC0</span><br>Animals, lab setups and neuroscience drawings, as SVG.</div>
+      <div><a href="https://biodraws.com/" target="_blank" rel="noopener">BioDraws</a><span class="lic">CC BY-SA 4.0</span><br>Proteins, DNA, cell culture, eye and embryology vectors, as SVG.</div>
+      <div><a href="https://3dproteinimaging.com/protein-imager/" target="_blank" rel="noopener">Protein Imager</a><span class="lic">check terms</span><br>Make cartoon proteins from a PDB ID, export a PNG with a transparent background, then import it.</div>
+      <div><a href="https://openscienceart.com/" target="_blank" rel="noopener">Open Science Art</a><span class="lic">CC0</span><br>Icons and 3D-style art (site partly under construction).</div>
+      <div><a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Molecules → PubChem</a><span class="lic">tool</span><br>Look up a compound, copy its <b>SMILES</b>, then use the molecule tool (<kbd>M</kbd>) to draw it as an editable vector.</div>
+      <div><a href="https://github.com/GPTchatly/DrawPlotia" target="_blank" rel="noopener">DrawPlotia</a><span class="lic">Apache-2.0</span><br>A related open-source editor that bundles 2,665 icons and adds statistics plots. You can run it locally with Node.</div>
+    </div>
+    <div class="small">Always follow each library's licence: keep the credit line for CC BY icons (OpenFigure collects it under <b>Credits</b>), and share CC BY-SA derivatives under the same licence.</div>`,
+    `<button class="btn primary" data-close>Got it</button>`);
+}
+$('#bSources').onclick=openSources;
+
+/* ---------------- manage library ---------------- */
+function openManage(){
+  const user=library.filter(i=>!i.builtin); const cats=new Map(); user.forEach(i=>cats.set(i.cat,(cats.get(i.cat)||0)+1));
+  const d=openModal('Manage library',`
+    <div class="small">${user.length} imported icon${user.length===1?'':'s'} in ${cats.size} categor${cats.size===1?'y':'ies'}. They are stored in this browser. Export a library pack to back them up or move them to another computer.</div>
+    <div class="row"><button class="btn" id="mExport"${user.length?'':' disabled'}>Export library pack (.json)</button><button class="btn" id="mImport">Import library pack…</button></div>
+    <div class="mlist">${[...cats.entries()].sort().map(([c,n])=>`<div class="mrow"><input class="in" data-ren="${esc(c)}" value="${esc(c)}"><span class="small" style="width:44px;text-align:right">${n}</span><button class="btn danger" data-delcat="${esc(c)}">Delete</button></div>`).join('')||'<div class="small">No imported categories yet.</div>'}</div>
+    ${user.length?'<button class="btn danger" id="mWipe" style="align-self:flex-start">Delete all imported icons</button>':''}`,
+    `<button class="btn primary" data-close>Done</button>`);
+  d.addEventListener('change',async e=>{ const t=e.target.closest('[data-ren]'); if(!t) return; const old=t.dataset.ren, nv=t.value.trim(); if(!nv||nv===old) return; const ch=library.filter(i=>!i.builtin&&i.cat===old); ch.forEach(i=>i.cat=nv); await DB.putMany('icons',ch); t.dataset.ren=nv; openCats.add(nv); renderLibrary(); toast('Renamed'); });
+  d.addEventListener('click',async e=>{ const b=e.target.closest('[data-delcat]'); if(!b) return; const c=b.dataset.delcat; const ids=library.filter(i=>!i.builtin&&i.cat===c).map(i=>i.id); library=library.filter(i=>i.builtin||i.cat!==c); await DB.delMany('icons',ids); renderSourceFilter(); renderLibrary(); openManage(); });
+  const ex=$('#mExport',d); if(ex) ex.onclick=()=>{ const pack={app:'OpenFigure Studio',kind:'library-pack',version:1,icons:library.filter(i=>!i.builtin).map(i=>({...i}))}; saveFile('openfigure-library.json',JSON.stringify(pack)); };
+  $('#mImport',d).onclick=()=>{ closeModal(); $('#fileProject').click(); };
+  const w=$('#mWipe',d); if(w) w.onclick=async()=>{ const ok=await confirmBox('Delete all imported icons?','Icons already placed on your canvas stay. This cannot be undone.','Delete all'); if(!ok) return; const ids=library.filter(i=>!i.builtin).map(i=>i.id); library=library.filter(i=>i.builtin); await DB.delMany('icons',ids); renderSourceFilter(); renderLibrary(); toast('Library cleared'); };
+}
+$('#bManage').onclick=openManage;
+
+/* =========================================================
+   MOLECULES (SMILES → editable vector via SmilesDrawer)
+   ========================================================= */
+const MOLS=[['Water','O'],['Ethanol','CCO'],['Glucose (β-D)','OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O'],['ATP','Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O'],['ADP','Nc1ncnc2c1ncn2[C@@H]1O[C@H](COP(=O)(O)OP(=O)(O)O)[C@@H](O)[C@H]1O'],['cAMP','Nc1ncnc2c1ncn2[C@@H]1O[C@@H]2COP(=O)(O)O[C@H]2[C@H]1O'],['Caffeine','Cn1cnc2c1c(=O)n(C)c(=O)n2C'],['Aspirin','CC(=O)Oc1ccccc1C(=O)O'],['Ibuprofen','CC(C)Cc1ccc(cc1)C(C)C(=O)O'],['Paracetamol','CC(=O)Nc1ccc(O)cc1'],['Metformin','CN(C)C(=N)NC(=N)N'],['Nicotine','CN1CCC[C@H]1c1cccnc1'],['Dopamine','NCCc1ccc(O)c(O)c1'],['Serotonin','NCCc1c[nH]c2ccc(O)cc12'],['Adrenaline','CNC[C@H](O)c1ccc(O)c(O)c1'],['Acetylcholine','CC(=O)OCC[N+](C)(C)C'],['Histamine','NCCc1c[nH]cn1'],['Melatonin','CC(=O)NCCc1c[nH]c2ccc(OC)cc12'],['GABA','NCCCC(=O)O'],['Glutamate','N[C@@H](CCC(=O)O)C(=O)O'],['Glycine','NCC(=O)O'],['Lactate','CC(O)C(=O)O'],['Pyruvate','CC(=O)C(=O)O'],['Citrate','OC(=O)CC(O)(CC(=O)O)C(=O)O'],['Urea','NC(N)=O'],['DMSO','CS(C)=O'],['Benzene','c1ccccc1'],['Cholesterol','C[C@H](CCCC(C)C)[C@H]1CC[C@@H]2[C@@]1(CC[C@H]3[C@H]2CC=C4[C@@]3(CC[C@@H](C4)O)C)C'],['Testosterone','C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@@H]2O)CCC4=CC(=O)CC[C@]34C'],['Estradiol','C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@@H]2O)CCc4cc(O)ccc34'],['Cortisol','C[C@]12CCC(=O)C=C1CC[C@@H]3[C@@H]2[C@H](C[C@]4([C@H]3CC[C@@]4(C(=O)CO)O)C)O'],['Dexamethasone','C[C@@H]1C[C@H]2[C@@H]3CCC4=CC(=O)C=C[C@@]4([C@]3([C@H](C[C@@]2([C@]1(C(=O)CO)O)C)O)F)C'],['Penicillin G','CC1([C@@H](N2[C@H](S1)[C@@H](C2=O)NC(=O)Cc3ccccc3)C(=O)O)C'],['Methotrexate','CN(Cc1cnc2nc(N)nc(N)c2n1)c1ccc(cc1)C(=O)N[C@@H](CCC(=O)O)C(=O)O'],['Tamoxifen','CC/C(=C(\\c1ccccc1)/c1ccc(OCCN(C)C)cc1)/c1ccccc1']];
+let molLast=null;
+async function openMolecule(){
+  const d=openModal('Molecule from SMILES',`
+    <div class="f"><label class="l">Common molecules<select class="in" id="molPick"><option value="">— choose —</option>${MOLS.map(m=>`<option value="${esc(m[1])}">${m[0]}</option>`).join('')}</select></label>
+    <label class="l">Name (for the layer list)<input class="in" id="molName" placeholder="e.g. Imatinib"></label></div>
+    <label class="l">SMILES<input class="in" id="molSmiles" placeholder="Paste SMILES, e.g. CC(=O)Oc1ccccc1C(=O)O"></label>
+    <div class="small">Find any compound's SMILES on <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubChem</a> (Names and Identifiers → SMILES). Name lookup needs the internet, which this page can't reach directly.</div>
+    <svg id="molPrev" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="small" id="molMsg">Loading the structure drawer…</div>
+    <label class="c"><input type="checkbox" id="molSave" checked> Also save to my library</label>`,
+    `<button class="btn" data-close>Cancel</button><button class="btn primary" id="molAdd" disabled>Add to figure</button>`);
+  try{ await loadScript(SMILES); $('#molMsg',d).textContent='Type or pick a molecule.'; }catch(e){ $('#molMsg',d).textContent='Could not load SmilesDrawer from unpkg.com — check your connection.'; return; }
+  const draw=()=>{ const smi=$('#molSmiles',d).value.trim(); molLast=null; $('#molAdd',d).disabled=true; const prev=$('#molPrev',d); prev.innerHTML=''; prev.removeAttribute('viewBox'); if(!smi){ return; }
+    try{
+      const SD=window.SmilesDrawer; const opts={width:480,height:300,bondThickness:1.4,fontSizeLarge:9,fontSizeSmall:6,padding:12};
+      const finish=()=>{ try{
+          const bb=prev.getBBox(); const pad=8; prev.setAttribute('viewBox',`${bb.x-pad} ${bb.y-pad} ${bb.width+2*pad} ${bb.height+2*pad}`); prev.removeAttribute('style'); prev.style.width='100%'; prev.style.height='270px';
+          const clone=prev.cloneNode(true); clone.removeAttribute('id'); clone.removeAttribute('style'); clone.removeAttribute('width'); clone.removeAttribute('height');
+          molLast=new XMLSerializer().serializeToString(clone); $('#molAdd',d).disabled=false; $('#molMsg',d).textContent='Looks right? Add it to the figure. Atom colours can be edited afterwards.';
+        }catch(err){ $('#molMsg',d).textContent='Could not draw: '+err.message; } };
+      const fail=()=>{ $('#molMsg',d).textContent='That SMILES could not be parsed. Check it and try again.'; };
+      if(SD.SvgDrawer&&SD.parse){ const drawer=new SD.SvgDrawer(opts); SD.parse(smi,tree=>{ try{ drawer.draw(tree,'molPrev','light'); finish(); }catch(err){ $('#molMsg',d).textContent='Could not draw: '+err.message; } },fail); }
+      else if(SD.SmiDrawer){ new SD.SmiDrawer(opts).draw(smi,'#molPrev','light',()=>finish(),fail); }
+      else $('#molMsg',d).textContent='SmilesDrawer did not load correctly.';
+    }catch(err){ $('#molMsg',d).textContent='Error: '+err.message; }
+  };
+  $('#molPick',d).onchange=e=>{ $('#molSmiles',d).value=e.target.value; $('#molName',d).value=e.target.selectedOptions[0].textContent.replace('— choose —',''); draw(); };
+  $('#molSmiles',d).addEventListener('input',()=>{ clearTimeout(draw.t); draw.t=setTimeout(draw,350); });
+  $('#molAdd',d).onclick=async()=>{ if(!molLast) return; let n; try{ n=normalizeSvg(molLast); }catch(e){ toast('Could not use this drawing'); return; }
+    const name=$('#molName',d).value.trim()||'Molecule';
+    const rec={id:'u_'+uid(),name,cat:'Molecules (SMILES)',source:'smiles',kind:'svg',svg:n.svg,w:n.w,h:n.h,license:'Generated',author:''}; rec.credit=SOURCES.smiles.credit(rec);
+    if($('#molSave',d).checked){ library.push(rec); await DB.put('icons',rec); openCats.add(rec.cat); renderSourceFilter(); renderLibrary(); }
+    closeModal(); placeIcon(rec); };
+}
+
+/* =========================================================
+   EXPORT
+   ========================================================= */
+function exportSVGString(mode){
+  const onlySel=$('#expSelection').checked&&sel.size; const items=doc.items.filter(i=>!i.hidden&&(!onlySel||sel.has(i.id)));
+  let X=0,Y=0,W=doc.width,H=doc.height;
+  if(onlySel){ const b=unionAABB(items); const pad=10; X=b.x-pad; Y=b.y-pad; W=b.x2-b.x+2*pad; H=b.y2-b.y+2*pad; }
+  const transparent=$('#expTransparent').checked||!doc.bg;
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${r2(W)}" height="${r2(H)}" viewBox="${r2(X)} ${r2(Y)} ${r2(W)} ${r2(H)}">`;
+  s+=`<title>${esc(doc.title)}</title>`;
+  if(!transparent) s+=`<rect x="${r2(X)}" y="${r2(Y)}" width="${r2(W)}" height="${r2(H)}" fill="${doc.bg}"/>`;
+  items.forEach((it,k)=>{ s+=renderItem(it,mode,'i'+k+'_'); });
+  return {svg:s+'</svg>',W,H};
+}
+const fname=ext=>(doc.title.trim()||'figure').replace(/[\\/:*?"<>|]+/g,'-').slice(0,80)+ext;
+async function doExport(kind){
+  closeMenus();
+  if(!doc.items.length){ toast('Nothing to export yet'); return; }
+  if(kind==='svg'){ const {svg:s}=exportSVGString('svg'); await saveFile(fname('.svg'),'<?xml version="1.0" encoding="UTF-8"?>\n'+s); return; }
+  const scale={png1:1,png2:2,png4:4}[kind]||2;
+  try{
+    toast('Rendering PNG…',6000);
+    const {svg:s,W,H}=exportSVGString('png');
+    const img=new Image(); img.src=svgDataUri(s); await img.decode();
+    let sc=scale; while(W*sc*H*sc>2.6e8||W*sc>16000||H*sc>16000) sc*=0.8;
+    const cv=document.createElement('canvas'); cv.width=Math.round(W*sc); cv.height=Math.round(H*sc);
+    const ctx=cv.getContext('2d'); ctx.imageSmoothingQuality='high'; ctx.drawImage(img,0,0,cv.width,cv.height);
+    const blob=await new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('Canvas export blocked by the browser')),'image/png'));
+    await saveFile(fname(sc===scale&&scale>1?`@${scale}x.png`:'.png'),blob);
+  }catch(err){ toast('PNG export failed: '+err.message+' — try SVG export instead.',5000); }
+}
+$$('[data-exp]').forEach(b=>b.onclick=()=>doExport(b.dataset.exp));
+
+/* ---------------- credits ---------------- */
+function openCredits(){
+  const used=[...new Set(doc.items.filter(i=>i.type==='icon'&&!i.hidden).map(i=>i.asset))].map(k=>doc.assets[k]).filter(Boolean);
+  const lines=[...new Set(used.map(a=>a.credit).filter(Boolean))];
+  const bySrc={}; used.forEach(a=>{ const l=(SOURCES[a.source]||{}).label||a.source||'Unknown'; bySrc[l]=(bySrc[l]||0)+1; });
+  const legend=lines.length?('Figure created with OpenFigure Studio. Icons: '+lines.join('; ')+'.'):'Figure created with OpenFigure Studio.';
+  const d=openModal('Credits & licences for this figure',`
+    ${used.length?`<div class="small">${used.length} different icon${used.length===1?'':'s'} used — ${Object.entries(bySrc).map(([k,v])=>`${esc(k)}: ${v}`).join(' · ')}</div>`:'<div class="small">No library icons used yet.</div>'}
+    <label class="l">Suggested text for your figure legend or acknowledgements<textarea class="in" id="credTxt" style="min-height:140px">${esc(legend)}</textarea></label>
+    <div class="note">CC BY icons need this credit. CC BY-SA (BioDraws) means the figure parts derived from them should be shared under CC BY-SA. Public-domain and CC0 credits are a courtesy. You are responsible for checking each item's licence.</div>`,
+    `<button class="btn" id="credCopy">Copy</button><button class="btn primary" data-close>Close</button>`);
+  $('#credCopy',d).onclick=async()=>{ try{ await navigator.clipboard.writeText($('#credTxt',d).value); toast('Credits copied'); }catch(e){ $('#credTxt',d).select(); toast('Press Ctrl+C to copy'); } };
+}
+$('#bCredits').onclick=openCredits;
+
+/* ---------------- projects ---------------- */
+$('#bSave').onclick=()=>{ const data={app:'OpenFigure Studio',kind:'project',version:1,doc:prunedDoc()}; saveFile(fname('.json'),JSON.stringify(data)); };
+$('#bOpen').onclick=()=>$('#fileProject').click();
+$('#fileProject').addEventListener('change',async e=>{ const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  try{ const o=JSON.parse(await f.text());
+    if(o.kind==='library-pack'&&Array.isArray(o.icons)){ const have=new Set(library.map(i=>i.id)); const add=o.icons.filter(i=>i&&i.id&&!have.has(i.id)&&(i.svg||i.src)); await DB.putMany('icons',add); library.push(...add); renderSourceFilter(); renderLibrary(); toast(`Added ${add.length} icons from pack`); return; }
+    const d=o.doc||o; if(!Array.isArray(d.items)) throw new Error('not an OpenFigure project');
+    doc={...newDoc(),...d}; sel.clear(); undoS=[]; redoS=[]; lastSnap=snap(); renderAll(); fit(); autosave(); toast('Opened '+f.name);
+  }catch(err){ toast('Could not open: '+err.message,4000); } });
+$('#bNew').onclick=async()=>{ if(doc.items.length&&!(await confirmBox('Start a new figure?','Unsaved changes on this canvas will be lost (use Save first to keep a project file).','New figure'))) return; doc=newDoc(); sel.clear(); undoS=[]; redoS=[]; lastSnap=snap(); renderAll(); fit(); autosave(); };
+$('#title').addEventListener('input',e=>{ doc.title=e.target.value; });
+$('#title').addEventListener('change',()=>commit());
+
+/* ---------------- top bar ---------------- */
+$('#bUndo').onclick=undo; $('#bRedo').onclick=redo;
+$('#bZoomIn').onclick=()=>zoomBy(1.25); $('#bZoomOut').onclick=()=>zoomBy(0.8); $('#bFit').onclick=fit;
+$('#bGrid').onclick=()=>{ settings.grid=!settings.grid; renderAll(); autosave(); };
+$('#bSnap').onclick=()=>{ settings.snap=!settings.snap; updateButtons(); autosave(); toast(settings.snap?`Snapping to ${settings.gridSize}px grid`:'Snapping off'); };
+$('#bExport').onclick=e=>{ e.stopPropagation(); $('#exportMenu').classList.toggle('open'); };
+function closeMenus(){ $$('.menu.open').forEach(m=>m.classList.remove('open')); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.menu')) closeMenus(); });
+$('#bHelp').onclick=()=>openModal('Keyboard shortcuts',`<div class="keys">
+  <kbd>V</kbd><span>Select</span><kbd>H / Space</kbd><span>Pan</span><kbd>T</kbd><span>Text</span><kbd>P</kbd><span>Panel label (A, B, C…)</span><kbd>R / O</kbd><span>Rectangle / ellipse</span><kbd>A / I / L</kbd><span>Arrow / inhibition / line</span><kbd>M</kbd><span>Molecule from SMILES</span><kbd>U</kbd><span>Insert your own image</span>
+  <kbd>Double-click tool</kbd><span>Keep tool active for repeated drawing</span><kbd>Ctrl+Z / Ctrl+Shift+Z</kbd><span>Undo / redo</span><kbd>Ctrl+C / V / D</kbd><span>Copy / paste / duplicate</span><kbd>Ctrl+A</kbd><span>Select all</span><kbd>Delete</kbd><span>Delete selection</span>
+  <kbd>Arrows</kbd><span>Nudge 1px (Shift = 10px)</span><kbd>Ctrl+G / Ctrl+Shift+G</kbd><span>Group / ungroup</span><kbd>Ctrl+] / Ctrl+[</kbd><span>Forward / backward (add Shift for front/back)</span><kbd>Ctrl+0</kbd><span>Fit to screen</span><kbd>Ctrl+wheel</kbd><span>Zoom</span>
+  <kbd>Alt+drag</kbd><span>Duplicate while dragging</span><kbd>Shift+resize</kbd><span>Free-resize icons / square shapes</span><kbd>Double-click arrow</kbd><span>Straighten</span><kbd>Ctrl+V</kbd><span>Paste an image or SVG code from your clipboard</span></div>`,'<button class="btn primary" data-close>OK</button>');
+
+/* =========================================================
+   KEYBOARD + CLIPBOARD
+   ========================================================= */
+let clip=null, clipFresh=false;
+window.addEventListener('blur',()=>{ clipFresh=false; });
+const typing=t=>t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable);
+document.addEventListener('keydown',e=>{
+  if(typing(e.target)) return;
+  if($('#modal').classList.contains('open')){ if(e.key==='Escape') closeModal(); return; }
+  const mod=e.ctrlKey||e.metaKey, k=e.key.toLowerCase();
+  if(k===' '){ if(!spaceDown){ spaceDown=true; stage.classList.add('panning'); } e.preventDefault(); return; }
+  if(mod&&k==='z'){ e.preventDefault(); e.shiftKey?redo():undo(); return; }
+  if(mod&&k==='y'){ e.preventDefault(); redo(); return; }
+  if(mod&&k==='a'){ e.preventDefault(); sel=new Set(doc.items.filter(i=>!i.locked&&!i.hidden).map(i=>i.id)); renderOverlay(); renderProps(); renderLayers(); return; }
+  if(mod&&k==='c'){ if(sel.size){ clip=JSON.stringify(selItems()); clipFresh=true; toast(`Copied ${sel.size} item${sel.size>1?'s':''}`); } return; }
+  if(mod&&k==='x'){ if(sel.size){ clip=JSON.stringify(selItems()); clipFresh=true; act('del'); } return; }
+  if(mod&&k==='d'){ e.preventDefault(); if(sel.size) act('dup'); return; }
+  if(mod&&k==='g'){ e.preventDefault(); act(e.shiftKey?'ungroup':'group'); return; }
+  if(mod&&(k===']'||k==='}')){ e.preventDefault(); act(e.shiftKey?'front':'fwd'); return; }
+  if(mod&&(k==='['||k==='{')){ e.preventDefault(); act(e.shiftKey?'back':'bwd'); return; }
+  if(mod&&k==='0'){ e.preventDefault(); fit(); return; }
+  if(mod&&(k==='='||k==='+')){ e.preventDefault(); zoomBy(1.25); return; }
+  if(mod&&k==='-'){ e.preventDefault(); zoomBy(0.8); return; }
+  if(mod&&k==='s'){ e.preventDefault(); $('#bSave').click(); return; }
+  if(mod) return;
+  if(k==='delete'||k==='backspace'){ if(sel.size){ e.preventDefault(); act('del'); } return; }
+  if(k==='escape'){ sel.clear(); stickyTool=false; setTool('select'); renderOverlay(); renderProps(); renderLayers(); return; }
+  if(k==='enter'){ const it=selItems()[0]; if(it&&it.type==='text'){ e.preventDefault(); editText(it,true); } return; }
+  if(k.startsWith('arrow')&&sel.size){ e.preventDefault(); const st=e.shiftKey?10:1; const dx=k==='arrowleft'?-st:k==='arrowright'?st:0, dy=k==='arrowup'?-st:k==='arrowdown'?st:0; const items=selItems(); items.forEach(it=>moveItem(it,JSON.parse(JSON.stringify(it)),dx,dy)); updateItemEls(items); clearTimeout(nudgeT); nudgeT=setTimeout(()=>{renderProps();commit();},300); return; }
+  const map={v:'select',h:'hand',t:'text',p:'label',r:'rect',o:'ellipse',a:'arrow',i:'inhibit',l:'line',m:'mol',u:'image'};
+  if(map[k]){ stickyTool=false; setTool(map[k]); }
+});
+let nudgeT;
+document.addEventListener('keyup',e=>{ if(e.key===' '){ spaceDown=false; if(tool!=='hand') stage.classList.remove('panning'); } });
+document.addEventListener('paste',async e=>{
+  if(typing(e.target)||$('#modal').classList.contains('open')) return;
+  if(clip&&clipFresh){ e.preventDefault(); pasteInternal(); return; }
+  const files=[...(e.clipboardData?.files||[])].filter(f=>/^image\//.test(f.type));
+  const txt=e.clipboardData?.getData('text/plain')||'';
+  if(files.length){ e.preventDefault(); const ents=files.map((f,k)=>({path:(f.name&&f.name!=='image.png'?f.name:`pasted-${Date.now()}-${k}.png`),file:f})); const res=await importEntries(ents,{source:'own',cat:'My uploads',quiet:true}); res.forEach(ic=>placeIcon(ic)); return; }
+  if(/^\s*(<\?xml[\s\S]*?\?>\s*)?<svg[\s>]/i.test(txt)){ e.preventDefault(); const res=await importEntries([{path:`pasted-${Date.now()}.svg`,file:new Blob([txt])}],{source:'own',cat:'My uploads',quiet:true}); res.forEach(ic=>placeIcon(ic)); return; }
+  if(clip){ e.preventDefault(); pasteInternal(); }
+});
+function pasteInternal(){ const items=JSON.parse(clip).map(o=>{ o.id=uid(); if(o.type==='line'){o.x1+=24;o.y1+=24;o.x2+=24;o.y2+=24;} else {o.x+=24;o.y+=24;} return o; }); remapGroups(items); doc.items.push(...items); clip=JSON.stringify(items); sel=new Set(items.map(i=>i.id)); renderAll(); commit(); }
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+(async function boot(){
+  buildTools(); setTool('select');
+  library=STARTER.map(([cat,name,svgText],k)=>{ const n=normalizeSvg(svgText); return {id:'s_'+k+'_'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),name,cat,kind:'svg',svg:n.svg,w:n.w,h:n.h,source:'starter',license:'CC0',credit:SOURCES.starter.credit(),builtin:true}; });
+  await DB.open();
+  const stored=await DB.all('icons'); library.push(...stored);
+  const st=await DB.get('kv','settings'); if(st){ settings.grid=st.grid!==false; settings.snap=!!st.snap; settings.gridSize=st.gridSize||10; lastSource=st.lastSource||lastSource; }
+  $('#gridPat').setAttribute('width',settings.gridSize*2); $('#gridPat').setAttribute('height',settings.gridSize*2); $('#gridPath').setAttribute('d',`M${settings.gridSize*2} 0H0V${settings.gridSize*2}`);
+  const saved=await DB.get('kv','autosave'); if(saved&&Array.isArray(saved.items)){ doc={...newDoc(),...saved}; }
+  lastSnap=snap();
+  renderSourceFilter(); renderLibrary(); renderAll(); applyView(); fit();
+  if(!DB.db) toast('Browser storage is off here — use Save to keep your work and Manage → Export pack for icons.',6000);
+})();
+})();
+</script>
+</body>
+</html>
