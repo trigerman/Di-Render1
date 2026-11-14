@@ -1,6 +1,14 @@
 import { InputError, INPUT_LIMITS, assertFileSize } from "../security/input";
 
 export type ImageMime = "image/png" | "image/jpeg";
+/** Provenance for generated images (protein renders, molecule PNGs); shown in the License panel and figure legend. */
+export interface MediaCredit {
+  text: string;
+  licenseId: string;
+  licenseName: string;
+  licenseUrl: string | null;
+  attributionRequired: boolean;
+}
 export interface ProjectImage {
   id: string;
   name: string;
@@ -8,6 +16,7 @@ export interface ProjectImage {
   data: string;
   width: number;
   height: number;
+  credit?: MediaCredit;
 }
 
 const read32 = (bytes: Uint8Array, offset: number) =>

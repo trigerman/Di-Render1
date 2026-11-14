@@ -28,11 +28,24 @@ const STYLES = [
 const PDB_ID = /^[0-9][A-Za-z0-9]{3}$|^pdb_[0-9]{4}[A-Za-z0-9]{4}$/i;
 const UNIPROT = /^[A-Z0-9]{6,10}$/i;
 
+// Citations follow the RCSB PDB citation policy (rcsb.org/pages/policies) and the
+// AlphaFold DB "Licence and attribution" section (alphafold.ebi.ac.uk/download).
+const MOLSTAR = "Rendered with Mol* (Sehnal D. et al. Mol* Viewer, Nucleic Acids Res. 2021;49:W431–W437, doi:10.1093/nar/gkab314).";
+
 function creditFor(source: Source, id: string, fileName: string) {
-  const molstar = "Rendered with Mol* (Sehnal et al., Nucleic Acids Res. 2021).";
-  if (source === "pdb") return `Structure: PDB ${id.toUpperCase()} (RCSB Protein Data Bank, rcsb.org). ${molstar}`;
-  if (source === "afdb") return `Structure: AlphaFold DB model ${id.toUpperCase()} (Jumper et al. 2021; Varadi et al. 2024), CC BY 4.0. ${molstar}`;
-  return `Structure: ${fileName}. ${molstar}`;
+  if (source === "pdb")
+    return `Structure: PDB ID ${id.toUpperCase()} (RCSB Protein Data Bank, RCSB.org; PDB data CC0 1.0); also cite the structure's primary publication. ${MOLSTAR}`;
+  if (source === "afdb")
+    return `Structure: AlphaFold DB model of UniProt ${id.toUpperCase()} (Jumper J. et al. Nature 2021; Varadi M. et al. Nucleic Acids Res. 2024), AlphaFold Data © DeepMind Technologies Limited, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). ${MOLSTAR}`;
+  return `Structure: ${fileName} (uploaded by the author: add its source and licence). ${MOLSTAR}`;
+}
+
+function licenseFor(source: Source) {
+  if (source === "pdb")
+    return { id: "CC0-1.0", name: "CC0 1.0 (PDB data; citation requested)", url: "https://creativecommons.org/publicdomain/zero/1.0/", attributionRequired: true };
+  if (source === "afdb")
+    return { id: "CC-BY-4.0", name: "CC BY 4.0 (AlphaFold DB)", url: "https://creativecommons.org/licenses/by/4.0/", attributionRequired: true };
+  return { id: "UNKNOWN", name: "Uploaded structure: licence not recorded", url: null, attributionRequired: true };
 }
 
 function ProteinPanel({ host, close }: { host: PluginHost; close: () => void }) {
@@ -163,10 +176,10 @@ function ProteinPanel({ host, close }: { host: PluginHost; close: () => void }) 
       const canvas = transparent ? trimCanvas(await dataUrlToCanvas(dataUrl)) : await dataUrlToCanvas(dataUrl);
       const blob = await fitPng(canvas);
       const name = loaded.source === "file" ? loaded.file : `${loaded.source === "pdb" ? "PDB" : "AlphaFold"} ${loaded.id.toUpperCase()}`;
-      await host.insertImage(blob, { name });
       const credit = creditFor(loaded.source, loaded.id, loaded.file);
+      await host.insertImage(blob, { name, credit: { text: credit, license: licenseFor(loaded.source) } });
       try { await navigator.clipboard.writeText(credit); } catch { /* clipboard optional */ }
-      host.notify(`Protein inserted. Credit (copied to clipboard): ${credit}`);
+      host.notify("Protein inserted. Its citation is in the License panel and the figure legend (also copied to the clipboard).");
       close();
     } catch (error) {
       setStatus((error as Error).message);

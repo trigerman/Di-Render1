@@ -53,6 +53,10 @@ Additional artwork (see docs/ICON_SOURCES.md and the per-item manifest records):
   from github.com/biodraws/biodraws.
 - 311 further Bioicons drawings and 18 further Servier Medical Art drawings
   (Bioicons vector edition), each under the licence recorded in its folder.
+- 4,264 Servier Medical Art drawings converted from the official Servier Medical Art
+  PowerPoint kits (https://smart.servier.com/), CC BY 4.0
+  (https://creativecommons.org/licenses/by/4.0/). Modified: converted to SVG, cropped,
+  tiny gradient textures flattened to solid colours.
 Normalization only expanded styles and removed editor metadata; geometry is unchanged.
 
 Optional runtime libraries, loaded only when their plugin opens:

@@ -28,7 +28,7 @@ export function createProject(
       title: "Untitled figure",
       createdAt: now,
       updatedAt: now,
-      applicationVersion: "Di-Render 0.2.0",
+      applicationVersion: "Di-Render 0.3.0",
     },
     document: {
       width: Math.round(dimensions.width),

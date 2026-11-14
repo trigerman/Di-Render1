@@ -83,7 +83,7 @@ function MoleculePanel({ host, close }: { host: PluginHost; close: () => void })
     } catch {
       // The strict SVG grammar can reject some text features: fall back to a crisp PNG.
       try {
-        await host.insertImage(await svgToPng(drawn, 4), { name: title });
+        await host.insertImage(await svgToPng(drawn, 4), { name: title, credit: { text: meta.attribution, license: meta.license } });
         host.notify("Inserted as a high-resolution image (this drawing uses SVG features the editor keeps as pixels).");
         close();
       } catch (error) {

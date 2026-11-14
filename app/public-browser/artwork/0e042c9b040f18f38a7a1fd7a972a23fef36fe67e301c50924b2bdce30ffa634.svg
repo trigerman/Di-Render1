@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40.04" height="57.52" viewBox="549.80 369.68 40.04 57.52">
+<defs>
+<clipPath id="clip-0">
+<path clip-rule="nonzero" d="M 0 0.28125 L 958.992188 0.28125 L 958.992188 539.695312 L 0 539.695312 Z M 0 0.28125 "/>
+</clipPath>
+</defs>
+<g clip-path="url(#clip-0)">
+
+</g>
+<path fill-rule="evenodd" fill="#7fb0f9" fill-opacity="1" stroke-width="0.51022" stroke-linecap="round" stroke-linejoin="round" stroke="#000000" stroke-opacity="1" stroke-miterlimit="10" d="M 570.584224 113.753011 L 555.959775 113.753011 L 555.959775 116.986813 L 585.185211 116.986813 L 585.185211 113.753011 Z M 570.584224 113.753011 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill-rule="evenodd" fill="#c1dffd" fill-opacity="1" stroke-width="0.51022" stroke-linecap="round" stroke-linejoin="round" stroke="#000000" stroke-opacity="1" stroke-miterlimit="10" d="M 589.34966 148.620982 L 570.470826 169.114762 L 551.478593 148.620982 L 559.475117 148.620982 L 555.959775 116.986813 L 585.212583 116.986813 L 581.329675 148.620982 Z M 589.34966 148.620982 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill-rule="evenodd" fill="#7fb0f9" fill-opacity="1" d="M 580.730469 391.253906 L 580.984375 394.511719 L 588.742188 394.511719 L 588.742188 391.253906 Z M 550.910156 394.511719 L 558.644531 394.511719 L 558.898438 391.253906 L 550.910156 391.253906 Z M 550.910156 394.511719 "/>
+<path fill="none" stroke-width="0.51022" stroke-linecap="round" stroke-linejoin="round" stroke="#000000" stroke-opacity="1" stroke-miterlimit="10" d="M 581.329675 148.620982 L 581.583843 145.359808 L 589.34966 145.359808 L 589.34966 148.620982 Z M 581.329675 148.620982 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.51022" stroke-linecap="round" stroke-linejoin="round" stroke="#000000" stroke-opacity="1" stroke-miterlimit="10" d="M 551.478593 145.359808 L 559.220948 145.359808 L 559.475117 148.620982 L 551.478593 148.620982 Z M 551.478593 145.359808 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+</svg>

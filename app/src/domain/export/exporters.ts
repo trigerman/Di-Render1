@@ -66,7 +66,7 @@ export function buildSvgExport(
   const attribution = generateAttributions(project);
   const metadata = escapeXml(
     JSON.stringify({
-      generator: "Di-Render 0.2.0 (Di-Render 0.1.0 / OpenBioFigure 0.3.0 adaptation)",
+      generator: "Di-Render 0.3.0 (Di-Render 0.1.0 / OpenBioFigure 0.3.0 adaptation)",
       projectFormat: project.formatVersion,
       title: project.metadata.title,
       attributions: attribution.check.assets.map((asset) => ({

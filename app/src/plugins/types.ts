@@ -25,6 +25,14 @@ export interface InsertSvgOptions {
 export interface InsertImageOptions {
   /** Shown in the Layers panel. */
   name: string;
+  /**
+   * Where the pixels came from. It is listed in the License panel and the figure
+   * legend, so readers can cite the data (e.g. a PDB entry or AlphaFold model).
+   */
+  credit?: {
+    text: string;
+    license: PluginLicense;
+  };
 }
 
 /**
@@ -32,7 +40,7 @@ export interface InsertImageOptions {
  * built-in and external plugins keep working when the editor internals change.
  */
 export interface PluginHost {
-  /** Di-Render version, e.g. "0.2.0". */
+  /** Di-Render version, e.g. "0.3.0". */
   readonly version: string;
   /** Deployment base path ("/" locally, "/di-render/" on GitHub Pages). */
   readonly baseUrl: string;

@@ -1,0 +1,24 @@
+Di-Render 0.3.0 update (complete: replaces the earlier Di-Render-0.3.0-update.zip)
+==================================================================================
+
+Unzip this into your Di-Render folder and allow it to replace existing files.
+(Windows: right-click > Extract All..., choose C:\Users\dhrup\Downloads\Di-Render,
+then "Replace the files in the destination".)
+
+What's inside
+- Library: 9,087 drawings. All 49 Servier Medical Art kits (4,264 drawings, CC BY 4.0),
+  including the large venous-valve drawings, the Arteries pathophysiology kit and
+  Servier's callout arrows.
+- Publishing safety: the License panel says "Ready to publish" or explains what to fix,
+  flags ShareAlike (CC BY-SA) drawings, and gives a ready-to-paste figure legend.
+  The library has a "Journal-safe (no ShareAlike)" licence filter and BY-SA badges.
+  Protein and molecule images now carry their citation into the legend.
+- docs/PUBLISHING.md: each source's terms, with links to the official pages.
+- Blossom pink-and-white theme, 13 new templates, version 0.3.0.
+
+Then publish:
+  git add -A
+  git commit -m "Di-Render 0.3.0: all Servier kits, publication licence check, Blossom theme"
+  git push
+If GitHub Pages still shows the README: Settings > Pages > Source = "GitHub Actions",
+then Actions > "Deploy to GitHub Pages" > Run workflow.

@@ -26,5 +26,5 @@
     "test:stats-browser": "node tests/analysis-browser.mjs",
     "test:long-stats-browser": "node tests/long-stats-browser.mjs"
   },
-  "version": "0.2.0"
+  "version": "0.3.0"
 }

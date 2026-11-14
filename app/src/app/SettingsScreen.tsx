@@ -465,7 +465,7 @@ export function SettingsScreen({
               <div className="about-product">
                 <Brand />
                 <div>
-                  <h3 id="about-title">Di-Render 0.2.0</h3>
+                  <h3 id="about-title">Di-Render 0.3.0</h3>
                   <p>
                     Adapted from OpenBioFigure v0.3.0. Includes an open-license asset
                     pack, editable scientific tools and local export.

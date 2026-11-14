@@ -1,12 +1,12 @@
 import { sanitizeSvg } from "../domain/assets/sanitize";
 import type { ProjectAsset } from "../domain/assets/schema";
-import { prepareImageFile } from "../domain/media/images";
+import { prepareImageFile, type ProjectImage } from "../domain/media/images";
 import { InputError } from "../domain/security/input";
 import type { FabricEditor } from "../editor/FabricEditor";
 import type { InsertSvgOptions, PluginHost } from "./types";
 import { APP_BASE, loadScript, loadStylesheet } from "./vendor";
 
-export const DI_RENDER_VERSION = "0.2.0";
+export const DI_RENDER_VERSION = "0.3.0";
 
 const https = (value?: string | null) => {
   if (!value) return null;
@@ -86,7 +86,17 @@ export function createPluginHost(deps: HostDeps): PluginHost {
       const type = image.type === "image/jpeg" ? "image/jpeg" : "image/png";
       const name = clip(options.name || "Plugin image", 200);
       const file = new File([image], `${slug(name)}.${type === "image/jpeg" ? "jpg" : "png"}`, { type });
-      const media = await prepareImageFile(file);
+      const media: ProjectImage = await prepareImageFile(file);
+      if (options.credit?.text) {
+        const license = options.credit.license;
+        media.credit = {
+          text: clip(options.credit.text, 2_000),
+          licenseId: /^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$/.test(license.id) ? license.id : "UNKNOWN",
+          licenseName: clip(license.name || license.id, 300),
+          licenseUrl: https(license.url),
+          attributionRequired: license.attributionRequired,
+        };
+      }
       if (deps.getEditor() !== editor || editor.getProject().metadata.id !== documentId || deps.isSwitching()) return false;
       const inserted = await editor.addImage({ ...media, name });
       if (inserted) deps.onInserted();

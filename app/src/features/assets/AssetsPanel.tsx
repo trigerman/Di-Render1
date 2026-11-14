@@ -41,6 +41,7 @@ import {
   toggleFavorite,
 } from "../../domain/assets/libraryState";
 import { searchAssets, type AssetFilters } from "../../domain/assets/search";
+import { JOURNAL_SAFE_FILTER, journalSafety } from "../../domain/licensing/journal";
 import type { AssetMetadata } from "../../domain/assets/schema";
 import {
   assetTaxonomy,
@@ -237,7 +238,9 @@ export function AssetsPanel({
     >
       <div className="asset-thumb" aria-hidden="true">
         <img src={getSeedAssetUrl(asset)} alt="" loading="lazy" draggable={false} />
-        {asset.license.attributionRequired && (
+        {journalSafety(asset.license.id) === "share-alike" ? (
+          <span className="credit-flag share-alike-flag" title="CC BY-SA (ShareAlike): many journals cannot accept it. Use the Journal-safe filter for alternatives.">BY-SA</span>
+        ) : asset.license.attributionRequired && (
           <span className="credit-flag">credit</span>
         )}
       </div>
@@ -442,6 +445,7 @@ export function AssetsPanel({
               }
             >
               <option value="">{t(locale, "all")}</option>
+              <option value={JOURNAL_SAFE_FILTER}>Journal-safe (no ShareAlike)</option>
               {licenses.map((item) => (
                 <option key={item}>{item}</option>
               ))}

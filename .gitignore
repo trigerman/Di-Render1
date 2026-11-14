@@ -16,3 +16,6 @@ releases/
 
 # Copied from node_modules by scripts/vendor-sync.mjs at build time
 app/public-browser/vendor/
+
+__pycache__/
+*.pyc

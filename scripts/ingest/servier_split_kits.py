@@ -101,6 +101,10 @@ def blank_template(xml: bytes) -> bytes:
     return etree.tostring(root, xml_declaration=True, encoding='UTF-8', standalone=True)
 
 
+# Safety valve for pathological files; the largest official kit slide is ~60 MB.
+MAX_SLIDE_XML = 128 * 2**20
+
+
 def split(kit_path, out_dir):
     kit = os.path.splitext(os.path.basename(kit_path))[0]
     zin = zipfile.ZipFile(kit_path)
@@ -117,28 +121,33 @@ def split(kit_path, out_dir):
     for slide_no, target in enumerate(order, 1):
         part = 'ppt/' + target if not target.startswith('/') else target[1:]
         rels_part = part.replace('slides/', 'slides/_rels/') + '.rels'
+        if zin.getinfo(part).file_size > MAX_SLIDE_XML:
+            print(f'skip {os.path.basename(kit_path)} slide {slide_no}: {zin.getinfo(part).file_size // 2**20} MB of XML (too large to split)', flush=True)
+            continue
         root = etree.fromstring(zin.read(part))
         tree = root.find('p:cSld/p:spTree', NS)
         items, labels = drawing_candidates(tree)
         title = next((t for t, _ in sorted(labels, key=lambda l: (l[1][1], l[1][0])) if t), '')
         # Build one light skeleton per slide (no shapes, no background, no master graphics),
-        # then add a single drawing to each copy.
-        skeleton = copy.deepcopy(root)
+        # then add a single drawing to each copy. Work on bytes: removing or deep-copying
+        # huge subtrees in lxml is very slow (namespace clean-up), and slides reach 60 MB.
+        raw = zin.read(part)
+        a, b_end = raw.find(b'<p:spTree>'), raw.rfind(b'</p:spTree>')
+        keep = b''.join(etree.tostring(child) for child in tree
+                        if etree.QName(child).localname in ('nvGrpSpPr', 'grpSpPr'))
+        skeleton = etree.fromstring(raw[:a] + b'<p:spTree>' + keep + b'</p:spTree>' + raw[b_end + len(b'</p:spTree>'):])
         skeleton.set('showMasterSp', '0')
-        s_tree = skeleton.find('p:cSld/p:spTree', NS)
-        for child in list(s_tree):
-            if etree.QName(child).localname not in ('nvGrpSpPr', 'grpSpPr'): s_tree.remove(child)
         cSld = skeleton.find('p:cSld', NS)
         old_bg = cSld.find('p:bg', NS)
         if old_bg is not None: cSld.remove(old_bg)
         bg = etree.Element(q('p:bg')); cSld.insert(0, bg)
         bgpr = etree.SubElement(bg, q('p:bgPr')); etree.SubElement(bgpr, q('a:noFill')); etree.SubElement(bgpr, q('a:effectLst'))
+        template = etree.tostring(skeleton, xml_declaration=True, encoding='UTF-8', standalone=True)
+        cut = template.rfind(b'</p:spTree>')
         for index, (el, b) in enumerate(items):
             counter += 1
-            new_root = copy.deepcopy(skeleton)
-            new_root.find('p:cSld/p:spTree', NS).append(copy.deepcopy(el))
             name = f'ppt/slides/split{counter}.xml'
-            new_parts[name] = etree.tostring(new_root, xml_declaration=True, encoding='UTF-8', standalone=True)
+            new_parts[name] = template[:cut] + etree.tostring(el) + template[cut:]
             if rels_part in names:
                 new_parts[name.replace('slides/', 'slides/_rels/') + '.rels'] = zin.read(rels_part)
             records.append({'kit': kit, 'slide': slide_no, 'index': index + 1, 'title': title,

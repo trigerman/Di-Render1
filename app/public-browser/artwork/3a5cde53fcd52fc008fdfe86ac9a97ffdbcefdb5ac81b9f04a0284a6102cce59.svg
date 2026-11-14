@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36.54" height="43.64" viewBox="730.37 468.06 36.54 43.64">
+<defs>
+<clipPath id="clip-0">
+<path clip-rule="nonzero" d="M 0 0.28125 L 958.992188 0.28125 L 958.992188 539.695312 L 0 539.695312 Z M 0 0.28125 "/>
+</clipPath>
+</defs>
+<g clip-path="url(#clip-0)">
+
+</g>
+<path fill-rule="evenodd" fill="#ffffff" fill-opacity="1" stroke-width="0.73699" stroke-linecap="butt" stroke-linejoin="round" stroke="#ffffff" stroke-opacity="1" stroke-miterlimit="10" d="M 734.823826 28.884282 L 752.486563 53.233599 L 753.620545 53.233599 L 766.829472 55.075341 L 766.203827 58.735364 L 753.108298 56.889711 L 753.108298 57.515356 L 751.352582 70.892426 L 747.950638 70.892426 L 749.678982 56.889711 L 749.678982 55.075341 L 731.961501 31.265643 Z M 734.823826 28.884282 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 734.88248 28.884282 L 752.513935 53.206227 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 749.733726 55.047969 L 731.992783 31.238271 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 753.13567 57.515356 L 751.379954 70.892426 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 747.97801 70.892426 L 749.733726 56.889711 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 753.675289 53.206227 L 766.856844 55.047969 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="1.61572" stroke-linecap="round" stroke-linejoin="round" stroke="#939393" stroke-opacity="1" stroke-miterlimit="10" d="M 766.262482 58.735364 L 753.13567 56.889711 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+</svg>

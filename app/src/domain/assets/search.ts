@@ -1,5 +1,6 @@
 import type { AssetMetadata } from "./schema";
 import { getAssetTaxonomyForCategory, getAssetTaxonomyGroup } from "./taxonomy";
+import { isJournalSafe, JOURNAL_SAFE_FILTER } from "../licensing/journal";
 
 export interface AssetFilters {
   query: string;
@@ -123,7 +124,10 @@ export function searchAssets(
     const matchesProvider =
       !filters.provider || asset.source.provider === filters.provider;
     const matchesLicense =
-      !filters.license || asset.license.id === filters.license;
+      !filters.license ||
+      (filters.license === JOURNAL_SAFE_FILTER
+        ? isJournalSafe(asset.license.id)
+        : asset.license.id === filters.license);
     const matchesAttribution =
       filters.attribution === "all" ||
       (filters.attribution === "required" &&

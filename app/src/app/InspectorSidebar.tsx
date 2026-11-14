@@ -83,7 +83,7 @@ export function InspectorSidebar({
         >
           <FileCheck2 />
           License
-          {publication.incompleteCount > 0 && (
+          {(publication.incompleteCount > 0 || !publication.journalReady) && (
             <i className="tab-flag">
               <span className="visually-hidden">needs review</span>
             </i>

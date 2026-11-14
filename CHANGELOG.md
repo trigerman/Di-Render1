@@ -8,8 +8,23 @@
 - Templates can place real library drawings (`artwork` in `templates.ts`). They load through the verified catalog,
   so licensing credits are complete, and a template still opens if a drawing can't load.
 - "Illustrated" and "Layout" tags on template cards, plus preview styles for panel and poster layouts.
-- Maintainer pipeline to convert Servier Medical Art PowerPoint kits into verified library SVGs
-  (`scripts/ingest/servier_split_kits.py`, `servier_ingest.py`), with 12 new library categories.
+- **All 49 Servier Medical Art kits** converted into **4,264** verified, editable vector drawings (CC BY 4.0),
+  across 13 new categories (cardiovascular, musculoskeletal, digestive, respiratory, urinary, reproductive,
+  endocrinology, dermatology, ENT and ophthalmology, medical equipment, drugs, nutrition, maps and more).
+  The library grows from 4,827 to **9,087** drawings.
+- Maintainer pipeline for the kits: `scripts/ingest/servier_split_kits.py` and `servier_ingest.py`.
+- **Blossom theme**: a soft pink-and-white palette, now the default. Light, Dark and System remain in Settings.
+  Figure paper stays white so exports are unaffected.
+- Removed four duplicate drawings (three BioDraws, one Servier).
+- **Publication licence check**: the License panel says whether a figure is ready for CC BY and
+  subscription journals, flags CC BY-SA (ShareAlike) drawings, and gives a short legend to copy.
+  Servier drawings are credited with one line, as Servier's FAQ suggests.
+- Library: **Journal-safe (no ShareAlike)** licence filter and a BY-SA badge on ShareAlike drawings.
+- Protein (PDB, AlphaFold DB) and molecule images now carry their data citation into the
+  legend and ATTRIBUTIONS.md, instead of only copying it to the clipboard.
+- New guide: [docs/PUBLISHING.md](docs/PUBLISHING.md), with each source's terms and links.
+- Servier splitter rewritten to handle 60 MB slides in seconds; very large drawings are
+  compacted to fit. Recovered the Arteries pathophysiology kit, which an interrupted run had skipped.
 
 ## 0.2.0 — Di-Render
 

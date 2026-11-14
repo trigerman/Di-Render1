@@ -28,7 +28,7 @@ export function Brand({ compact = false }: BrandProps) {
       <strong>
         Di<span>-</span>Render
       </strong>
-      {!compact && <span className="version">Rev 0.2.0</span>}
+      {!compact && <span className="version">Rev 0.3.0</span>}
     </div>
   );
 }

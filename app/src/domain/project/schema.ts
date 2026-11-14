@@ -86,6 +86,13 @@ const mediaSchema = z.object({
   data: z.string().min(4).max(Math.ceil(INPUT_LIMITS.imageBytes / 3) * 4),
   width: z.number().int().positive().max(INPUT_LIMITS.pngSide),
   height: z.number().int().positive().max(INPUT_LIMITS.pngSide),
+  credit: z.object({
+    text: z.string().min(1).max(2_000),
+    licenseId: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$/),
+    licenseName: z.string().min(1).max(300),
+    licenseUrl: z.string().url().startsWith("https://").max(2_048).nullable(),
+    attributionRequired: z.boolean(),
+  }).strict().optional(),
 }).strict();
 
 export type ProjectObject =

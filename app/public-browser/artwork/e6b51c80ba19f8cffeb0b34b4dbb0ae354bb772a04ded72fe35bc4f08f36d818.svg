@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42.54" height="111.32" viewBox="327.98 370.11 42.54 111.32">
+<defs>
+<clipPath id="clip-0">
+<path clip-rule="nonzero" d="M 0 0.28125 L 958.992188 0.28125 L 958.992188 539.695312 L 0 539.695312 Z M 0 0.28125 "/>
+</clipPath>
+</defs>
+<g clip-path="url(#clip-0)">
+
+</g>
+<path fill-rule="evenodd" fill="#df4375" fill-opacity="1" d="M 354.671875 479.292969 L 354.671875 393.945312 L 364.78125 375.851562 L 358.46875 375.851562 L 361.808594 372.28125 L 368.351562 372.28125 L 357.875 475.835938 Z M 354.671875 479.292969 "/>
+<path fill-rule="evenodd" fill="#fccad6" fill-opacity="1" d="M 354.871094 382.164062 L 352.832031 385.621094 L 342.128906 385.621094 L 336.777344 375.851562 L 330.121094 375.851562 L 333.4375 372.28125 L 339.976562 372.28125 L 345.328125 382.164062 Z M 354.871094 382.164062 "/>
+<path fill-rule="evenodd" fill="#fccad6" fill-opacity="1" d="M 358.496094 375.820312 Z M 368.378906 372.253906 L 361.808594 372.253906 L 358.496094 375.820312 L 364.78125 375.820312 Z M 368.378906 372.253906 "/>
+<path fill-rule="evenodd" fill="#f98cab" fill-opacity="1" d="M 364.78125 375.851562 L 358.46875 375.851562 L 352.859375 385.589844 L 342.15625 385.589844 L 336.804688 375.851562 L 330.148438 375.851562 L 340.371094 479.292969 L 354.644531 479.292969 Z M 364.78125 375.851562 "/>
+<path fill-rule="evenodd" fill="#ffffff" fill-opacity="1" d="M 357.277344 379.898438 L 353.457031 386.328125 L 347.167969 386.328125 L 354.050781 387.289062 Z M 357.277344 379.898438 "/>
+<path fill-rule="evenodd" fill="#df4375" fill-opacity="1" d="M 340.03125 372.28125 L 336.832031 375.851562 L 342.1875 385.621094 L 345.414062 382.164062 Z M 340.03125 372.28125 "/>
+<path fill-rule="evenodd" fill="#e45d87" fill-opacity="1" d="M 363.566406 375.851562 L 352.492188 476.773438 L 340.597656 478.667969 L 340.371094 479.292969 L 354.644531 479.292969 L 364.78125 375.851562 Z M 363.566406 375.851562 "/>
+<path fill-rule="evenodd" fill="#e45d87" fill-opacity="1" d="M 334.683594 376.445312 L 340.628906 385.960938 L 342.1875 386.328125 L 336.804688 376.445312 Z M 334.683594 376.445312 "/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 365.157636 164.039218 L 358.838623 164.039218 L 353.22346 154.290889 L 342.509292 154.290889 L 337.152207 164.039218 L 330.489089 164.039218 L 340.722293 60.49108 L 355.010458 60.49108 Z M 365.157636 164.039218 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 355.03783 60.49108 L 365.157636 164.039218 L 358.838623 164.039218 L 362.181913 167.613215 L 368.731633 167.613215 L 358.24426 63.951678 Z M 355.03783 60.49108 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 355.237255 157.720205 L 353.196088 154.259607 L 342.48192 154.259607 L 337.124835 164.039218 L 330.461717 164.039218 L 333.781545 167.613215 L 340.327355 167.613215 L 345.684439 157.720205 Z M 355.237255 157.720205 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 340.382099 167.640587 L 336.812013 164.070501 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 368.731633 167.27302 L 365.157636 163.812422 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+<path fill="none" stroke-width="0.62361" stroke-linecap="round" stroke-linejoin="round" stroke="#333333" stroke-opacity="1" stroke-miterlimit="10" d="M 345.743094 157.747577 L 342.509292 154.290889 " transform="matrix(0.998969, 0, 0, -0.998969, 0, 539.721697)"/>
+</svg>

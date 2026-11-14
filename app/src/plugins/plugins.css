@@ -74,3 +74,17 @@
 .template-poster i:first-child { grid-column: 1 / -1; min-height: 8px; background: #b9d3ea; }
 .template-tag { display: inline-block; margin-left: 6px; padding: 0 5px; border: 1px solid var(--color-brand-border); border-radius: 3px;
   font: 600 var(--text-label) / 1.5 var(--font-label); letter-spacing: var(--tracking-label); text-transform: uppercase; font-style: normal; color: var(--color-brand); vertical-align: middle; }
+
+/* Licensing: ShareAlike badge, publication check and ready-to-paste legend */
+.share-alike-flag { border-color: var(--color-warning); color: var(--color-warning); background: var(--color-warning-soft); }
+.publication-check { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--color-border); background: var(--color-surface-raised); }
+.publication-check.ok { border-color: var(--color-brand-border); background: var(--color-brand-soft); }
+.publication-check.warn { border-color: var(--color-warning); background: var(--color-warning-soft); }
+.publication-check > strong { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.publication-check > strong svg { width: 16px; height: 16px; flex: none; }
+.publication-check ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 12px; line-height: 1.45; }
+.publication-check p { margin: 0; font-size: 12px; line-height: 1.45; color: var(--color-text-secondary); }
+.legend-box { display: grid; gap: 6px; }
+.legend-box > span { font: 600 var(--text-label) / 1.25 var(--font-label); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-secondary); }
+.legend-box textarea { width: 100%; min-height: 96px; resize: vertical; font: 12px/1.45 var(--font-ui, inherit); padding: 8px; border: 1px solid var(--color-border); background: var(--color-document); color: var(--color-text); overflow-wrap: anywhere; }
+.credit-card.share-alike { border-color: var(--color-warning); }

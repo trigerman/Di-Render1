@@ -54,15 +54,19 @@ export function EditorStatus({
           type="button"
           onClick={onOpenLicensing}
           className={`status-cell ${
-            publication.ready ? "publication-ready" : "publication-warning"
+            publication.journalReady ? "publication-ready" : "publication-warning"
           }`}
         >
           <span className="cell-label" aria-hidden="true">
             Credits
           </span>
-          {publication.ready ? <Check /> : <AlertTriangle />}
+          {publication.journalReady ? <Check /> : <AlertTriangle />}
           <span>
-            {publication.ready ? "Credits complete" : "Review licensing"}
+            {publication.journalReady
+              ? "Credits complete"
+              : publication.ready
+                ? "Journal licence check"
+                : "Review licensing"}
           </span>
           <small>
             {publication.completeCount}/{publication.usedAssetCount} verified

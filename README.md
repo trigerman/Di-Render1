@@ -2,7 +2,7 @@
 
 **A free, open-source scientific figure editor — a BioRender alternative that runs in your browser.**
 
-Di-Render combines an editable vector canvas, a verified library of **4,827 open-licence scientific drawings**, data plots with statistics, and plugins for **protein structures**, **chemical structures** and **bulk icon import**. Everything runs locally in the browser; nothing is uploaded.
+Di-Render combines an editable vector canvas, a verified library of **9,087 open-licence scientific drawings**, data plots with statistics, and plugins for **protein structures**, **chemical structures** and **bulk icon import**. Everything runs locally in the browser; nothing is uploaded.
 
 > Di-Render is a fork of [OpenBRender / DrawPlotia](https://github.com/GPTchatly/DrawPlotia) (Apache-2.0), itself adapted from [OpenBioFigure](https://github.com/Voldigoade/openbiofigure). See [NOTICE](NOTICE).
 
@@ -12,7 +12,7 @@ Di-Render combines an editable vector canvas, a verified library of **4,827 open
 |---|---|
 | **Canvas** | Text, shapes, arrows and connectors, layers, groups, alignment, undo/redo, and an SVG artwork editor (recolour or edit any part of a drawing) |
 | **Templates** | 19 editable templates, 13 of them with real artwork: cell signaling, mouse study, cell culture, virus life cycle, immune response, CRISPR, clinical trial, western blot, drug mechanism, gene expression, organoid screen, six-panel figure, research poster and more |
-| **Icon library** | 4,827 drawings in 43 categories: Reactome (1,651), Servier Medical Art (1,370), Bioicons (918), NIH BioArt (706), BioDraws (182). Every item carries its creator, source, licence and credit line |
+| **Icon library** | 9,087 drawings in 56 categories: Servier Medical Art (5,633, including all 49 official PowerPoint kits), Reactome (1,651), Bioicons (918), NIH BioArt (706), BioDraws (179). Every item carries its creator, source, licence and credit line |
 | **Licensing** | A Licensing tab lists the credits each figure needs and flags any artwork with an unknown licence |
 | **Data & plots** | CSV/TSV import and 15 editable vector plot types. Statistics: t-tests, ANOVA with Tukey, and Kruskal–Wallis with Dunn, shown as plot brackets |
 | **Protein plugin** | Load a PDB ID, an AlphaFold UniProt ID or a `.pdb/.cif` file. Style it as cartoon, surface or illustrative (outlined) in [Mol\*](https://molstar.org/), then insert a transparent PNG |
@@ -25,7 +25,7 @@ Di-Render combines an editable vector canvas, a verified library of **4,827 open
 
 1. Create a new GitHub repository (for example `di-render`) and push this folder to its `main` branch:
    ```sh
-   git init && git add . && git commit -m "Di-Render 0.2.0"
+   git init && git add . && git commit -m "Di-Render 0.3.0"
    git branch -M main
    git remote add origin https://github.com/<you>/di-render.git
    git push -u origin main
@@ -83,6 +83,13 @@ docs/                     plugin API, icon sources, data analysis, security note
 ## Adding more icon libraries
 
 Built-in drawings must pass the editor's strict SVG grammar and load in Fabric.js. Every library item is integrity-checked, so a drawing can't be swapped after review. To add a source, extend `scripts/ingest/ingest_extra_packs.py` and follow [docs/ICON_SOURCES.md](docs/ICON_SOURCES.md). Users can also import any icon pack at runtime with **Plugins → My library**.
+
+## Publishing your figures
+
+Figures made with Di-Render can go into journals, theses and books, including commercial ones,
+at no cost. Keep the credit line from **License › Copy legend** in the caption, and avoid
+ShareAlike drawings for CC BY journals: the library's *Journal-safe* filter hides them.
+See [docs/PUBLISHING.md](docs/PUBLISHING.md) for each source's terms.
 
 ## Licence
 
